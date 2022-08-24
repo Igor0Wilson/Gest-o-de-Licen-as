@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { FlatList } from 'react-native';
 
-import { Load } from '@components/Animations/Load';
 import { Filters } from '@components/Controllers/Filters';
 import { Order, OrderProps } from '@components/Controllers/Order';
 import { Container, Header, Title, Counter } from './styles';
+import { Divider, Heading, HStack, Spinner } from 'native-base';
+import { Load } from '@components/Layout/Spinner';
 
 export function Licences() {
   const [status, setStatus] = useState('open');
@@ -20,7 +21,7 @@ export function Licences() {
       <Filters onFilter={setStatus} />
 
       <Header>
-        <Title>Chamados {status === 'open' ? 'aberto' : 'encerrado'}</Title>
+        <Title>Chamados {status === 'open' ? 'Válidas' : 'Expiradas'}</Title>
         <Counter>{orders.length}</Counter>
       </Header>
 

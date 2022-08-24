@@ -1,19 +1,18 @@
 import React from 'react';
+import { LogoutButton } from '../LogoutButton';
 
-import { LogoutButton } from '@components/Controllers/LogoutButton';
 import { Container, Greeting, Title, SubTitle } from './styles';
 
 export function Header() {
-  function handleSignOut() { }
+  
 
   return (
     <Container>
       <Greeting>
-        <Title>HelpDesk</Title>
-        <SubTitle>Conte conosco, estamos aqui para ajudar.</SubTitle>
+        <Title>Gestão De Licenças</Title>
+        <SubTitle>Sistema de controle de licenças de aplicações</SubTitle>
       </Greeting>
-
-      <LogoutButton onPress={handleSignOut} />
+      <LogoutButton />
     </Container>
   );
 }

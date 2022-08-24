@@ -2,8 +2,9 @@ import React, { useRef } from 'react';
 import { BottomSheetView, BottomSheetModal, BottomSheetModalProvider } from '@gorhom/bottom-sheet';
 
 import { Background } from './styles';
-import { Button } from '@components/Controllers/Button';
+// import { Button } from '@components/Controllers/Button';
 import { OrderForm } from '@components/Forms/OrderForm';
+import { Button } from 'native-base';
 
 export function NewOrder() {
   const bottomSheetRef = useRef<BottomSheetModal>(null);
@@ -14,7 +15,7 @@ export function NewOrder() {
 
   return (
     <>
-      <Button title="Novo chamado" onPress={handleSnapPress} />
+      <Button variant="solid" onPress={handleSnapPress}>Adicionar Licença</Button>
 
       <BottomSheetModalProvider>
         <BottomSheetModal

@@ -13,18 +13,18 @@ export function Filters({ onFilter }: Props) {
 
   return (
     <Container>
-      <Title>Filtre pelo status do chamado</Title>
+      <Title>Filtre pela validade da licença</Title>
 
       <Options>
         <Filter
-          title="Abertos"
-          backgroundColor={theme.COLORS.SECONDARY}
+          title="Válidas"
+          backgroundColor={theme.COLORS.PRIMARY}
           onPress={() => onFilter('open')}
         />
 
         <Filter
-          title="Encerrados"
-          backgroundColor={theme.COLORS.PRIMARY}
+          title="Expiradas"
+          backgroundColor={theme.COLORS.SECONDARY}
           onPress={() => onFilter('closed')}
         />
       </Options>
