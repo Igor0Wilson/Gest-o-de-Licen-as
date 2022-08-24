@@ -160,25 +160,19 @@ export function ClientForm() {
             <ErrorText>{errors.phone?.message}</ErrorText>
 
             <Controller
-            defaultValue=""
+              defaultValue={false}
               control={control}
               name="isValid"
               render={({ field: { onBlur, value, onChange } }) => (
                 <HStack alignItems="center" space={4}>
                   <Switch
-                    name="isValid"
                     size="md" 
-                    onToggle={onChange}
+                    onValueChange={onChange}
+                    value={value}
                   />
                   <Text>Validado pelo administrador?</Text>
                 </HStack>
               )}
-              rules={{
-                required: {
-                  value: true,
-                  message: "E-mail do cliente é um campo obrigatório"
-                } 
-              }}
             />    
 
             <Button
