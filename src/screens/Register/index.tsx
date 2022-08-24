@@ -5,7 +5,7 @@ import { useTheme } from 'styled-components/native';
 import { MaterialIcons } from '@expo/vector-icons';
 import { Header } from '@components/Layout/Header';
 
-import { Container } from './styles';
+import { Background, Container } from './styles';
 import { NewUser } from '@components/Controllers/NewUser';
 import { Users } from '@components/Lists/Users';
 
@@ -15,11 +15,13 @@ export function Register() {
   const navigation = useNavigation();
 
   return (
-    <Container>
+    <Background>
       <Header />
-      <Users />
-      <NewUser />
-    </Container>
+      <Container>
+        <Users />
+        <NewUser />
+      </Container>
+    </Background>
   );
 }
 

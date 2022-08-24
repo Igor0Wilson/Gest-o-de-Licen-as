@@ -12,7 +12,6 @@ export function Header() {
         <Title>Gestão De Licenças</Title>
         <SubTitle>Sistema de controle de licenças de aplicações</SubTitle>
       </Greeting>
-      <LogoutButton />
     </Container>
   );
 }

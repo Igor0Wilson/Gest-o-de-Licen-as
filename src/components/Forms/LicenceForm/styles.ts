@@ -11,3 +11,5 @@ export const Title = styled.Text`
   margin-bottom: 24px;
   align-self: center;
 `;
+
+

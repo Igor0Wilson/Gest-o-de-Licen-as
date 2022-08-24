@@ -3,6 +3,7 @@ import { useTheme } from 'styled-components/native';
 
 import { Filter } from '@components/Controllers/Filter';
 import { Container, Title, Options } from './styles';
+import { AntDesign } from '@expo/vector-icons';
 
 type Props = {
   onFilter: (status: string) => void;
@@ -13,7 +14,7 @@ export function Filters({ onFilter }: Props) {
 
   return (
     <Container>
-      <Title>Filtre pela validade da licença</Title>
+      <Title><AntDesign name="questioncircleo" size={18} color="black" /> - Filtre pela validade da licença</Title>
 
       <Options>
         <Filter

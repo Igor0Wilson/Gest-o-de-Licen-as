@@ -2,12 +2,21 @@ import React, { useRef } from 'react';
 import { BottomSheetView, BottomSheetModal, BottomSheetModalProvider } from '@gorhom/bottom-sheet';
 
 import { Background } from './styles';
-// import { Button } from '@components/Controllers/Button';
-import { OrderForm } from '@components/Forms/OrderForm';
-import { Button } from 'native-base';
+import { useForm, Controller } from "react-hook-form";
+import { LicenceForm } from '@components/Forms/LicenceForm';
+import { AddIcon, Button, CheckIcon } from 'native-base';
+import { AntDesign   } from "@expo/vector-icons";
 
-export function NewOrder() {
+export function NewLicence() {
   const bottomSheetRef = useRef<BottomSheetModal>(null);
+
+  const {
+    handleSubmit,
+    control,
+    formState: { errors },
+  } = useForm();
+
+  
 
   function handleSnapPress() {
     bottomSheetRef.current?.present();
@@ -15,18 +24,18 @@ export function NewOrder() {
 
   return (
     <>
-      <Button variant="solid" onPress={handleSnapPress}>Adicionar Licença</Button>
 
+      <Button variant="solid" leftIcon={<AntDesign name="idcard" size={24} color="white" />} onPress={handleSnapPress}>Adicionar Licença</Button>
+      
       <BottomSheetModalProvider>
         <BottomSheetModal
           ref={bottomSheetRef}
-          snapPoints={['50%']}
+          snapPoints={['100%']}
           style={{ padding: 24 }}
           enablePanDownToClose={true}
-          backdropComponent={() => <Background />}
         >
           <BottomSheetView>
-            <OrderForm />
+            <LicenceForm />
           </BottomSheetView>
         </BottomSheetModal>
       </BottomSheetModalProvider>

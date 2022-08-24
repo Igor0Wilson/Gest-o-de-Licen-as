@@ -1,5 +1,6 @@
 import { Box, Popover, Button } from "native-base";
 import React, { useState } from "react";
+import { AntDesign } from '@expo/vector-icons';
 
 export function LogoutButton() {
     const [isOpen, setIsOpen] = useState<boolean>(false);
@@ -8,9 +9,7 @@ export function LogoutButton() {
 
     return <Box alignItems="center">
         <Popover trigger={triggerProps => {
-        return  <Button variant="outline" colorScheme="danger" alignSelf="center" {...triggerProps} onPress={() => setIsOpen(true)}>
-                    Sair
-                </Button>;
+        return  <Button leftIcon={<AntDesign name="logout" size={18} color="red" />} variant="subtle" colorScheme="danger" alignSelf="center" {...triggerProps} onPress={() => setIsOpen(true)}/>
                 }} isOpen={isOpen} onClose={() => setIsOpen(!isOpen)}>
           <Popover.Content accessibilityLabel="Delete Customerd" w="56">
             <Popover.Arrow />
@@ -21,10 +20,8 @@ export function LogoutButton() {
             </Popover.Body>
             <Popover.Footer justifyContent="flex-end">
               <Button.Group space={2}>
-                <Button colorScheme="coolGray" variant="ghost" onPress={() => setIsOpen(false)}>
-                  Cancel
-                </Button>
-                <Button onPress={handleSignOut} colorScheme="danger">Sair</Button>
+                <Button colorScheme="warning" leftIcon={<AntDesign name="closecircleo" size={18} color="white" />}  onPress={() => setIsOpen(false)}/>
+                <Button onPress={handleSignOut} leftIcon={<AntDesign name="logout" size={18} color="white" />} size={10}  colorScheme="danger"/>
               </Button.Group>
             </Popover.Footer>
           </Popover.Content>

@@ -6,8 +6,8 @@ import { Order, OrderProps } from '@components/Controllers/Order';
 import { Container, Header, Title, Counter } from './styles';
 
 export function Users() {
-  const [status, setStatus] = useState('open');
-  const [isLoading, setIsLoading] = useState(false);
+  const [status, setStatus] = useState<string>('open');
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const [orders, setOrders] = useState<OrderProps[]>([]);
 
   useEffect(() => {

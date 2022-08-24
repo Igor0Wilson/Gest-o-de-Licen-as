@@ -2,8 +2,9 @@ import React, { useRef } from 'react';
 import { BottomSheetView, BottomSheetModal, BottomSheetModalProvider } from '@gorhom/bottom-sheet';
 
 import { Background } from './styles';
-import { Button } from '@components/Controllers/Button';
 import { RegisterForm } from '@components/Forms/RegisterForm';
+import { Button } from 'native-base';
+import { MaterialIcons } from '@expo/vector-icons';
 
 export function NewUser() {
   const bottomSheetRef = useRef<BottomSheetModal>(null);
@@ -14,7 +15,7 @@ export function NewUser() {
 
   return (
     <>
-      <Button title="Cadastrar usuário" onPress={handleSnapPress} />
+      <Button variant="solid" leftIcon={<MaterialIcons name="person-add" size={24} color="white" />} onPress={handleSnapPress}>Novo Usuário</Button>
 
       <BottomSheetModalProvider>
         <BottomSheetModal
