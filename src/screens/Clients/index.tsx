@@ -1,13 +1,17 @@
 import React from 'react';
 
-import { Container } from './styles';
-import { Header } from '@components/Layout/Header';
+import { Background, Container } from './styles';
+import { Header } from '@components/Layout/Header';;
+import { NewClient } from '@components/Controllers/NewClient';
 
 export function Clients() {
   return (
-    <Container>
+    <Background>
       <Header />
-
-    </Container>
+      <Container>
+        {/* <ClientForm /> */}
+        <NewClient/>
+      </Container>
+    </Background>
   );
 }
