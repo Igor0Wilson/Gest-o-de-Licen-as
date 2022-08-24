@@ -1,0 +1,11 @@
+{
+  "expo": {
+    "name": "controleLicencas",
+    "slug": "controleLicencas",
+    "version": "1.0.0",
+    "assetBundlePatterns": [
+      "**/*"
+    ]
+  },
+  "name": "controleLicencas"
+}
