@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-import { Form, Title } from "./styles";
+import { ErrorText, Form, Title } from "./styles";
 import { AntDesign } from "@expo/vector-icons";
 import { MaterialIcons } from "@expo/vector-icons";
 import { Fontisto } from '@expo/vector-icons';
@@ -14,6 +14,8 @@ type UserFormProps = {
   phone: string;
   isValid: boolean;
 }
+
+const EMAIL_REGEX = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
 
 export function ClientForm() {
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -38,15 +40,54 @@ export function ClientForm() {
             <AntDesign name="addusergroup" size={30} color="black" /> Adicionar Cliente
           </Title>
 
-          <Stack mt={3} space={4} w="full" maxW="500px">       
+          <Stack mt={3} space={4} w="full" maxW="500px">     
             <Controller
+              defaultValue=""
+              control={control}
+              name="name"
+              render={({ field: { onBlur, value, onChange } }) => (
+                <Input
+                  placeholder=" Digite o nome do cliente"
+                  error={errors.name}
+                  errorText={errors.name?.message}
+                  onBlur={onBlur}
+                  value={value}
+                  onChangeText={onChange}
+                  variant="underlined"
+                  size="lg"
+                  autoCapitalize="none"
+                  InputLeftElement={
+                    <Icon
+                      as={
+                        <MaterialIcons
+                          name="person"
+                          size={5}
+                          ml={2}
+                          color="muted.400"
+                        />
+                      }
+                    />
+                  }
+                />
+              )}
+              rules={{
+                required: {
+                  value: true,
+                  message: "Nome do cliente é um campo obrigatório"
+                } 
+              }}
+            />
+            <ErrorText>{errors.name?.message}</ErrorText>
+
+            <Controller
+              defaultValue=""
               control={control}
               name="email"
               render={({ field: { onBlur, value, onChange } }) => (
                 <Input
                   placeholder=" Digite o email do cliente"
                   error={errors.email}
-                  errorText={error.email.message}
+                  errorText={errors.email?.message}
                   onBlur={onBlur}
                   value={value}
                   onChangeText={onChange}
@@ -71,50 +112,24 @@ export function ClientForm() {
                 required: {
                   value: true,
                   message: "E-mail do cliente é um campo obrigatório"
-                } 
-                
+                }, 
+                pattern: {
+                  value: EMAIL_REGEX,
+                  message: "E-mail inválido"
+                }
               }}
             />
+            <ErrorText>{errors.email?.message}</ErrorText>
 
             <Controller
-              control={control}
-              name="name"
-              render={({ field: { onBlur, value, onChange } }) => (
-                <Input
-                  placeholder=" Digite o nome do cliente"
-                  error={errors.name}
-                  onBlur={onBlur}
-                  value={value}
-                  onChangeText={onChange}
-                  variant="underlined"
-                  size="lg"
-                  autoCapitalize="none"
-                  InputLeftElement={
-                    <Icon
-                      as={
-                        <MaterialIcons
-                          name="person"
-                          size={5}
-                          ml={2}
-                          color="muted.400"
-                        />
-                      }
-                    />
-                  }
-                />
-              )}
-              rules={{
-                required: true,
-              }}
-            />
-
-            <Controller
+              defaultValue=""
               control={control}
               name="phone"
               render={({ field: { onBlur, value, onChange } }) => (
                 <Input
                   placeholder=" Digite o telefone do cliente"
                   error={errors.phone}
+                  errorText={errors.phone?.message}
                   onBlur={onBlur}
                   value={value}
                   onChangeText={onChange}
@@ -136,13 +151,18 @@ export function ClientForm() {
                 />
               )}
               rules={{
-                required: true,
+                required: {
+                  value: true,
+                  message: "Telefone do cliente é um campo obrigatório"
+                } 
               }}
             />
+            <ErrorText>{errors.phone?.message}</ErrorText>
 
             <Controller
+            defaultValue=""
               control={control}
-              name="phone"
+              name="isValid"
               render={({ field: { onBlur, value, onChange } }) => (
                 <HStack alignItems="center" space={4}>
                   <Switch
@@ -154,7 +174,10 @@ export function ClientForm() {
                 </HStack>
               )}
               rules={{
-                required: true,
+                required: {
+                  value: true,
+                  message: "E-mail do cliente é um campo obrigatório"
+                } 
               }}
             />    
 
@@ -162,7 +185,7 @@ export function ClientForm() {
               isLoading={isLoading}
               onPress={handleSubmit(handleNewOrder)}
               spinnerPlacement="end"
-              isLoadingText=""
+              isLoadingText="Carregando"
             >
               Cadastrar Licença
             </Button>

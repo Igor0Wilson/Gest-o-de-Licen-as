@@ -12,4 +12,10 @@ export const Title = styled.Text`
   align-self: center;
 `;
 
+export const ErrorText = styled.Text`
+  font-size: 12px;
+  color: red;
+`;
+
+
 
