@@ -2,7 +2,7 @@ import React, { useRef } from 'react';
 import { BottomSheetView, BottomSheetModal, BottomSheetModalProvider } from '@gorhom/bottom-sheet';
 
 import { Background } from './styles';
-import { RegisterForm } from '@components/Forms/RegisterForm';
+import { Register} from '@components/Forms/RegisterForm';
 import { Button } from 'native-base';
 import { MaterialIcons } from '@expo/vector-icons';
 
@@ -20,13 +20,12 @@ export function NewUser() {
       <BottomSheetModalProvider>
         <BottomSheetModal
           ref={bottomSheetRef}
-          snapPoints={['50%']}
+          snapPoints={['100%']}
           style={{ padding: 24 }}
           enablePanDownToClose={true}
-          backdropComponent={() => <Background />}
         >
           <BottomSheetView>
-            <RegisterForm />
+            <Register/>
           </BottomSheetView>
         </BottomSheetModal>
       </BottomSheetModalProvider>

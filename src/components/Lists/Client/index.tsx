@@ -3,7 +3,7 @@ import { FlatList } from 'react-native';
 
 import { Order, OrderProps } from '@components/Controllers/Order';
 import { Container, Header, Title, Counter } from './styles';
-import { Load } from '@components/Layout/Spinner';
+import { Load } from '@components/Controllers/Spinner';
 
 export function Client() {
   const [isLoading, setIsLoading] = useState(false);

@@ -8,7 +8,7 @@ import { Box, Button, FormControl, HStack, Icon, Input, Stack, Switch, Text, War
 import { useForm, Controller } from "react-hook-form";
 
 
-type UserFormProps = {
+type ClientFormProps = {
   name: string;
   email: string;
   phone: string;
@@ -24,9 +24,9 @@ export function ClientForm() {
     handleSubmit,
     control,
     formState: { errors },
-  } = useForm();
+  } = useForm<ClientFormProps>();
 
-  function handleNewOrder(data: UserFormProps) {
+  function handleNewOrder(data: ClientFormProps) {
     
     console.log(data)
     setIsLoading(true);

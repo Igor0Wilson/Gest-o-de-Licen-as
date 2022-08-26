@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { FlatList } from 'react-native';
 
-import { Load } from '@components/Animations/Load';
 import { Order, OrderProps } from '@components/Controllers/Order';
 import { Container, Header, Title, Counter } from './styles';
+import { Load } from '@components/Controllers/Spinner';
 
 export function Users() {
   const [status, setStatus] = useState<string>('open');

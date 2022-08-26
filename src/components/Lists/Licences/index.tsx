@@ -5,7 +5,7 @@ import { Filters } from '@components/Controllers/Filters';
 import { Order, OrderProps } from '@components/Controllers/Order';
 import { Container, Header, Title, Counter } from './styles';
 import { Divider, Heading, HStack, Spinner } from 'native-base';
-import { Load } from '@components/Layout/Spinner';
+import { Load } from '@components/Controllers/Spinner';
 
 export function Licences() {
   const [status, setStatus] = useState('open');

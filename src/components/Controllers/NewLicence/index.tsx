@@ -1,11 +1,11 @@
 import React, { useRef } from 'react';
 import { BottomSheetView, BottomSheetModal, BottomSheetModalProvider } from '@gorhom/bottom-sheet';
-
-import { Background } from './styles';
-import { useForm, Controller } from "react-hook-form";
+;
+import { useForm } from "react-hook-form";
 import { LicenceForm } from '@components/Forms/LicenceForm';
-import { AddIcon, Button, CheckIcon } from 'native-base';
+import { Button } from 'native-base';
 import { AntDesign   } from "@expo/vector-icons";
+
 
 export function NewLicence() {
   const bottomSheetRef = useRef<BottomSheetModal>(null);
@@ -16,15 +16,12 @@ export function NewLicence() {
     formState: { errors },
   } = useForm();
 
-  
-
   function handleSnapPress() {
     bottomSheetRef.current?.present();
   }
 
   return (
     <>
-
       <Button variant="solid" leftIcon={<AntDesign name="idcard" size={24} color="white" />} onPress={handleSnapPress}>Adicionar Licença</Button>
       
       <BottomSheetModalProvider>
