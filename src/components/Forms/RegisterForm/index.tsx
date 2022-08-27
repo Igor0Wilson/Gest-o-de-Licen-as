@@ -2,11 +2,11 @@ import React, { useState } from "react";
 
 import { ErrorText, Form, Title } from "./styles";
 
-import { Fontisto } from '@expo/vector-icons';
-import { Box, Button, FormControl, HStack, Icon, Input, Stack, Switch, Text } from "native-base";
+import { Box, Button, FormControl, HStack, Icon, Input, Radio, Stack, Switch, Text } from "native-base";
 import { useForm, Controller } from "react-hook-form";
 
 //import icones
+import { Fontisto } from '@expo/vector-icons';
 import { Entypo } from '@expo/vector-icons';
 import { FontAwesome5 } from '@expo/vector-icons';
 import { MaterialIcons } from "@expo/vector-icons";
@@ -17,8 +17,7 @@ type UserFormProps = {
   email: string;
   phone: string;
   password: string;
-  admin: boolean;
-  colab: boolean;
+  role: string;
   isActive: boolean;
 }
 
@@ -212,22 +211,25 @@ export function Register() {
             <ErrorText>{errors.password?.message}</ErrorText>
             <HStack  justifyContent="center">
               <Controller
-                defaultValue={false}
+                defaultValue="colab"
                 control={control}
-                name="admin"
+                name="role"
                 render={({ field: { value, onChange } }) => (
-                  <HStack alignItems="center" space={4}>
-                    <Text>Administrador</Text>
-                    <Switch
-                      size="md" 
-                      onValueChange={onChange}
-                      value={value}
-                    />
-                    <Text>Colaborador</Text>
-                  </HStack>
+                  <Radio.Group 
+                    name="myRadioGroup" 
+                    accessibilityLabel="favorite number" 
+                    value={value} 
+                    onChange={onChange}
+                  >
+                      <Radio value="adm" colorScheme="emerald" size="sm" my={10}>
+                        Administrador
+                      </Radio>
+                      <Radio value="colab" colorScheme="secondary" size="sm" my={1}>
+                        Colaborador
+                      </Radio>
+                    </Radio.Group>
                 )}
               /> 
-
             </HStack>
 
                   
@@ -247,9 +249,6 @@ export function Register() {
                   </HStack>
                 )}
               />    
-
-
-            
 
             <Button
               isLoading={isLoading}

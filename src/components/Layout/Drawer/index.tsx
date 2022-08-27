@@ -23,7 +23,6 @@ export function Drawer({ ...props }) {
       <DrawerContentScrollView {...props}>
         <DrawerItemList {...props} />
         <LogOutContainer>
-          <Divider />
           <DrawerItem
             label="Sair"
             icon={() => (

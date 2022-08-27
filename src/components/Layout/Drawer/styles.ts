@@ -7,7 +7,9 @@ export const ContainerNavigation = styled.View`
 
 export const LogOutContainer = styled.View`
   flex: 1;
-  margin-top: 97%;   
+  margin-top: 97%; 
+  padding: 2px;
+  background-color: #FFE4C4;
 `;
 
 export const HeaderContainer = styled.View`
@@ -16,4 +18,6 @@ export const HeaderContainer = styled.View`
   padding: 30px;
   margin-top: -50px;
 `;
+
+
 

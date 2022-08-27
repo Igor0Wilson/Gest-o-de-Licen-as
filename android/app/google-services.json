@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "278659054642",
+    "project_id": "controle-de-licencas-e7993",
+    "storage_bucket": "controle-de-licencas-e7993.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:278659054642:android:38d267014cae36c478d02b",
+        "android_client_info": {
+          "package_name": "com.controlelicencas.app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "278659054642-2ejjmcd75q69aob6acacbk6m0a33vg2r.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAzr5Vofg8aGI7uDeygTCQrGufY1G6lBSE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "278659054642-2ejjmcd75q69aob6acacbk6m0a33vg2r.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

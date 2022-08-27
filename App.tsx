@@ -14,6 +14,8 @@ import {
 import { Routes } from "./src/routes";
 import theme from "./src/theme";
 import { NativeBaseProvider } from "native-base";
+import AuthProvider from "./src/contexts/auth";
+
 
 export default function App() {
   const [fontsLoaded] = useFonts({
@@ -30,7 +32,9 @@ export default function App() {
       <NativeBaseProvider>
         <ThemeProvider theme={theme}>
           <StatusBar style="dark" translucent backgroundColor="transparent" />
-          <Routes />
+          <AuthProvider>
+            <Routes  />
+          </AuthProvider>
         </ThemeProvider>
       </NativeBaseProvider>
     </GestureHandlerRootView>
