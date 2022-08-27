@@ -140,7 +140,7 @@ export function SignInForm() {
 
             <Button
               isLoading={isLoading}
-              onPress={handleSubmit()}
+              onPress={handleSubmit(handleSignIn)}
               spinnerPlacement="end"
               isLoadingText="Carregando"
             >
@@ -148,7 +148,6 @@ export function SignInForm() {
             </Button>
 
             <Footer>
-                {/* <FooterButton title="Criar conta" icon="person-add" onPress={() => navigation.navigate('register')} /> */}
                 <FooterButton title="Esqueci senha" icon="email" onPress={handleForgotPassword} />
             </Footer>
           </Stack> 
