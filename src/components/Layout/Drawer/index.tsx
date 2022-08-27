@@ -3,10 +3,10 @@ import {
   DrawerItem,
   DrawerItemList,
 } from "@react-navigation/drawer";
-import { DrawerActions } from "@react-navigation/native";
 import React from "react";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
-import { Icon, HStack, Container } from "native-base";
+import { ContainerNavigation, HeaderContainer, LogOutContainer } from "./styles";
+import { Avatar, Divider, Text } from "native-base";
 
 export function Drawer({ ...props }) {
   function handleSignOut() {
@@ -14,15 +14,25 @@ export function Drawer({ ...props }) {
   }
 
   return (
-    <DrawerContentScrollView {...props}>
-      <DrawerItemList {...props} />
-      <DrawerItem
-        label="Sair"
-        icon={() => (
-          <MaterialCommunityIcons name="logout" size={24} color="black" />
-        )}
-        onPress={handleSignOut}
-      />
-    </DrawerContentScrollView>
+    <ContainerNavigation>
+      <HeaderContainer>
+        <Avatar alignSelf="center" size="lg" >IW</Avatar>
+        <Text>Igor Wilson</Text>
+        <Text>igorwilsonsimiao@gmail.com</Text>
+      </HeaderContainer>
+      <DrawerContentScrollView {...props}>
+        <DrawerItemList {...props} />
+        <LogOutContainer>
+          <Divider />
+          <DrawerItem
+            label="Sair"
+            icon={() => (
+              <MaterialCommunityIcons name="logout" size={24} color="black" />
+            )}
+            onPress={handleSignOut}
+          />
+        </LogOutContainer>
+      </DrawerContentScrollView>
+    </ContainerNavigation>
   );
 }

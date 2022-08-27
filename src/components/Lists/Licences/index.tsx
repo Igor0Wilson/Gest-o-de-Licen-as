@@ -21,7 +21,7 @@ export function Licences() {
       <Filters onFilter={setStatus} />
 
       <Header>
-        <Title>Chamados {status === 'open' ? 'Válidas' : 'Expiradas'}</Title>
+        <Title>Licenças {status === 'open' ? 'Válidas' : 'Expiradas'}</Title>
         <Counter>{orders.length}</Counter>
       </Header>
 
