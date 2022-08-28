@@ -1,11 +1,14 @@
 import React, { useState } from "react";
 
+import firestore from "@react-native-firebase/firestore";
+
 import { ErrorText, Form, Title } from "./styles";
 import { AntDesign } from "@expo/vector-icons";
 import { MaterialIcons } from "@expo/vector-icons";
 import { Fontisto } from '@expo/vector-icons';
 import { Box, Button, FormControl, HStack, Icon, Input, Stack, Switch, Text, WarningOutlineIcon } from "native-base";
 import { useForm, Controller } from "react-hook-form";
+import { Alert } from "react-native";
 
 
 type ClientFormProps = {
@@ -26,10 +29,24 @@ export function ClientForm() {
     formState: { errors },
   } = useForm<ClientFormProps>();
 
-  function handleNewOrder(data: ClientFormProps) {
-    
-    console.log(data)
+  function handleNewClient(data: ClientFormProps) {
     setIsLoading(true);
+
+    firestore()
+      .collection("Client")
+      .add({
+        name: data.name,
+        email: data.email,
+        telephone: data.phone,
+        isValid: data.isValid,
+        createdAt: firestore.FieldValue.serverTimestamp(),
+        updatedAt: firestore.FieldValue.serverTimestamp()
+      })
+      .then(() => {
+        Alert.alert("Cadastro realizado!", "Cliente cadastrado com sucesso!")
+      })
+      .catch((error) => {console.log(error)})
+      .finally(() => setIsLoading(false));
   }
 
   return (
@@ -177,7 +194,7 @@ export function ClientForm() {
 
             <Button
               isLoading={isLoading}
-              onPress={handleSubmit(handleNewOrder)}
+              onPress={handleSubmit(handleNewClient)}
               spinnerPlacement="end"
               isLoadingText="Carregando"
             >

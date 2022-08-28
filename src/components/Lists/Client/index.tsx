@@ -1,16 +1,34 @@
 import React, { useEffect, useState } from 'react';
 import { FlatList } from 'react-native';
 
-import { Order, OrderProps } from '@components/Controllers/Order';
+import firestore from "@react-native-firebase/firestore";
+
+import { ClientData, ClientProps } from '@components/Controllers/ListClient';
 import { Container, Header, Title, Counter } from './styles';
 import { Load } from '@components/Controllers/Spinner';
 
-export function Client() {
+export function ClientList() {
   const [isLoading, setIsLoading] = useState(false);
-  const [orders, setOrders] = useState<OrderProps[]>([]);
+  const [client, setClient] = useState<ClientProps[]>([]);
 
   useEffect(() => {
     setIsLoading(true);
+
+    const subscriber = firestore()
+    .collection("Client")
+    .onSnapshot(querySnapshot => {
+      const data = querySnapshot.docs.map(doc => {
+        return {
+          id: doc.id,
+          ...doc.data()
+        }
+      }) as ClientProps[];
+
+      setClient(data);
+      setIsLoading(false);
+    });
+
+    return () => subscriber();
   }, []);
 
   return (
@@ -18,16 +36,16 @@ export function Client() {
 
       <Header>
         <Title>Clientes cadastrados</Title>
-        <Counter>{orders.length}</Counter>
+        <Counter>{client.length}</Counter>
       </Header>
 
       {
         isLoading ?
         <Load />
         : <FlatList
-          data={orders}
+          data={client}
           keyExtractor={item => item.id}
-          renderItem={({ item }) => <Order data={item} />}
+          renderItem={({ item }) => <ClientData data={item} />}
           contentContainerStyle={{ paddingBottom: 100 }}
           showsVerticalScrollIndicator={false}
           style={{ flex: 1 }}

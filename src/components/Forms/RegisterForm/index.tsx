@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
+import { AuthContext } from "../../../contexts/auth";
 
 import { ErrorText, Form, Title } from "./styles";
 
@@ -10,7 +11,6 @@ import { Fontisto } from '@expo/vector-icons';
 import { Entypo } from '@expo/vector-icons';
 import { FontAwesome5 } from '@expo/vector-icons';
 import { MaterialIcons } from "@expo/vector-icons";
-
 
 type UserFormProps = {
   name: string;
@@ -24,8 +24,9 @@ type UserFormProps = {
 const EMAIL_REGEX = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
 
 export function Register() {
-  const [isLoading, setIsLoading] = useState<boolean>(false);
   const [show, setShow] = useState<boolean>(false);
+  
+  const { signUp } = useContext(AuthContext);
 
   const {
     handleSubmit,
@@ -34,9 +35,14 @@ export function Register() {
   } = useForm<UserFormProps>();
 
   function handleNewUser(data: UserFormProps) {
-    
-    console.log(data)
-    setIsLoading(true);
+    signUp(
+      data.name,
+      data.email,
+      data.phone,
+      data.password,
+      data.role,
+      data.isActive
+    )
   }
 
   return (
@@ -216,18 +222,18 @@ export function Register() {
                 name="role"
                 render={({ field: { value, onChange } }) => (
                   <Radio.Group 
-                    name="myRadioGroup" 
+                    name="role" 
                     accessibilityLabel="favorite number" 
                     value={value} 
                     onChange={onChange}
                   >
-                      <Radio value="adm" colorScheme="emerald" size="sm" my={10}>
-                        Administrador
-                      </Radio>
-                      <Radio value="colab" colorScheme="secondary" size="sm" my={1}>
-                        Colaborador
-                      </Radio>
-                    </Radio.Group>
+                    <Radio value="adm" colorScheme="emerald" size="sm" my={1}>
+                      Administrador
+                    </Radio>
+                    <Radio value="colab" colorScheme="secondary" size="sm" my={1}>
+                      Colaborador
+                    </Radio>
+                  </Radio.Group>
                 )}
               /> 
             </HStack>
@@ -251,7 +257,6 @@ export function Register() {
               />    
 
             <Button
-              isLoading={isLoading}
               onPress={handleSubmit(handleNewUser)}
               spinnerPlacement="end"
               isLoadingText="Carregando"

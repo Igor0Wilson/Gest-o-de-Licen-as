@@ -15,8 +15,6 @@ export function NewClient() {
     formState: { errors },
   } = useForm();
 
-  
-
   function handleSnapPress() {
     bottomSheetRef.current?.present();
   }

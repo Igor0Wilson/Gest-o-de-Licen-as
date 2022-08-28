@@ -1,7 +1,7 @@
 import styled from 'styled-components/native';
 
-export type OrderStyleProps = {
-  status: 'open' | 'closed';
+export type ClientStyleProps = {
+  isValid: true | false;
 };
 
 export const Container = styled.View`
@@ -25,15 +25,15 @@ export const Header = styled.View`
   flex-direction: row;
 `;
 
-export const Status = styled.View<OrderStyleProps>`
+export const Status = styled.View<ClientStyleProps>`
   width: 10px;
   height: 94px;
-  background-color: ${({ theme, status }) => status === 'open' ? theme.COLORS.SECONDARY : theme.COLORS.PRIMARY};
+  background-color: ${({ theme, isValid }) => isValid === true ? theme.COLORS.SECONDARY : theme.COLORS.PRIMARY};
 `;
 
 export const Title = styled.Text`
   flex: 1;
-  font-size: 18px;
+  font-size: 16px;
   font-family: ${({ theme }) => theme.FONTS.TITLE};
   color: ${({ theme }) => theme.COLORS.TEXT};
   margin-bottom: 18px;

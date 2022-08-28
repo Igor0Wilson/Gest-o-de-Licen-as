@@ -1,7 +1,6 @@
 import React, { useRef } from 'react';
 import { BottomSheetView, BottomSheetModal, BottomSheetModalProvider } from '@gorhom/bottom-sheet';
 
-import { Background } from './styles';
 import { Register} from '@components/Forms/RegisterForm';
 import { Button } from 'native-base';
 import { MaterialIcons } from '@expo/vector-icons';

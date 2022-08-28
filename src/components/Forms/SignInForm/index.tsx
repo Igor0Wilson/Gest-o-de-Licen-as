@@ -13,21 +13,17 @@ import { MaterialIcons } from "@expo/vector-icons";
 import { Fontisto } from '@expo/vector-icons';
 
 type SignInFormProps = {
-  name: string;
   email: string;
-  phone: string;
   password: string;
-  admin: boolean;
-  colab: boolean;
-  isActive: boolean;
 }
 
 const EMAIL_REGEX = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
 
 export function SignInForm() {
-  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(false);
   const [show, setShow] = useState<boolean>(false);
-  const { user } = useContext(AuthContext);
+
+  const { signIn } = useContext(AuthContext);
 
   const {
     handleSubmit,
@@ -35,9 +31,9 @@ export function SignInForm() {
     formState: { errors },
   } = useForm<SignInFormProps>();
 
-  function handleSignIn() {
-    setIsLoading(true);
-    console.log(user);
+  function handleSignIn(data: SignInFormProps ) {
+    setLoading(true);
+    signIn(data.email, data.password);
   }
 
   function handleForgotPassword() {
@@ -73,7 +69,6 @@ export function SignInForm() {
                         <Fontisto
                           name="email"
                           size={5}
-                          ml={2}
                           color="muted.400"
                         />
                       }
@@ -139,7 +134,7 @@ export function SignInForm() {
             <ErrorText>{errors.password?.message}</ErrorText>
 
             <Button
-              isLoading={isLoading}
+              isLoading={loading}
               onPress={handleSubmit(handleSignIn)}
               spinnerPlacement="end"
               isLoadingText="Carregando"

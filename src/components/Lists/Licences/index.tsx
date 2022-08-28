@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { FlatList } from 'react-native';
 
 import { Filters } from '@components/Controllers/Filters';
-import { Order, OrderProps } from '@components/Controllers/Order';
+import { Order, OrderProps } from '@components/Controllers/ListClient';
 import { Container, Header, Title, Counter } from './styles';
 import { Divider, Heading, HStack, Spinner } from 'native-base';
 import { Load } from '@components/Controllers/Spinner';

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { FlatList } from 'react-native';
 
-import { Order, OrderProps } from '@components/Controllers/Order';
+import { Order, OrderProps } from '@components/Controllers/ListClient';
 import { Container, Header, Title, Counter } from './styles';
 import { Load } from '@components/Controllers/Spinner';
 

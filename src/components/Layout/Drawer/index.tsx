@@ -3,14 +3,18 @@ import {
   DrawerItem,
   DrawerItemList,
 } from "@react-navigation/drawer";
-import React from "react";
+import React, { useContext } from "react";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { ContainerNavigation, HeaderContainer, LogOutContainer } from "./styles";
 import { Avatar, Divider, Text } from "native-base";
+import { AuthContext } from "../../../contexts/auth";
 
 export function Drawer({ ...props }) {
+
+  const { signOut } = useContext(AuthContext);
+
   function handleSignOut() {
-    console.log("SAIU");
+    signOut()
   }
 
   return (
