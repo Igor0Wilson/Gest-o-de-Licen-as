@@ -1,15 +1,14 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import firestore from "@react-native-firebase/firestore";
 
 import { ErrorText, Form, Title } from "./styles";
-import { AntDesign } from "@expo/vector-icons";
 import { MaterialIcons } from "@expo/vector-icons";
 import { Fontisto } from '@expo/vector-icons';
 import { Box, Button, FormControl, HStack, Icon, Input, Stack, Switch, Text, WarningOutlineIcon } from "native-base";
 import { useForm, Controller } from "react-hook-form";
 import { Alert } from "react-native";
-
+import { FontAwesome5 } from '@expo/vector-icons';
 
 type ClientFormProps = {
   name: string;
@@ -20,8 +19,18 @@ type ClientFormProps = {
 
 const EMAIL_REGEX = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
 
-export function ClientForm() {
+export function UpdateClientForm({ uid }) {
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [clientData, setClientData] = useState()
+
+  useEffect(() => {
+    firestore()
+    .collection("Client")
+    .doc(uid)
+    .get()
+    .then((data) => setClientData(data._data))
+    .catch((error) => console.log(error));
+  }, []);
 
   const {
     handleSubmit,
@@ -29,17 +38,17 @@ export function ClientForm() {
     formState: { errors },
   } = useForm<ClientFormProps>();
 
-  function handleNewClient(data: ClientFormProps) {
+  function handleUpdateClient(data: ClientFormProps) {
     setIsLoading(true);
 
     firestore()
       .collection("Client")
-      .add({
+      .doc(uid)
+      .update({
         name: data.name,
         email: data.email,
         telephone: data.phone,
         isValid: data.isValid,
-        createdAt: firestore.FieldValue.serverTimestamp(),
         updatedAt: firestore.FieldValue.serverTimestamp()
       })
       .then(() => {
@@ -49,17 +58,15 @@ export function ClientForm() {
       .finally(() => setIsLoading(false));
   }
 
-  return (
-    <Box alignItems="center">
-      <FormControl isRequired w="full" maxW="500px">
-        <Form>
+  const updateClientForm = clientData === undefined ? null : (
+    <Form>
           <Title>
-            <AntDesign name="addusergroup" size={30} color="black" /> Adicionar Cliente
+            <FontAwesome5 name="user-edit" size={30} color="black" /> Editar Cliente
           </Title>
 
           <Stack mt={3} space={4} w="full" maxW="500px">     
             <Controller
-              defaultValue=""
+              defaultValue={clientData?.name}
               control={control}
               name="name"
               render={({ field: { onBlur, value, onChange } }) => (
@@ -97,7 +104,7 @@ export function ClientForm() {
             <ErrorText>{errors.name?.message}</ErrorText>
 
             <Controller
-              defaultValue=""
+              defaultValue={clientData?.email}
               control={control}
               name="email"
               render={({ field: { onBlur, value, onChange } }) => (
@@ -139,7 +146,7 @@ export function ClientForm() {
             <ErrorText>{errors.email?.message}</ErrorText>
 
             <Controller
-              defaultValue=""
+              defaultValue={clientData?.telephone}
               control={control}
               name="phone"
               render={({ field: { onBlur, value, onChange } }) => (
@@ -177,7 +184,7 @@ export function ClientForm() {
             <ErrorText>{errors.phone?.message}</ErrorText>
 
             <Controller
-              defaultValue={false}
+              defaultValue={clientData?.isValid}
               control={control}
               name="isValid"
               render={({ field: { onBlur, value, onChange } }) => (
@@ -194,14 +201,20 @@ export function ClientForm() {
 
             <Button
               isLoading={isLoading}
-              onPress={handleSubmit(handleNewClient)}
+              onPress={handleSubmit(handleUpdateClient)}
               spinnerPlacement="end"
               isLoadingText="Carregando"
             >
-              Cadastrar
+              Concluir
             </Button>
           </Stack> 
         </Form>
+  )
+
+  return (
+    <Box alignItems="center">
+      <FormControl isRequired w="full" maxW="500px">
+        {updateClientForm}
       </FormControl>
     </Box>
   );

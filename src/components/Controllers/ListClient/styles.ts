@@ -48,7 +48,7 @@ export const Info = styled.View`
 export const Footer = styled.View`
   width: 100%;
   justify-content: space-between;
-  flex-direction: row;
+  /* flex-direction: row; */
 `;
 
 

@@ -26,12 +26,22 @@ export const AuthContext = createContext<ContextProps>(ContextProps)
 export default function AuthProvider({ children }: UserContextProps) {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [user, setUser] = useState(null);
+  const [userData, setUserData] = useState({});
 
   useEffect(() => {
     const subscriber = auth().onAuthStateChanged(setUser);
 
     return subscriber
   }, [])
+
+  useEffect(() => {
+    firestore()
+    .collection("Users")
+    .doc(user?.id)
+    .get()
+    .then((data) => setUserData(data._data))
+    .catch((error) => console.log(error));
+  }, [user]);
 
   async function signUp(name: string, email: string, telephone: string, password: string, role: string, isActive: boolean, createdAt: string, updatedAt: string) {
     await auth().createUserWithEmailAndPassword(email, password)

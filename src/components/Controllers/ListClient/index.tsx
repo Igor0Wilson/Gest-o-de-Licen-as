@@ -18,6 +18,7 @@ import {
 import { Button } from 'native-base';
 import { Entypo } from '@expo/vector-icons';
 import { Alert } from 'react-native';
+import { UpdateClient } from '../UpdateClient';
 
 
 export type ClientProps = ClientStyleProps & {
@@ -46,6 +47,7 @@ export function ClientData({ data }: Props) {
     .catch((error) => console.log(error));
   }
 
+
   return (
     <Container>
       <Status status={data.isValid} />
@@ -58,7 +60,6 @@ export function ClientData({ data }: Props) {
             ml={5}
             color={data.isValid === true ? theme.COLORS.SECONDARY : theme.COLORS.PRIMARY}
           />
-          <Button ml={5} size={8}><Entypo name="edit" size={15} color="black" /></Button>
         </Header>
 
         <Footer>
@@ -74,9 +75,9 @@ export function ClientData({ data }: Props) {
             <Label>
             {data.telephone}
             </Label>
+            <UpdateClient uid={uid} />
+            <Button onPress={handleDeleteClient} ml={1} size={8}><Entypo name="trash" size={15} color="black" /></Button>
           </Info>
-
-          <Button onPress={handleDeleteClient} size={8}><Entypo name="trash" size={15} color="black" /></Button>
         </Footer>
       </Content>
     </Container>
