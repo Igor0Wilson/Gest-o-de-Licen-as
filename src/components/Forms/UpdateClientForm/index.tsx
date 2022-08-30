@@ -76,7 +76,7 @@ export function UpdateClientForm({ uid }) {
         updatedAt: firestore.FieldValue.serverTimestamp(),
       })
       .then(() => {
-        showToast("Informações do usuário atualizadas com sucesso!");
+        showToast("Informações do cliente atualizadas com sucesso!");
       })
       .catch((error) => {
         console.log(error);

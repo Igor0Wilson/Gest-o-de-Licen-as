@@ -6,15 +6,15 @@ export type ClientStyleProps = {
 
 export const Container = styled.View`
   width: 100%;
-  height: 94px;
+  height: 160px;
   flex-direction: row;
   overflow: hidden;
-  margin-bottom: 16px;
+  margin-bottom: -22px;
 `;
 
 export const Content = styled.View`
   flex: 1;
-  height: 94px;
+  height: 120px;
   padding: 0 15px;
   justify-content: center;
   background-color: ${({ theme }) => theme.COLORS.WHITE};
@@ -26,17 +26,18 @@ export const Header = styled.View`
 
 export const Status = styled.View<ClientStyleProps>`
   width: 10px;
-  height: 94px;
+  height: 120px;
   background-color: ${({ theme, isValid }) =>
     isValid === true ? theme.COLORS.PRIMARY : theme.COLORS.SECONDARY};
 `;
 
 export const Title = styled.Text`
   flex: 1;
-  font-size: 16px;
+  font-size: 15px;
   font-family: ${({ theme }) => theme.FONTS.TITLE};
   color: ${({ theme }) => theme.COLORS.TEXT};
   margin-bottom: 18px;
+  margin-left: 10px;
 `;
 
 export const Info = styled.View`
@@ -51,13 +52,13 @@ export const Footer = styled.View`
 `;
 
 export const Label = styled.Text`
-  font-size: 12px;
+  font-size: 13px;
   font-family: ${({ theme }) => theme.FONTS.TEXT};
   color: ${({ theme }) => theme.COLORS.SUBTEXT};
   margin-left: 3px;
 `;
 
 export const GroupsContainer = styled.View`
-  margin-left: 44%;
+  margin-left: 80%;
   flex-direction: row;
 `;

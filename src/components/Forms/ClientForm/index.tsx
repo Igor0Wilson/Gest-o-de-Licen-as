@@ -5,20 +5,31 @@ import firestore from "@react-native-firebase/firestore";
 import { ErrorText, Form, Title } from "./styles";
 import { AntDesign } from "@expo/vector-icons";
 import { MaterialIcons } from "@expo/vector-icons";
-import { Fontisto } from '@expo/vector-icons';
-import { Box, Button, FormControl, HStack, Icon, Input, Stack, Switch, Text, WarningOutlineIcon } from "native-base";
+import { Fontisto } from "@expo/vector-icons";
+import {
+  Box,
+  Button,
+  FormControl,
+  HStack,
+  Icon,
+  Input,
+  Stack,
+  Switch,
+  Text,
+  WarningOutlineIcon,
+} from "native-base";
 import { useForm, Controller } from "react-hook-form";
 import { Alert } from "react-native";
-
 
 type ClientFormProps = {
   name: string;
   email: string;
   phone: string;
   isValid: boolean;
-}
+};
 
-const EMAIL_REGEX = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+const EMAIL_REGEX =
+  /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
 export function ClientForm() {
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -40,12 +51,14 @@ export function ClientForm() {
         telephone: data.phone,
         isValid: data.isValid,
         createdAt: firestore.FieldValue.serverTimestamp(),
-        updatedAt: firestore.FieldValue.serverTimestamp()
+        updatedAt: firestore.FieldValue.serverTimestamp(),
       })
       .then(() => {
-        Alert.alert("Cadastro realizado!", "Cliente cadastrado com sucesso!")
+        Alert.alert("Cadastro realizado!", "Cliente cadastrado com sucesso!");
       })
-      .catch((error) => {console.log(error)})
+      .catch((error) => {
+        console.log(error);
+      })
       .finally(() => setIsLoading(false));
   }
 
@@ -54,10 +67,11 @@ export function ClientForm() {
       <FormControl isRequired w="full" maxW="500px">
         <Form>
           <Title>
-            <AntDesign name="addusergroup" size={30} color="black" /> Adicionar Cliente
+            <AntDesign name="addusergroup" size={30} color="black" /> Adicionar
+            Cliente
           </Title>
 
-          <Stack mt={3} space={4} w="full" maxW="500px">     
+          <Stack mt={3} space={4} w="full" maxW="500px">
             <Controller
               defaultValue=""
               control={control}
@@ -71,6 +85,7 @@ export function ClientForm() {
                   value={value}
                   onChangeText={onChange}
                   variant="underlined"
+                  maxLength={23}
                   size="lg"
                   autoCapitalize="none"
                   InputLeftElement={
@@ -90,8 +105,8 @@ export function ClientForm() {
               rules={{
                 required: {
                   value: true,
-                  message: "Nome do cliente é um campo obrigatório"
-                } 
+                  message: "Nome do cliente é um campo obrigatório",
+                },
               }}
             />
             <ErrorText>{errors.name?.message}</ErrorText>
@@ -128,12 +143,12 @@ export function ClientForm() {
               rules={{
                 required: {
                   value: true,
-                  message: "E-mail do cliente é um campo obrigatório"
-                }, 
+                  message: "E-mail do cliente é um campo obrigatório",
+                },
                 pattern: {
                   value: EMAIL_REGEX,
-                  message: "E-mail inválido"
-                }
+                  message: "E-mail inválido",
+                },
               }}
             />
             <ErrorText>{errors.email?.message}</ErrorText>
@@ -170,8 +185,8 @@ export function ClientForm() {
               rules={{
                 required: {
                   value: true,
-                  message: "Telefone do cliente é um campo obrigatório"
-                } 
+                  message: "Telefone do cliente é um campo obrigatório",
+                },
               }}
             />
             <ErrorText>{errors.phone?.message}</ErrorText>
@@ -182,15 +197,11 @@ export function ClientForm() {
               name="isValid"
               render={({ field: { onBlur, value, onChange } }) => (
                 <HStack alignItems="center" space={4}>
-                  <Switch
-                    size="md" 
-                    onValueChange={onChange}
-                    value={value}
-                  />
+                  <Switch size="md" onValueChange={onChange} value={value} />
                   <Text>Validado pelo administrador?</Text>
                 </HStack>
               )}
-            />    
+            />
 
             <Button
               isLoading={isLoading}
@@ -200,7 +211,7 @@ export function ClientForm() {
             >
               Cadastrar
             </Button>
-          </Stack> 
+          </Stack>
         </Form>
       </FormControl>
     </Box>

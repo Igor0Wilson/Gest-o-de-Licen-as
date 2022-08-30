@@ -16,11 +16,11 @@ import {
   ClientStyleProps,
   GroupsContainer,
 } from "./styles";
-import { Button } from "native-base";
+
+import { Box, Button, Toast } from "native-base";
 import { Entypo } from "@expo/vector-icons";
-import { Alert } from "react-native";
 import { UpdateClient } from "../UpdateClientModal";
-import { PopoverDelete } from "../Popover";
+import { Feather } from "@expo/vector-icons";
 
 export type ClientProps = ClientStyleProps & {
   id: string;
@@ -34,6 +34,18 @@ type Props = {
   data: ClientProps;
 };
 
+function showToast(message: string) {
+  Toast.show({
+    render: () => {
+      return (
+        <Box bg="emerald.500" px="2" py="1" rounded="sm" mb={5}>
+          {message}
+        </Box>
+      );
+    },
+  });
+}
+
 export function ClientData({ data }: Props) {
   const theme = useTheme();
 
@@ -44,19 +56,16 @@ export function ClientData({ data }: Props) {
       .collection("Client")
       .doc(uid)
       .delete()
-      .then(() =>
-        Alert.alert(
-          "Cliente deletado!",
-          "Os dados do cliente foram deletado com sucesso!"
-        )
-      )
+      .then(() => showToast("Cliente deletado com sucesso!"))
       .catch((error) => console.log(error));
   }
 
   return (
     <Container>
+      <Status isValid />
       <Content>
         <Header>
+          <Feather name="users" size={20} color="black" />
           <Title>{data.name}</Title>
         </Header>
 
@@ -77,11 +86,18 @@ export function ClientData({ data }: Props) {
               color={theme.COLORS.SUBTEXT}
             />
             <Label>{data.telephone}</Label>
-            <GroupsContainer>
-              <UpdateClient uid={uid} />
-              <PopoverDelete uid={uid} />
-            </GroupsContainer>
           </Info>
+          <GroupsContainer>
+            <UpdateClient uid={uid} />
+            <Button
+              ml={1}
+              colorScheme="danger"
+              size={8}
+              onPress={handleDeleteClient}
+            >
+              <Entypo name="trash" size={15} color="black" />
+            </Button>
+          </GroupsContainer>
         </Footer>
       </Content>
     </Container>
