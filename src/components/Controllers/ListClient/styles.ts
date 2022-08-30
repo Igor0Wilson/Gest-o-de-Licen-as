@@ -1,4 +1,4 @@
-import styled from 'styled-components/native';
+import styled from "styled-components/native";
 
 export type ClientStyleProps = {
   isValid: true | false;
@@ -18,7 +18,6 @@ export const Content = styled.View`
   padding: 0 15px;
   justify-content: center;
   background-color: ${({ theme }) => theme.COLORS.WHITE};
-  border-radius: 10px;
 `;
 
 export const Header = styled.View`
@@ -28,7 +27,8 @@ export const Header = styled.View`
 export const Status = styled.View<ClientStyleProps>`
   width: 10px;
   height: 94px;
-  background-color: ${({ theme, isValid }) => isValid === true ? theme.COLORS.SECONDARY : theme.COLORS.PRIMARY};
+  background-color: ${({ theme, isValid }) =>
+    isValid === true ? theme.COLORS.PRIMARY : theme.COLORS.SECONDARY};
 `;
 
 export const Title = styled.Text`
@@ -38,7 +38,6 @@ export const Title = styled.Text`
   color: ${({ theme }) => theme.COLORS.TEXT};
   margin-bottom: 18px;
 `;
-
 
 export const Info = styled.View`
   flex-direction: row;
@@ -51,10 +50,14 @@ export const Footer = styled.View`
   /* flex-direction: row; */
 `;
 
-
 export const Label = styled.Text`
   font-size: 12px;
   font-family: ${({ theme }) => theme.FONTS.TEXT};
-  color: ${({ theme }) => theme.COLORS.SUBTEXT};  
+  color: ${({ theme }) => theme.COLORS.SUBTEXT};
   margin-left: 3px;
+`;
+
+export const GroupsContainer = styled.View`
+  margin-left: 44%;
+  flex-direction: row;
 `;

@@ -1,9 +1,13 @@
-import React, { useRef } from 'react';
-import { BottomSheetView, BottomSheetModal, BottomSheetModalProvider } from '@gorhom/bottom-sheet';
+import React, { useRef } from "react";
+import {
+  BottomSheetView,
+  BottomSheetModal,
+  BottomSheetModalProvider,
+} from "@gorhom/bottom-sheet";
 
-import { Button } from 'native-base';
-import { AntDesign } from '@expo/vector-icons';
-import { ClientForm } from '@components/Forms/ClientForm';
+import { Button } from "native-base";
+import { AntDesign } from "@expo/vector-icons";
+import { ClientForm } from "@components/Forms/ClientForm";
 
 export function NewClient() {
   const bottomSheetRef = useRef<BottomSheetModal>(null);
@@ -14,12 +18,18 @@ export function NewClient() {
 
   return (
     <>
-      <Button variant="solid" leftIcon={<AntDesign name="addusergroup" size={24} color="white" />} onPress={handleSnapPress}>Adicionar Cliente</Button>
-      
+      <Button
+        variant="solid"
+        leftIcon={<AntDesign name="addusergroup" size={24} color="white" />}
+        onPress={handleSnapPress}
+      >
+        Adicionar Cliente
+      </Button>
+
       <BottomSheetModalProvider>
         <BottomSheetModal
           ref={bottomSheetRef}
-          snapPoints={['100%']}
+          snapPoints={["100%"]}
           style={{ padding: 24 }}
           enablePanDownToClose={true}
         >

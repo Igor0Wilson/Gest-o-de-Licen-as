@@ -1,12 +1,12 @@
-import styled from 'styled-components/native';
-import { TouchableOpacity } from 'react-native';
+import styled from "styled-components/native";
+import { TouchableOpacity } from "react-native";
 
 export type FilterProps = {
   backgroundColor: string;
-}
+};
 
-export const Container = styled(TouchableOpacity) <FilterProps>`
-  flex: 1;  
+export const Container = styled(TouchableOpacity)<FilterProps>`
+  flex: 1;
   background-color: ${({ backgroundColor }) => backgroundColor};
   align-items: center;
   padding: 10px;

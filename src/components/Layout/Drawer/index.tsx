@@ -5,22 +5,27 @@ import {
 } from "@react-navigation/drawer";
 import React, { useContext } from "react";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
-import { ContainerNavigation, HeaderContainer, LogOutContainer } from "./styles";
-import { Avatar, Divider, Text } from "native-base";
+import {
+  ContainerNavigation,
+  HeaderContainer,
+  LogOutContainer,
+} from "./styles";
+import { Avatar, Text } from "native-base";
 import { AuthContext } from "../../../contexts/auth";
 
 export function Drawer({ ...props }) {
-
   const { signOut } = useContext(AuthContext);
 
   function handleSignOut() {
-    signOut()
+    signOut();
   }
 
   return (
     <ContainerNavigation>
       <HeaderContainer>
-        <Avatar alignSelf="center" size="lg" >IW</Avatar>
+        <Avatar alignSelf="center" size="lg">
+          IW
+        </Avatar>
         <Text>Igor Wilson</Text>
         <Text>igorwilsonsimiao@gmail.com</Text>
       </HeaderContainer>

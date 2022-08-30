@@ -1,9 +1,13 @@
-import React, { useRef } from 'react';
-import { BottomSheetView, BottomSheetModal, BottomSheetModalProvider } from '@gorhom/bottom-sheet';
+import React, { useRef } from "react";
+import {
+  BottomSheetView,
+  BottomSheetModal,
+  BottomSheetModalProvider,
+} from "@gorhom/bottom-sheet";
 
-import { Register} from '@components/Forms/RegisterForm';
-import { Button } from 'native-base';
-import { MaterialIcons } from '@expo/vector-icons';
+import { Register } from "@components/Forms/RegisterForm";
+import { Button } from "native-base";
+import { MaterialIcons } from "@expo/vector-icons";
 
 export function NewUser() {
   const bottomSheetRef = useRef<BottomSheetModal>(null);
@@ -14,17 +18,23 @@ export function NewUser() {
 
   return (
     <>
-      <Button variant="solid" leftIcon={<MaterialIcons name="person-add" size={24} color="white" />} onPress={handleSnapPress}>Novo Usuário</Button>
+      <Button
+        variant="solid"
+        leftIcon={<MaterialIcons name="person-add" size={24} color="white" />}
+        onPress={handleSnapPress}
+      >
+        Novo Usuário
+      </Button>
 
       <BottomSheetModalProvider>
         <BottomSheetModal
           ref={bottomSheetRef}
-          snapPoints={['100%']}
+          snapPoints={["100%"]}
           style={{ padding: 24 }}
           enablePanDownToClose={true}
         >
           <BottomSheetView>
-            <Register/>
+            <Register />
           </BottomSheetView>
         </BottomSheetModal>
       </BottomSheetModalProvider>

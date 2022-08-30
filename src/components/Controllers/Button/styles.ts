@@ -1,5 +1,5 @@
-import styled from 'styled-components/native';
-import { RectButton } from 'react-native-gesture-handler';
+import styled from "styled-components/native";
+import { RectButton } from "react-native-gesture-handler";
 
 export const Container = styled(RectButton)`
   width: 100%;
@@ -17,5 +17,5 @@ export const Title = styled.Text`
 `;
 
 export const Load = styled.ActivityIndicator.attrs(({ theme }) => ({
-  color: theme.COLORS.WHITE
+  color: theme.COLORS.WHITE,
 }))``;

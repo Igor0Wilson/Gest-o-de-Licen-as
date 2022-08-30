@@ -1,11 +1,13 @@
-import React, { useRef } from 'react';
-import { BottomSheetView, BottomSheetModal, BottomSheetModalProvider } from '@gorhom/bottom-sheet';
-;
+import React, { useRef } from "react";
+import {
+  BottomSheetView,
+  BottomSheetModal,
+  BottomSheetModalProvider,
+} from "@gorhom/bottom-sheet";
 import { useForm } from "react-hook-form";
-import { LicenceForm } from '@components/Forms/LicenceForm';
-import { Button } from 'native-base';
-import { AntDesign   } from "@expo/vector-icons";
-
+import { LicenceForm } from "@components/Forms/LicenceForm";
+import { Button } from "native-base";
+import { AntDesign } from "@expo/vector-icons";
 
 export function NewLicence() {
   const bottomSheetRef = useRef<BottomSheetModal>(null);
@@ -22,12 +24,18 @@ export function NewLicence() {
 
   return (
     <>
-      <Button variant="solid" leftIcon={<AntDesign name="idcard" size={24} color="white" />} onPress={handleSnapPress}>Adicionar Licença</Button>
-      
+      <Button
+        variant="solid"
+        leftIcon={<AntDesign name="idcard" size={24} color="white" />}
+        onPress={handleSnapPress}
+      >
+        Adicionar Licença
+      </Button>
+
       <BottomSheetModalProvider>
         <BottomSheetModal
           ref={bottomSheetRef}
-          snapPoints={['100%']}
+          snapPoints={["100%"]}
           style={{ padding: 24 }}
           enablePanDownToClose={true}
         >

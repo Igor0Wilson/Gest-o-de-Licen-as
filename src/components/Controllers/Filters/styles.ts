@@ -1,4 +1,4 @@
-import styled from 'styled-components/native';
+import styled from "styled-components/native";
 
 export const Container = styled.View`
   width: 100%;
@@ -12,7 +12,6 @@ export const Title = styled.Text`
   color: ${({ theme }) => theme.COLORS.TEXT};
   text-align: center;
   margin-bottom: 16px;
-
 `;
 
 export const Options = styled.View`
