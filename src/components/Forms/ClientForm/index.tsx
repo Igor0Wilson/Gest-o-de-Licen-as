@@ -85,7 +85,7 @@ export function ClientForm() {
                   value={value}
                   onChangeText={onChange}
                   variant="underlined"
-                  maxLength={23}
+                  // maxLength={23}
                   size="lg"
                   autoCapitalize="none"
                   InputLeftElement={

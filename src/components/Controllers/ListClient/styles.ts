@@ -36,8 +36,7 @@ export const Title = styled.Text`
   font-size: 15px;
   font-family: ${({ theme }) => theme.FONTS.TITLE};
   color: ${({ theme }) => theme.COLORS.TEXT};
-  margin-bottom: 18px;
-  margin-left: 10px;
+  margin-bottom: 10px;
 `;
 
 export const Info = styled.View`

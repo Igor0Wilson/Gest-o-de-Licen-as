@@ -20,7 +20,6 @@ import {
 import { Box, Button, Toast } from "native-base";
 import { Entypo } from "@expo/vector-icons";
 import { UpdateClient } from "../UpdateClientModal";
-import { Feather } from "@expo/vector-icons";
 
 export type ClientProps = ClientStyleProps & {
   id: string;
@@ -65,7 +64,6 @@ export function ClientData({ data }: Props) {
       <Status isValid />
       <Content>
         <Header>
-          <Feather name="users" size={20} color="black" />
           <Title>{data.name}</Title>
         </Header>
 
