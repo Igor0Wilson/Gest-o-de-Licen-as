@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import { MaterialIcons } from "@expo/vector-icons";
 import { useTheme } from "styled-components/native";
 
@@ -17,9 +17,11 @@ import {
   GroupsContainer,
 } from "./styles";
 
-import { Box, Button, Toast } from "native-base";
+import { Button } from "native-base";
 import { Entypo } from "@expo/vector-icons";
 import { UpdateClient } from "../UpdateClientModal";
+import { AuthContext } from "../../../contexts/auth";
+import { showToast } from "@components/ToastMessage";
 
 export type ClientProps = ClientStyleProps & {
   id: string;
@@ -33,30 +35,31 @@ type Props = {
   data: ClientProps;
 };
 
-function showToast(message: string) {
-  Toast.show({
-    render: () => {
-      return (
-        <Box bg="emerald.500" px="2" py="1" rounded="sm" mb={5}>
-          {message}
-        </Box>
-      );
-    },
-  });
-}
-
 export function ClientData({ data }: Props) {
+  const { userData } = useContext(AuthContext);
+
+  console.log(userData);
+
+  console.log("Role:", userData.role);
+
   const theme = useTheme();
 
   const uid = data.id;
 
   function handleDeleteClient() {
-    firestore()
-      .collection("Client")
-      .doc(uid)
-      .delete()
-      .then(() => showToast("Cliente deletado com sucesso!"))
-      .catch((error) => console.log(error));
+    if (userData.role !== "adm") {
+      firestore()
+        .collection("Client")
+        .doc(uid)
+        .delete()
+        .then(() => showToast("emerald.500", "Cliente deletado com sucesso!"))
+        .catch((error) => console.log(error));
+    } else {
+      showToast(
+        "danger.400",
+        "Você não tem permissão para executar esta ação!"
+      );
+    }
   }
 
   return (

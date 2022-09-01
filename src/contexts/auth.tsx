@@ -3,13 +3,23 @@ import React, { useState, createContext, ReactNode, useEffect } from "react";
 import auth, { FirebaseAuthTypes } from "@react-native-firebase/auth";
 import firestore from "@react-native-firebase/firestore";
 import { Alert } from "react-native";
+import { showToast } from "@components/ToastMessage";
 
 type UserContextProps = {
   children: ReactNode;
 };
 
+type UserDataProps = {
+  email: string;
+  isActive: boolean;
+  name: string;
+  role: string;
+  telephone: string;
+};
+
 type ContextProps = {
   user: FirebaseAuthTypes.User | null;
+  userData: UserDataProps;
   signed: boolean;
   signUp: {};
   signIn: {
@@ -21,6 +31,13 @@ type ContextProps = {
 const ContextProps = {
   user: Boolean,
   signed: Boolean,
+  userData: {
+    email: "",
+    isActive: true,
+    name: "",
+    role: "",
+    telephone: "",
+  },
   signIn: {},
   signUp: {},
 };
@@ -30,7 +47,9 @@ export const AuthContext = createContext<ContextProps>(ContextProps);
 export default function AuthProvider({ children }: UserContextProps) {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [user, setUser] = useState(null);
-  const [userId, setUserId] = useState(null);
+  const [userData, setUserData] = useState({});
+
+  console.log(userData);
 
   useEffect(() => {
     const subscriber = auth().onAuthStateChanged(setUser);
@@ -59,7 +78,7 @@ export default function AuthProvider({ children }: UserContextProps) {
           createdAt: firestore.FieldValue.serverTimestamp(),
           updatedAt: firestore.FieldValue.serverTimestamp(),
         });
-        Alert.alert("Cadastro realizado!", "Usuário cadastrado com sucesso!");
+        showToast("Usuário cadastrado com sucesso!");
       })
       .catch((error) => console.log(error))
       .finally(() => setIsLoading(false));
@@ -68,7 +87,11 @@ export default function AuthProvider({ children }: UserContextProps) {
   function signIn(email: string, password: string) {
     auth()
       .signInWithEmailAndPassword(email, password)
-      .then()
+      .then(async (value) => {
+        let uid = value.user.uid;
+        const userData = await firestore().collection("Users").doc(uid).get();
+        setUserData(userData._data);
+      })
       .catch((error) => {
         console.log(error);
         switch (error.code) {
@@ -103,7 +126,15 @@ export default function AuthProvider({ children }: UserContextProps) {
 
   return (
     <AuthContext.Provider
-      value={{ signed: !!user, user, signUp, signIn, signOut, isLoading }}
+      value={{
+        signed: !!user,
+        userData,
+        user,
+        signUp,
+        signIn,
+        signOut,
+        isLoading,
+      }}
     >
       {children}
     </AuthContext.Provider>

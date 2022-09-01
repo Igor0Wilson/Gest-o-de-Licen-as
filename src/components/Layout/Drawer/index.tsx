@@ -14,7 +14,7 @@ import { Avatar, Text } from "native-base";
 import { AuthContext } from "../../../contexts/auth";
 
 export function Drawer({ ...props }) {
-  const { signOut } = useContext(AuthContext);
+  const { signOut, userData } = useContext(AuthContext);
 
   function handleSignOut() {
     signOut();
@@ -24,10 +24,10 @@ export function Drawer({ ...props }) {
     <ContainerNavigation>
       <HeaderContainer>
         <Avatar alignSelf="center" size="lg">
-          IW
+          {userData.name.substr(0, 1)}
         </Avatar>
-        <Text>Igor Wilson</Text>
-        <Text>igorwilsonsimiao@gmail.com</Text>
+        <Text>{userData.name}</Text>
+        <Text>{userData.email}</Text>
       </HeaderContainer>
       <DrawerContentScrollView {...props}>
         <DrawerItemList {...props} />
