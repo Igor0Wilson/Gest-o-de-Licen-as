@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 
 import firestore from "@react-native-firebase/firestore";
+import auth from "@react-native-firebase/auth";
 
 import { ErrorText, Form, Title } from "./styles";
 import { MaterialIcons } from "@expo/vector-icons";
@@ -12,6 +13,7 @@ import {
   HStack,
   Icon,
   Input,
+  Radio,
   Stack,
   Switch,
   Text,
@@ -22,28 +24,29 @@ import { Load } from "@components/Controllers/Spinner";
 import { showToast } from "@components/ToastMessage";
 import { AuthContext } from "../../../contexts/auth";
 
-type ClientFormProps = {
+type UserFormProps = {
   name: string;
   email: string;
-  phone: string;
-  isValid: boolean;
+  telephone: string;
+  isActive: boolean;
+  role: string;
 };
 
 const EMAIL_REGEX =
   /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
 export function UpdateClientForm({ uid }) {
-  const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [clientData, setClientData] = useState();
+  const [isLoading, setIsLoading] = useState(false);
+  const [usersData, setUsersData] = useState();
 
   const { userData } = useContext(AuthContext);
 
   useEffect(() => {
     firestore()
-      .collection("Client")
+      .collection("Users")
       .doc(uid)
       .get()
-      .then((data) => setClientData(data._data))
+      .then((data) => setUsersData(data._data))
       .catch((error) => console.log(error));
   }, []);
 
@@ -51,46 +54,42 @@ export function UpdateClientForm({ uid }) {
     handleSubmit,
     control,
     formState: { errors },
-  } = useForm<ClientFormProps>();
+  } = useForm<UserFormProps>();
 
-  console.log(clientData);
+  console.log(usersData);
 
-  function handleUpdateClient(data: ClientFormProps) {
+  function handleUpdateUser(data: UserFormProps) {
     setIsLoading(true);
-    if (
-      clientData?.isValid === false ||
-      (clientData?.isValid === true && userData.role === "adm")
-    ) {
-      firestore()
-        .collection("Client")
-        .doc(uid)
-        .update({
-          name: data.name,
-          email: data.email,
-          telephone: data.phone,
-          isValid: data.isValid,
-          updatedAt: firestore.FieldValue.serverTimestamp(),
-        })
-        .then(() => {
-          showToast(
-            "emerald.500",
-            "Informações do cliente atualizadas com sucesso!"
-          );
-        })
-        .catch((error) => {
-          console.log(error);
-        })
-        .finally(() => setIsLoading(false));
-    } else {
-      showToast(
-        "danger.400",
-        "Você não tem permissão para executar esta ação!"
-      );
-    }
+
+    firestore()
+      .collection("Users")
+      .doc(uid)
+      .update({
+        name: data.name,
+        email: data.email,
+        telephone: data.telephone,
+        isActive: data.isActive,
+        role: data.role,
+        updatedAt: firestore.FieldValue.serverTimestamp(),
+      })
+      .then(() => {
+        showToast(
+          "emerald.500",
+          "Informações do usuário atualizadas com sucesso!"
+        );
+      })
+      .catch((error) => {
+        console.log(error);
+      })
+      .finally(() => setIsLoading(false));
   }
 
-  const updateClientForm =
-    clientData === undefined ? (
+  function handleResetPassword(data: UserFormProps) {
+    auth().sendPasswordResetEmail(data.email);
+  }
+
+  const updatedUsersForm =
+    usersData === undefined ? (
       <Load />
     ) : (
       <Form>
@@ -101,7 +100,7 @@ export function UpdateClientForm({ uid }) {
 
         <Stack mt={3} space={4} w="full" maxW="500px">
           <Controller
-            defaultValue={clientData?.name}
+            defaultValue={usersData?.name}
             control={control}
             name="name"
             render={({ field: { onBlur, value, onChange } }) => (
@@ -132,24 +131,24 @@ export function UpdateClientForm({ uid }) {
             rules={{
               required: {
                 value: true,
-                message: "Nome do cliente é um campo obrigatório",
+                message: "Nome do usuário é um campo obrigatório",
               },
             }}
           />
           <ErrorText>{errors.name?.message}</ErrorText>
 
           <Controller
-            defaultValue={clientData?.email}
+            defaultValue={usersData?.email}
             control={control}
             name="email"
             render={({ field: { onBlur, value, onChange } }) => (
               <Input
-                placeholder=" Digite o email do cliente"
                 error={errors.email}
                 errorText={errors.email?.message}
                 onBlur={onBlur}
                 value={value}
                 onChangeText={onChange}
+                isDisabled
                 variant="underlined"
                 autoCapitalize="none"
                 size="lg"
@@ -167,28 +166,17 @@ export function UpdateClientForm({ uid }) {
                 }
               />
             )}
-            rules={{
-              required: {
-                value: true,
-                message: "E-mail do cliente é um campo obrigatório",
-              },
-              pattern: {
-                value: EMAIL_REGEX,
-                message: "E-mail inválido",
-              },
-            }}
           />
-          <ErrorText>{errors.email?.message}</ErrorText>
 
           <Controller
-            defaultValue={clientData?.telephone}
+            defaultValue={usersData?.telephone}
             control={control}
-            name="phone"
+            name="telephone"
             render={({ field: { onBlur, value, onChange } }) => (
               <Input
-                placeholder=" Digite o telefone do cliente"
-                error={errors.phone}
-                errorText={errors.phone?.message}
+                placeholder=" Digite o telefone do usuario"
+                error={errors.telephone}
+                errorText={errors.telephone?.message}
                 onBlur={onBlur}
                 value={value}
                 onChangeText={onChange}
@@ -212,32 +200,61 @@ export function UpdateClientForm({ uid }) {
             rules={{
               required: {
                 value: true,
-                message: "Telefone do cliente é um campo obrigatório",
+                message: "Telefone do usuário é um campo obrigatório",
               },
             }}
           />
-          <ErrorText>{errors.phone?.message}</ErrorText>
+          <ErrorText>{errors.telephone?.message}</ErrorText>
+
+          <HStack justifyContent="center">
+            <Controller
+              defaultValue={usersData?.role}
+              control={control}
+              name="role"
+              render={({ field: { value, onChange } }) => (
+                <Radio.Group
+                  name="role"
+                  accessibilityLabel="favorite number"
+                  value={value}
+                  onChange={onChange}
+                >
+                  <Radio value="adm" colorScheme="emerald" size="sm" my={1}>
+                    Administrador
+                  </Radio>
+                  <Radio value="colab" colorScheme="secondary" size="sm" my={1}>
+                    Colaborador
+                  </Radio>
+                </Radio.Group>
+              )}
+            />
+          </HStack>
 
           <Controller
-            defaultValue={clientData?.isValid}
+            defaultValue={false}
             control={control}
-            name="isValid"
-            render={({ field: { onBlur, value, onChange } }) => (
+            name="isActive"
+            render={({ field: { value, onChange } }) => (
               <HStack alignItems="center" space={4}>
-                <Switch size="md" onValueChange={onChange} value={value} />
-                <Text>Validado pelo administrador?</Text>
+                <Switch
+                  colorScheme="danger"
+                  size="md"
+                  onValueChange={onChange}
+                  value={value}
+                />
+                <Text>bloqueado</Text>
               </HStack>
             )}
           />
 
           <Button
             isLoading={isLoading}
-            onPress={handleSubmit(handleUpdateClient)}
+            onPress={handleSubmit(handleUpdateUser)}
             spinnerPlacement="end"
             isLoadingText="Carregando"
           >
             Concluir
           </Button>
+          <Button onPress={handleResetPassword}>Resetar senha</Button>
         </Stack>
       </Form>
     );
@@ -245,7 +262,7 @@ export function UpdateClientForm({ uid }) {
   return (
     <Box alignItems="center">
       <FormControl isRequired w="full" maxW="500px">
-        {updateClientForm}
+        {updatedUsersForm}
       </FormControl>
     </Box>
   );

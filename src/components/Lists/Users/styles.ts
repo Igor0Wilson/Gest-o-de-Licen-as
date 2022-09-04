@@ -1,8 +1,8 @@
-import styled from 'styled-components/native';
+import styled from "styled-components/native";
 
 export const Container = styled.View`
   flex: 1;
-  margin-top: -30px;    
+  margin-top: -30px;
 `;
 
 export const Header = styled.View`
@@ -25,4 +25,3 @@ export const Counter = styled.Text`
   color: ${({ theme }) => theme.COLORS.SUBTEXT};
   margin-bottom: 12px;
 `;
-

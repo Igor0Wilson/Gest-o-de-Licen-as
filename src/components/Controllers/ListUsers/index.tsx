@@ -13,7 +13,6 @@ import {
   Label,
   Info,
   Footer,
-  ClientStyleProps,
   GroupsContainer,
 } from "./styles";
 
@@ -23,19 +22,20 @@ import { UpdateClient } from "../UpdateClientModal";
 import { AuthContext } from "../../../contexts/auth";
 import { showToast } from "@components/ToastMessage";
 
-export type ClientProps = ClientStyleProps & {
+export type UsersProps = {
   id: string;
   name: string;
   email: string;
   telephone: string;
-  isValid: boolean;
+  isActive: boolean;
+  role: string;
 };
 
 type Props = {
-  data: ClientProps;
+  data: UsersProps;
 };
 
-export function ClientData({ data }: Props) {
+export function UserData({ data }: Props) {
   const { userData } = useContext(AuthContext);
 
   console.log(userData);
@@ -46,13 +46,13 @@ export function ClientData({ data }: Props) {
 
   const uid = data.id;
 
-  function handleDeleteClient() {
+  function handleDeleteUser() {
     if (userData.role === "adm") {
       firestore()
-        .collection("Client")
+        .collection("Users")
         .doc(uid)
         .delete()
-        .then(() => showToast("emerald.500", "Cliente deletado com sucesso!"))
+        .then(() => showToast("emerald.500", "Usuário deletado com sucesso!"))
         .catch((error) => console.log(error));
     } else {
       showToast(
@@ -87,6 +87,7 @@ export function ClientData({ data }: Props) {
               color={theme.COLORS.SUBTEXT}
             />
             <Label>{data.telephone}</Label>
+            <Label>{data.role}</Label>
           </Info>
           <GroupsContainer>
             <UpdateClient uid={uid} />
@@ -94,7 +95,7 @@ export function ClientData({ data }: Props) {
               ml={1}
               colorScheme="danger"
               size={8}
-              onPress={handleDeleteClient}
+              onPress={handleDeleteUser}
             >
               <Entypo name="trash" size={15} color="black" />
             </Button>

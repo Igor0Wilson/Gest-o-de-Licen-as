@@ -3,14 +3,14 @@ import { Header } from "@components/Layout/Header";
 
 import { Background, Container } from "./styles";
 import { NewUser } from "@components/Controllers/NewUser";
-import { Users } from "@components/Lists/Users";
+import { UserList } from "@components/Lists/Users";
 
 export function Register() {
   return (
     <Background>
       <Header />
       <Container>
-        <Users />
+        <UserList />
         <NewUser />
       </Container>
     </Background>

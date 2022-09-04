@@ -24,10 +24,12 @@ export function Drawer({ ...props }) {
     <ContainerNavigation>
       <HeaderContainer>
         <Avatar alignSelf="center" size="lg">
-          {userData.name.substr(0, 1)}
+          I{/* {userData.name.substr(0, 1)} */}
         </Avatar>
-        <Text>{userData.name}</Text>
-        <Text>{userData.email}</Text>
+        {/* <Text>{userData.name}</Text>
+        <Text>{userData.email}</Text> */}
+        <Text>Igor Wilson</Text>
+        <Text>igorwilsonsimiao@gmail.com</Text>
       </HeaderContainer>
       <DrawerContentScrollView {...props}>
         <DrawerItemList {...props} />

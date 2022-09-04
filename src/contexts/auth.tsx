@@ -78,7 +78,7 @@ export default function AuthProvider({ children }: UserContextProps) {
           createdAt: firestore.FieldValue.serverTimestamp(),
           updatedAt: firestore.FieldValue.serverTimestamp(),
         });
-        showToast("Usuário cadastrado com sucesso!");
+        showToast("emerald.500", "Usuário cadastrado com sucesso!");
       })
       .catch((error) => console.log(error))
       .finally(() => setIsLoading(false));
