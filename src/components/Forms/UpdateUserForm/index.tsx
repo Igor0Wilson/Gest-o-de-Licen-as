@@ -98,7 +98,7 @@ export function UpdateUserForm({ uid }) {
       <Form>
         <Title>
           <FontAwesome5 name="user-edit" size={30} color="black" /> Editar
-          Cliente
+          Usuário
         </Title>
 
         <Stack mt={3} space={4} w="full" maxW="500px">
