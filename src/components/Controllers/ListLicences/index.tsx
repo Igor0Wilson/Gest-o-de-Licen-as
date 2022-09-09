@@ -13,7 +13,7 @@ import {
   Label,
   Info,
   Footer,
-  ClientStyleProps,
+  LicencesStyleProps,
   GroupsContainer,
 } from "./styles";
 
@@ -23,19 +23,19 @@ import { UpdateClient } from "../UpdateClientModal";
 import { AuthContext } from "../../../contexts/auth";
 import { showToast } from "@components/ToastMessage";
 
-export type ClientProps = ClientStyleProps & {
+export type LicencesProps = LicencesStyleProps & {
   id: string;
-  name: string;
-  email: string;
-  telephone: string;
+  mac: string;
+  expiresIn: string;
   isValid: boolean;
+  created_by: string;
 };
 
 type Props = {
-  data: ClientProps;
+  data: LicencesProps;
 };
 
-export function ClientData({ data }: Props) {
+export function LicencesData({ data }: Props) {
   const { userData } = useContext(AuthContext);
 
   const theme = useTheme();
@@ -45,10 +45,10 @@ export function ClientData({ data }: Props) {
   function handleDeleteClient() {
     if (userData.role === "adm") {
       firestore()
-        .collection("Client")
+        .collection("Licences")
         .doc(uid)
         .delete()
-        .then(() => showToast("emerald.500", "Cliente deletado com sucesso!"))
+        .then(() => showToast("emerald.500", "Licença deletada com sucesso!"))
         .catch((error) => console.log(error));
     } else {
       showToast(
@@ -63,26 +63,26 @@ export function ClientData({ data }: Props) {
       <Status isValid />
       <Content>
         <Header>
-          <Title>{data.name}</Title>
+          <Title>{data.mac}</Title>
         </Header>
 
         <Footer>
           <Info>
             <MaterialIcons
-              name="email"
+              name="date-range"
               size={16}
               color={theme.COLORS.SUBTEXT}
             />
-            <Label>{data.email}</Label>
+            <Label>{data.expiresIn}</Label>
           </Info>
 
           <Info>
             <MaterialIcons
-              name="phone"
+              name="person"
               size={16}
               color={theme.COLORS.SUBTEXT}
             />
-            <Label>{data.telephone}</Label>
+            <Label>{data.created_by}</Label>
           </Info>
           <GroupsContainer>
             <UpdateClient uid={uid} />

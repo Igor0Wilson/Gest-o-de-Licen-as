@@ -3,14 +3,26 @@ import { AuthContext } from "../../../contexts/auth";
 
 import { ErrorText, Form, Title } from "./styles";
 
-import { Box, Button, FormControl, HStack, Icon, Input, Radio, Stack, Switch, Text } from "native-base";
+import {
+  Box,
+  Button,
+  FormControl,
+  HStack,
+  Icon,
+  Input,
+  Radio,
+  Stack,
+  Switch,
+  Text,
+} from "native-base";
 import { useForm, Controller } from "react-hook-form";
 
 //import icones
-import { Fontisto } from '@expo/vector-icons';
-import { Entypo } from '@expo/vector-icons';
-import { FontAwesome5 } from '@expo/vector-icons';
+import { Fontisto } from "@expo/vector-icons";
+import { Entypo } from "@expo/vector-icons";
+import { FontAwesome5 } from "@expo/vector-icons";
 import { MaterialIcons } from "@expo/vector-icons";
+import { showToast } from "@components/ToastMessage";
 
 type UserFormProps = {
   name: string;
@@ -19,14 +31,17 @@ type UserFormProps = {
   password: string;
   role: string;
   isActive: boolean;
-}
+};
 
-const EMAIL_REGEX = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+const EMAIL_REGEX =
+  /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
 export function Register() {
-  const [show, setShow] = useState<boolean>(false);
-  
-  const { signUp } = useContext(AuthContext);
+  const [show, setShow] = useState(false);
+
+  const { signUp, userData } = useContext(AuthContext);
+
+  console.log("Role", userData?.role);
 
   const {
     handleSubmit,
@@ -35,14 +50,21 @@ export function Register() {
   } = useForm<UserFormProps>();
 
   function handleNewUser(data: UserFormProps) {
-    signUp(
-      data.name,
-      data.email,
-      data.phone,
-      data.password,
-      data.role,
-      data.isActive
-    )
+    if (userData?.role === "adm") {
+      signUp(
+        data.name,
+        data.email,
+        data.phone,
+        data.password,
+        data.role,
+        data.isActive
+      );
+    } else {
+      showToast(
+        "danger.400",
+        "Você não tem permissão para cadastrar um novo usuário!"
+      );
+    }
   }
 
   return (
@@ -50,10 +72,11 @@ export function Register() {
       <FormControl isRequired w="full" maxW="500px">
         <Form>
           <Title>
-            <FontAwesome5 name="user-plus" size={24} color="black" /> Adicionar Usuário
+            <FontAwesome5 name="user-plus" size={24} color="black" /> Adicionar
+            Usuário
           </Title>
 
-          <Stack space={2} w="full" maxW="500px">     
+          <Stack space={2} w="full" maxW="500px">
             <Controller
               defaultValue=""
               control={control}
@@ -86,8 +109,8 @@ export function Register() {
               rules={{
                 required: {
                   value: true,
-                  message: "Nome do cliente é um campo obrigatório"
-                } 
+                  message: "Nome do cliente é um campo obrigatório",
+                },
               }}
             />
             <ErrorText>{errors.name?.message}</ErrorText>
@@ -124,12 +147,12 @@ export function Register() {
               rules={{
                 required: {
                   value: true,
-                  message: "E-mail do cliente é um campo obrigatório"
-                }, 
+                  message: "E-mail do cliente é um campo obrigatório",
+                },
                 pattern: {
                   value: EMAIL_REGEX,
-                  message: "E-mail inválido"
-                }
+                  message: "E-mail inválido",
+                },
               }}
             />
             <ErrorText>{errors.email?.message}</ErrorText>
@@ -166,8 +189,8 @@ export function Register() {
               rules={{
                 required: {
                   value: true,
-                  message: "Telefone do usuário é um campo obrigatório"
-                }, 
+                  message: "Telefone do usuário é um campo obrigatório",
+                },
               }}
             />
             <ErrorText>{errors.phone?.message}</ErrorText>
@@ -190,7 +213,11 @@ export function Register() {
                   type={show ? "text" : "password"}
                   InputRightElement={
                     <Icon
-                      as={<MaterialIcons name={show ? "visibility" : "visibility-off"} />}
+                      as={
+                        <MaterialIcons
+                          name={show ? "visibility" : "visibility-off"}
+                        />
+                      }
                       size={5}
                       mr="2"
                       color="muted.400"
@@ -210,51 +237,55 @@ export function Register() {
               rules={{
                 required: {
                   value: true,
-                  message: "Senha do usuário é um campo obrigatório"
-                } 
+                  message: "Senha do usuário é um campo obrigatório",
+                },
               }}
             />
             <ErrorText>{errors.password?.message}</ErrorText>
-            <HStack  justifyContent="center">
+            <HStack justifyContent="center">
               <Controller
                 defaultValue="colab"
                 control={control}
                 name="role"
                 render={({ field: { value, onChange } }) => (
-                  <Radio.Group 
-                    name="role" 
-                    accessibilityLabel="favorite number" 
-                    value={value} 
+                  <Radio.Group
+                    name="role"
+                    accessibilityLabel="favorite number"
+                    value={value}
                     onChange={onChange}
                   >
                     <Radio value="adm" colorScheme="emerald" size="sm" my={1}>
                       Administrador
                     </Radio>
-                    <Radio value="colab" colorScheme="secondary" size="sm" my={1}>
+                    <Radio
+                      value="colab"
+                      colorScheme="secondary"
+                      size="sm"
+                      my={1}
+                    >
                       Colaborador
                     </Radio>
                   </Radio.Group>
                 )}
-              /> 
+              />
             </HStack>
 
-                  
-              <Controller
-                defaultValue={false}
-                control={control}
-                name="isActive"
-                render={({ field: { value, onChange } }) => (
-                  <HStack alignItems="center" space={4}>
-                    <Switch
-                      colorScheme="danger"
-                      size="md" 
-                      onValueChange={onChange}
-                      value={value}
-                    />
-                    <Text>bloqueado</Text>
-                  </HStack>
-                )}
-              />    
+            <Controller
+              defaultValue={false}
+              control={control}
+              name="isActive"
+              render={({ field: { value, onChange } }) => (
+                <HStack alignItems="center" space={4}>
+                  <Switch
+                    colorScheme="danger"
+                    size="md"
+                    onValueChange={onChange}
+                    value={value}
+                  />
+                  <Text>bloqueado</Text>
+                </HStack>
+              )}
+            />
 
             <Button
               onPress={handleSubmit(handleNewUser)}
@@ -263,7 +294,7 @@ export function Register() {
             >
               Cadastrar Usuário
             </Button>
-          </Stack> 
+          </Stack>
         </Form>
       </FormControl>
     </Box>

@@ -52,6 +52,9 @@ export default function AuthProvider({ children }: UserContextProps) {
   console.log(userData);
 
   useEffect(() => {
+    if (user === null) {
+      auth().signOut();
+    }
     const subscriber = auth().onAuthStateChanged(setUser);
 
     return subscriber;

@@ -18,9 +18,10 @@ import {
 
 import { Button } from "native-base";
 import { Entypo } from "@expo/vector-icons";
-import { UpdateClient } from "../UpdateClientModal";
+import { EvilIcons } from "@expo/vector-icons";
 import { AuthContext } from "../../../contexts/auth";
 import { showToast } from "@components/ToastMessage";
+import { UpdateUser } from "../UpdateUserModal";
 
 export type UsersProps = {
   id: string;
@@ -41,6 +42,8 @@ export function UserData({ data }: Props) {
   console.log(userData);
 
   console.log("Role:", userData.role);
+
+  const roleTitle = data.role === "adm" ? "Administrador" : "Colaborador";
 
   const theme = useTheme();
 
@@ -87,10 +90,13 @@ export function UserData({ data }: Props) {
               color={theme.COLORS.SUBTEXT}
             />
             <Label>{data.telephone}</Label>
-            <Label>{data.role}</Label>
+          </Info>
+          <Info>
+            <EvilIcons name="user" size={24} color="black" />
+            <Label>{roleTitle}</Label>
           </Info>
           <GroupsContainer>
-            <UpdateClient uid={uid} />
+            <UpdateUser uid={uid} />
             <Button
               ml={1}
               colorScheme="danger"

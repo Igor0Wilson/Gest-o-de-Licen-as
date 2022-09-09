@@ -16,7 +16,6 @@ import {
   Stack,
   Switch,
   Text,
-  WarningOutlineIcon,
 } from "native-base";
 import { useForm, Controller } from "react-hook-form";
 import { Alert } from "react-native";
@@ -41,8 +40,6 @@ export function ClientForm() {
   } = useForm<ClientFormProps>();
 
   function handleNewClient(data: ClientFormProps) {
-    setIsLoading(true);
-
     firestore()
       .collection("Client")
       .add({
@@ -204,7 +201,6 @@ export function ClientForm() {
             />
 
             <Button
-              isLoading={isLoading}
               onPress={handleSubmit(handleNewClient)}
               spinnerPlacement="end"
               isLoadingText="Carregando"

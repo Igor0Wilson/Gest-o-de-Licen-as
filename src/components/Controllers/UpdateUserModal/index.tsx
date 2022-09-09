@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 
 import { Button, Center, FormControl, Modal } from "native-base";
-import { UpdateClientForm } from "@components/Forms/UpdateClientForm";
 import { Entypo } from "@expo/vector-icons";
+import { UpdateUserForm } from "@components/Forms/UpdateUserForm";
 
-export function UpdateClient({ uid }) {
+export function UpdateUser({ uid }) {
   const [showModal, setShowModal] = useState(false);
 
   return (
@@ -21,7 +21,7 @@ export function UpdateClient({ uid }) {
         <Modal.Content maxWidth="400px">
           <Modal.CloseButton />
           <Modal.Body>
-            <UpdateClientForm uid={uid} />
+            <UpdateUserForm uid={uid} />
           </Modal.Body>
         </Modal.Content>
       </Modal>

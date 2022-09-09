@@ -4,19 +4,12 @@ import {
   BottomSheetModal,
   BottomSheetModalProvider,
 } from "@gorhom/bottom-sheet";
-import { useForm } from "react-hook-form";
 import { LicenceForm } from "@components/Forms/LicenceForm";
 import { Button } from "native-base";
 import { AntDesign } from "@expo/vector-icons";
 
 export function NewLicence() {
   const bottomSheetRef = useRef<BottomSheetModal>(null);
-
-  const {
-    handleSubmit,
-    control,
-    formState: { errors },
-  } = useForm();
 
   function handleSnapPress() {
     bottomSheetRef.current?.present();

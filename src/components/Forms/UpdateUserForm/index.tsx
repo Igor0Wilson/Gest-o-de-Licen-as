@@ -35,7 +35,7 @@ type UserFormProps = {
 const EMAIL_REGEX =
   /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
-export function UpdateClientForm({ uid }) {
+export function UpdateUserForm({ uid }) {
   const [isLoading, setIsLoading] = useState(false);
   const [usersData, setUsersData] = useState();
 
@@ -60,28 +60,31 @@ export function UpdateClientForm({ uid }) {
 
   function handleUpdateUser(data: UserFormProps) {
     setIsLoading(true);
-
-    firestore()
-      .collection("Users")
-      .doc(uid)
-      .update({
-        name: data.name,
-        email: data.email,
-        telephone: data.telephone,
-        isActive: data.isActive,
-        role: data.role,
-        updatedAt: firestore.FieldValue.serverTimestamp(),
-      })
-      .then(() => {
-        showToast(
-          "emerald.500",
-          "Informações do usuário atualizadas com sucesso!"
-        );
-      })
-      .catch((error) => {
-        console.log(error);
-      })
-      .finally(() => setIsLoading(false));
+    if (userData?.role !== "adm" || usersData?.isActive === true) {
+      showToast("danger.400", "Você não tem permissão para editar");
+    } else {
+      firestore()
+        .collection("Users")
+        .doc(uid)
+        .update({
+          name: data.name,
+          email: data.email,
+          telephone: data.telephone,
+          isActive: data.isActive,
+          role: data.role,
+          updatedAt: firestore.FieldValue.serverTimestamp(),
+        })
+        .then(() => {
+          showToast(
+            "emerald.500",
+            "Informações do usuário atualizadas com sucesso!"
+          );
+        })
+        .catch((error) => {
+          console.log(error);
+        })
+        .finally(() => setIsLoading(false));
+    }
   }
 
   function handleResetPassword(data: UserFormProps) {
@@ -254,7 +257,7 @@ export function UpdateClientForm({ uid }) {
           >
             Concluir
           </Button>
-          <Button onPress={handleResetPassword}>Resetar senha</Button>
+          {/* <Button onPress={handleResetPassword}>Resetar senha</Button> */}
         </Stack>
       </Form>
     );

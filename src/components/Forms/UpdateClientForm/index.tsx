@@ -29,10 +29,14 @@ type ClientFormProps = {
   isValid: boolean;
 };
 
+type Props = {
+  uid: string;
+};
+
 const EMAIL_REGEX =
   /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
-export function UpdateClientForm({ uid }) {
+export function UpdateClientForm({ uid }: Props) {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [clientData, setClientData] = useState();
 
@@ -62,7 +66,7 @@ export function UpdateClientForm({ uid }) {
       (clientData?.isValid === true && userData.role === "adm")
     ) {
       firestore()
-        .collection("Client")
+        .collection("Licences")
         .doc(uid)
         .update({
           name: data.name,

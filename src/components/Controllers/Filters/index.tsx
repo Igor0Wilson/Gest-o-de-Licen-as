@@ -6,7 +6,7 @@ import { Container, Title, Options } from "./styles";
 import { AntDesign } from "@expo/vector-icons";
 
 type Props = {
-  onFilter: (status: string) => void;
+  onFilter: (status: boolean) => void;
 };
 
 export function Filters({ onFilter }: Props) {
@@ -23,13 +23,13 @@ export function Filters({ onFilter }: Props) {
         <Filter
           title="Válidas"
           backgroundColor={theme.COLORS.PRIMARY}
-          onPress={() => onFilter("open")}
+          onPress={() => onFilter(false)}
         />
 
         <Filter
           title="Expiradas"
           backgroundColor={theme.COLORS.SECONDARY}
-          onPress={() => onFilter("closed")}
+          onPress={() => onFilter(true)}
         />
       </Options>
     </Container>

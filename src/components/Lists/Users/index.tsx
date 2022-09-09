@@ -35,7 +35,7 @@ export function UserList() {
   return (
     <Container>
       <Header>
-        <Title>Clientes cadastrados</Title>
+        <Title>Usuários cadastrados</Title>
         <Counter>{user.length}</Counter>
       </Header>
 

@@ -1,4 +1,4 @@
-import styled from 'styled-components/native';
+import styled from "styled-components/native";
 
 export const Form = styled.View`
   width: 100%;
@@ -12,4 +12,7 @@ export const Title = styled.Text`
   align-self: center;
 `;
 
-
+export const ErrorText = styled.Text`
+  font-size: 12px;
+  color: red;
+`;
