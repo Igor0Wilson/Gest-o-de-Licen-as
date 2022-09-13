@@ -12,6 +12,7 @@ import {
 } from "./styles";
 import { Avatar, Text } from "native-base";
 import { AuthContext } from "../../../contexts/auth";
+import { AntDesign } from "@expo/vector-icons";
 
 export function Drawer({ ...props }) {
   const { signOut, userData } = useContext(AuthContext);
@@ -23,13 +24,11 @@ export function Drawer({ ...props }) {
   return (
     <ContainerNavigation>
       <HeaderContainer>
-        <Avatar alignSelf="center" size="lg">
-          I{/* {userData.name.substr(0, 1)} */}
+        <Avatar bg="cyan.500" alignSelf="center" size="lg">
+          <AntDesign name="user" size={35} color="black" />
         </Avatar>
-        {/* <Text>{userData.name}</Text>
-        <Text>{userData.email}</Text> */}
-        <Text>Igor Wilson</Text>
-        <Text>igorwilsonsimiao@gmail.com</Text>
+        <Text>{userData?.name}</Text>
+        <Text>{userData?.email}</Text>
       </HeaderContainer>
       <DrawerContentScrollView {...props}>
         <DrawerItemList {...props} />

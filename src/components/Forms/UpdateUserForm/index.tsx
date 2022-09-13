@@ -56,8 +56,6 @@ export function UpdateUserForm({ uid }) {
     formState: { errors },
   } = useForm<UserFormProps>();
 
-  console.log(usersData);
-
   function handleUpdateUser(data: UserFormProps) {
     setIsLoading(true);
     if (userData?.role !== "adm" || usersData?.isActive === true) {

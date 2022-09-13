@@ -19,14 +19,16 @@ import {
 
 import { Button } from "native-base";
 import { Entypo } from "@expo/vector-icons";
-import { UpdateClient } from "../UpdateClientModal";
 import { AuthContext } from "../../../contexts/auth";
 import { showToast } from "@components/ToastMessage";
+import { UpdateLicense } from "../UpdateLicenceModal";
 
 export type LicencesProps = LicencesStyleProps & {
   id: string;
   mac: string;
-  expiresIn: string;
+  day: Number;
+  month: Number;
+  year: Number;
   isValid: boolean;
   created_by: string;
 };
@@ -42,7 +44,7 @@ export function LicencesData({ data }: Props) {
 
   const uid = data.id;
 
-  function handleDeleteClient() {
+  function handleDeleteLicences() {
     if (userData.role === "adm") {
       firestore()
         .collection("Licences")
@@ -60,7 +62,7 @@ export function LicencesData({ data }: Props) {
 
   return (
     <Container>
-      <Status isValid />
+      <Status expired />
       <Content>
         <Header>
           <Title>{data.mac}</Title>
@@ -73,7 +75,7 @@ export function LicencesData({ data }: Props) {
               size={16}
               color={theme.COLORS.SUBTEXT}
             />
-            <Label>{data.expiresIn}</Label>
+            <Label>{`${data.day}/${data.month}/${data.year}`}</Label>
           </Info>
 
           <Info>
@@ -85,12 +87,12 @@ export function LicencesData({ data }: Props) {
             <Label>{data.created_by}</Label>
           </Info>
           <GroupsContainer>
-            <UpdateClient uid={uid} />
+            <UpdateLicense uid={uid} />
             <Button
               ml={1}
               colorScheme="danger"
               size={8}
-              onPress={handleDeleteClient}
+              onPress={handleDeleteLicences}
             >
               <Entypo name="trash" size={15} color="black" />
             </Button>

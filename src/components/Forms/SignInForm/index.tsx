@@ -1,27 +1,36 @@
-import React, { useState, useContext } from 'react';
-import { useNavigation } from '@react-navigation/native';
+import React, { useState, useContext } from "react";
+import { useNavigation } from "@react-navigation/native";
 
-import { FooterButton } from '@components/Controllers/FooterButton';
-import { Form, Title, Footer } from './styles';
-import { Box, Button, FormControl, HStack, Icon, Input, Stack } from 'native-base';
+import { FooterButton } from "@components/Controllers/FooterButton";
+import { Form, Title, Footer } from "./styles";
+import {
+  Box,
+  Button,
+  FormControl,
+  HStack,
+  Icon,
+  Input,
+  Stack,
+} from "native-base";
 import { useForm, Controller } from "react-hook-form";
-import { ErrorText } from '../RegisterForm/styles';
-import { AuthContext } from '../../../contexts/auth';
+import { ErrorText } from "../RegisterForm/styles";
+import { AuthContext } from "../../../contexts/auth";
 
-import { Entypo } from '@expo/vector-icons';
+import { Entypo } from "@expo/vector-icons";
 import { MaterialIcons } from "@expo/vector-icons";
-import { Fontisto } from '@expo/vector-icons';
+import { Fontisto } from "@expo/vector-icons";
 
 type SignInFormProps = {
   email: string;
   password: string;
-}
+};
 
-const EMAIL_REGEX = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+const EMAIL_REGEX =
+  /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
 export function SignInForm() {
-  const [loading, setLoading] = useState<boolean>(false);
-  const [show, setShow] = useState<boolean>(false);
+  const [loading, setLoading] = useState(false);
+  const [show, setShow] = useState(false);
 
   const { signIn } = useContext(AuthContext);
 
@@ -31,22 +40,19 @@ export function SignInForm() {
     formState: { errors },
   } = useForm<SignInFormProps>();
 
-  function handleSignIn(data: SignInFormProps ) {
+  function handleSignIn(data: SignInFormProps) {
     setLoading(true);
     signIn(data.email, data.password);
   }
 
-  function handleForgotPassword() {
-
-  }
+  function handleForgotPassword() {}
 
   return (
     <Box alignItems="center">
       <FormControl isRequired w="full" maxW="500px">
         <Form>
           <Title>Entrar</Title>
-          <Stack space={2} w="full" maxW="500px">     
-
+          <Stack space={2} w="full" maxW="500px">
             <Controller
               defaultValue=""
               control={control}
@@ -65,13 +71,7 @@ export function SignInForm() {
                   size="lg"
                   InputLeftElement={
                     <Icon
-                      as={
-                        <Fontisto
-                          name="email"
-                          size={5}
-                          color="muted.400"
-                        />
-                      }
+                      as={<Fontisto name="email" size={5} color="muted.400" />}
                     />
                   }
                 />
@@ -79,12 +79,12 @@ export function SignInForm() {
               rules={{
                 required: {
                   value: true,
-                  message: "E-mail do cliente é um campo obrigatório"
-                }, 
+                  message: "E-mail do cliente é um campo obrigatório",
+                },
                 pattern: {
                   value: EMAIL_REGEX,
-                  message: "E-mail inválido"
-                }
+                  message: "E-mail inválido",
+                },
               }}
             />
             <ErrorText>{errors.email?.message}</ErrorText>
@@ -99,7 +99,7 @@ export function SignInForm() {
                   error={errors.password}
                   errorText={errors.password?.message}
                   onBlur={onBlur}
-                  value={value} 
+                  value={value}
                   onChangeText={onChange}
                   size="lg"
                   variant="underlined"
@@ -107,7 +107,11 @@ export function SignInForm() {
                   type={show ? "text" : "password"}
                   InputRightElement={
                     <Icon
-                      as={<MaterialIcons name={show ? "visibility" : "visibility-off"} />}
+                      as={
+                        <MaterialIcons
+                          name={show ? "visibility" : "visibility-off"}
+                        />
+                      }
                       size={5}
                       mr="2"
                       color="muted.400"
@@ -127,14 +131,14 @@ export function SignInForm() {
               rules={{
                 required: {
                   value: true,
-                  message: "Senha do usuário é um campo obrigatório"
-                } 
+                  message: "Senha do usuário é um campo obrigatório",
+                },
               }}
             />
             <ErrorText>{errors.password?.message}</ErrorText>
 
             <Button
-              isLoading={loading}
+              // isLoading={loading}
               onPress={handleSubmit(handleSignIn)}
               spinnerPlacement="end"
               isLoadingText="Carregando"
@@ -143,9 +147,13 @@ export function SignInForm() {
             </Button>
 
             <Footer>
-                <FooterButton title="Esqueci senha" icon="email" onPress={handleForgotPassword} />
+              <FooterButton
+                title="Esqueci senha"
+                icon="email"
+                onPress={handleForgotPassword}
+              />
             </Footer>
-          </Stack> 
+          </Stack>
         </Form>
       </FormControl>
     </Box>

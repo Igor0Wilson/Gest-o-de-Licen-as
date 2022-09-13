@@ -45,11 +45,9 @@ const ContextProps = {
 export const AuthContext = createContext<ContextProps>(ContextProps);
 
 export default function AuthProvider({ children }: UserContextProps) {
-  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [user, setUser] = useState(null);
   const [userData, setUserData] = useState({});
-
-  console.log(userData);
 
   useEffect(() => {
     if (user === null) {
@@ -96,31 +94,29 @@ export default function AuthProvider({ children }: UserContextProps) {
         setUserData(userData._data);
       })
       .catch((error) => {
-        console.log(error);
         switch (error.code) {
           case "auth/user-not-found":
-            Alert.alert(
-              "Usuário inexistente",
+            showToast(
+              "danger.400",
               "O email digitado não pertence a nenhum usuário cadastrado!"
             );
             break;
 
           case "auth/wrong-password":
-            Alert.alert(
-              "Senha inválida",
+            showToast(
+              "danger.400",
               "A senha digitada é inválida! Verifique a senha e tente novamente!"
             );
             break;
 
           default:
-            Alert.alert(
-              "Ocorreu um erro!",
+            showToast(
+              "danger.400",
               "Um erro inesperado ocorreu! Entre em contato com o administrador do sistema para mais informações"
             );
             break;
         }
-      })
-      .finally(() => setIsLoading(false));
+      });
   }
 
   function signOut() {

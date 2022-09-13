@@ -57,8 +57,6 @@ export function UpdateClientForm({ uid }: Props) {
     formState: { errors },
   } = useForm<ClientFormProps>();
 
-  console.log(clientData);
-
   function handleUpdateClient(data: ClientFormProps) {
     setIsLoading(true);
     if (

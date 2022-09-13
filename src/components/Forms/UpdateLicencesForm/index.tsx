@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import { ErrorText, Form, Title } from "./styles";
 import { AntDesign } from "@expo/vector-icons";
 import { MaterialIcons } from "@expo/vector-icons";
@@ -25,17 +25,32 @@ type LicenceFormProps = {
   mac: string;
   day: Number;
   month: Number;
+  expired: boolean;
   year: Number;
   isValid: boolean;
 };
 
-export function LicenceForm() {
+type props = {
+  uid: string;
+};
+
+export function UpdateLicenceForm({ uid }: props) {
   const { userData } = useContext(AuthContext);
+  const [licencesData, setLicencesData] = useState<LicenceFormProps>({});
 
   const date = new Date();
   const currentDay = date.getDate() - 1;
   const currentMonth = date.getMonth() + 1;
   const currentYear = date.getFullYear();
+
+  useEffect(() => {
+    firestore()
+      .collection("Licences")
+      .doc(uid)
+      .get()
+      .then((data) => setLicencesData(data._data))
+      .catch((error) => console.log(error));
+  }, []);
 
   const {
     handleSubmit,
@@ -43,7 +58,7 @@ export function LicenceForm() {
     formState: { errors },
   } = useForm<LicenceFormProps>();
 
-  function handleNewLicence(data: LicenceFormProps) {
+  function handleUpdateLicences(data: LicenceFormProps) {
     let isExpired = false;
 
     if (
@@ -80,19 +95,19 @@ export function LicenceForm() {
 
     firestore()
       .collection("Licences")
-      .add({
+      .doc(uid)
+      .update({
         mac: data.mac,
         day: data.day,
         month: data.month,
         year: data.year,
         isValid: data.isValid,
         expired: isExpired,
-        created_by: userData.name,
-        createdAt: firestore.FieldValue.serverTimestamp(),
+        updated_by: userData.name,
         updatedAt: firestore.FieldValue.serverTimestamp(),
       })
       .then(() => {
-        showToast("emerald.500", "Licença cadastrada com sucesso!");
+        showToast("emerald.500", "Licença atualizada com sucesso!");
       })
       .catch((error) => {
         console.log(error);
@@ -103,13 +118,12 @@ export function LicenceForm() {
       <FormControl isRequired w="full" maxW="500px">
         <Form>
           <Title>
-            <AntDesign name="idcard" size={30} color="black" /> Adicionar
-            Licenças
+            <AntDesign name="idcard" size={30} color="black" /> Editar Licenças
           </Title>
 
           <Stack mt={3} space={4} w="full" maxW="500px">
             <Controller
-              defaultValue=""
+              defaultValue={licencesData?.mac}
               control={control}
               name="mac"
               render={({ field: { onBlur, value, onChange } }) => (
@@ -152,7 +166,7 @@ export function LicenceForm() {
               <ErrorText>{errors.day?.message}</ErrorText>
               <HStack space={3}>
                 <Controller
-                  defaultValue=""
+                  defaultValue={licencesData?.day}
                   control={control}
                   name="day"
                   render={({ field: { onBlur, value, onChange } }) => (
@@ -190,6 +204,7 @@ export function LicenceForm() {
                 />
 
                 <Controller
+                  defaultValue={licencesData?.month}
                   control={control}
                   name="month"
                   render={({ field: { onBlur, value, onChange } }) => (
@@ -228,6 +243,7 @@ export function LicenceForm() {
                 />
 
                 <Controller
+                  defaultValue={licencesData?.year}
                   control={control}
                   name="year"
                   render={({ field: { onBlur, value, onChange } }) => (
@@ -289,7 +305,7 @@ export function LicenceForm() {
             />
 
             <Controller
-              defaultValue={false}
+              defaultValue={licencesData?.isValid}
               control={control}
               name="isValid"
               render={({ field: { onBlur, value, onChange } }) => (
@@ -300,12 +316,8 @@ export function LicenceForm() {
               )}
             />
 
-            <Button
-              onPress={handleSubmit(handleNewLicence)}
-              spinnerPlacement="end"
-              isLoadingText="Carregando"
-            >
-              Cadastrar
+            <Button onPress={handleSubmit(handleUpdateLicences)}>
+              Concluir
             </Button>
           </Stack>
         </Form>

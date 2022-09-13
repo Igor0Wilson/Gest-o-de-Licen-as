@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { FlatList } from "react-native";
 
 import firestore from "@react-native-firebase/firestore";
@@ -7,10 +7,14 @@ import { Container, Header, Title, Counter } from "./styles";
 import { Load } from "@components/Controllers/Spinner";
 import { UserData, UsersProps } from "@components/Controllers/ListUsers";
 import { UseProps } from "react-native-svg";
+import { AuthContext } from "../../../contexts/auth";
+import { Text } from "native-base";
 
 export function UserList() {
   const [isLoading, setIsLoading] = useState(false);
   const [user, setUser] = useState<UsersProps[]>([]);
+
+  const { userData } = useContext(AuthContext);
 
   useEffect(() => {
     setIsLoading(true);
