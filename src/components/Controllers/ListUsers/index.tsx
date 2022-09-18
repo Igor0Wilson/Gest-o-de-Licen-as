@@ -39,10 +39,6 @@ type Props = {
 export function UserData({ data }: Props) {
   const { userData } = useContext(AuthContext);
 
-  console.log(userData);
-
-  console.log("Role:", userData.role);
-
   const roleTitle = data.role === "adm" ? "Administrador" : "Colaborador";
 
   const theme = useTheme();

@@ -8,13 +8,10 @@ import { Load } from "@components/Controllers/Spinner";
 import { UserData, UsersProps } from "@components/Controllers/ListUsers";
 import { UseProps } from "react-native-svg";
 import { AuthContext } from "../../../contexts/auth";
-import { Text } from "native-base";
 
 export function UserList() {
   const [isLoading, setIsLoading] = useState(false);
   const [user, setUser] = useState<UsersProps[]>([]);
-
-  const { userData } = useContext(AuthContext);
 
   useEffect(() => {
     setIsLoading(true);

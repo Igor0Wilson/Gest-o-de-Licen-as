@@ -4,7 +4,11 @@ import { Button, Center, FormControl, Modal } from "native-base";
 import { Entypo } from "@expo/vector-icons";
 import { UpdateUserForm } from "@components/Forms/UpdateUserForm";
 
-export function UpdateUser({ uid }) {
+type Props = {
+  uid: string;
+};
+
+export function UpdateUser({ uid }: Props) {
   const [showModal, setShowModal] = useState(false);
 
   return (

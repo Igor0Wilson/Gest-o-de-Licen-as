@@ -2,13 +2,12 @@ import React, { useState } from "react";
 
 import { Button, Center, Modal } from "native-base";
 import { Entypo } from "@expo/vector-icons";
-import { UpdateLicenceForm } from "@components/Forms/UpdateLicencesForm";
+import {
+  LicenceFormProps,
+  UpdateLicenceForm,
+} from "@components/Forms/UpdateLicencesForm";
 
-type Props = {
-  uid: string;
-};
-
-export function UpdateLicense({ uid }: Props) {
+export function UpdateLicense({ uid }: LicenceFormProps) {
   const [showModal, setShowModal] = useState(false);
 
   return (

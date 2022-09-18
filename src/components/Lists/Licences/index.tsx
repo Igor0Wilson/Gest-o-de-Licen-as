@@ -16,6 +16,52 @@ export function Licences() {
   const [isLoading, setIsLoading] = useState(false);
   const [licences, setLicences] = useState<LicencesProps[]>([]);
 
+  const date = new Date();
+  const currentDay = date.getDate() - 1;
+  const currentMonth = date.getMonth() + 1;
+  const currentYear = date.getFullYear();
+
+  function updateExpired(id: string) {
+    firestore().collection("Licences").doc(id).update({
+      expired: true,
+      updatedAt: firestore.FieldValue.serverTimestamp(),
+    });
+  }
+
+  function isExpired(data: LicencesProps) {
+    if (
+      data.day < currentDay &&
+      data.month <= currentMonth &&
+      data.year <= currentYear
+    ) {
+      updateExpired(data.id);
+    } else if (
+      data.day >= currentDay &&
+      data.month >= currentMonth &&
+      data.year < currentYear
+    ) {
+      updateExpired(data.id);
+    } else if (
+      data.day > currentDay &&
+      data.month < currentMonth &&
+      data.year > currentYear
+    ) {
+      updateExpired(data.id);
+    } else if (
+      data.day < currentDay &&
+      data.month < currentMonth &&
+      data.year < currentYear
+    ) {
+      updateExpired(data.id);
+    } else if (
+      data.day < currentDay &&
+      data.month > currentMonth &&
+      data.year < currentYear
+    ) {
+      updateExpired(data.id);
+    }
+  }
+
   useEffect(() => {
     setIsLoading(true);
 
@@ -36,6 +82,18 @@ export function Licences() {
 
     return () => subscriber();
   }, [expired]);
+
+  useEffect(() => {
+    let data;
+
+    licences.forEach((licences) => {
+      data = licences;
+    });
+
+    if (data !== undefined) {
+      isExpired(data);
+    }
+  }, []);
 
   return (
     <Container>

@@ -32,11 +32,6 @@ type LicenceFormProps = {
 export function LicenceForm() {
   const { userData } = useContext(AuthContext);
 
-  const date = new Date();
-  const currentDay = date.getDate() - 1;
-  const currentMonth = date.getMonth() + 1;
-  const currentYear = date.getFullYear();
-
   const {
     handleSubmit,
     control,
@@ -44,40 +39,6 @@ export function LicenceForm() {
   } = useForm<LicenceFormProps>();
 
   function handleNewLicence(data: LicenceFormProps) {
-    let isExpired = false;
-
-    if (
-      data.day < currentDay &&
-      data.month <= currentMonth &&
-      data.year <= currentYear
-    ) {
-      isExpired = true;
-    } else if (
-      data.day >= currentDay &&
-      data.month >= currentMonth &&
-      data.year < currentYear
-    ) {
-      isExpired = true;
-    } else if (
-      data.day > currentDay &&
-      data.month < currentMonth &&
-      data.year > currentYear
-    ) {
-      isExpired = true;
-    } else if (
-      data.day < currentDay &&
-      data.month < currentMonth &&
-      data.year < currentYear
-    ) {
-      isExpired = true;
-    } else if (
-      data.day < currentDay &&
-      data.month > currentMonth &&
-      data.year < currentYear
-    ) {
-      isExpired = true;
-    }
-
     firestore()
       .collection("Licences")
       .add({
@@ -86,7 +47,7 @@ export function LicenceForm() {
         month: data.month,
         year: data.year,
         isValid: data.isValid,
-        expired: isExpired,
+        expired: false,
         created_by: userData.name,
         createdAt: firestore.FieldValue.serverTimestamp(),
         updatedAt: firestore.FieldValue.serverTimestamp(),

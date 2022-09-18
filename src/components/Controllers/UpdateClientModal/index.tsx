@@ -1,10 +1,14 @@
 import React, { useState } from "react";
 
-import { Button, Center, FormControl, Modal } from "native-base";
+import { Button, Center, Modal } from "native-base";
 import { UpdateClientForm } from "@components/Forms/UpdateClientForm";
 import { Entypo } from "@expo/vector-icons";
 
-export function UpdateClient({ uid }) {
+type Props = {
+  uid: string;
+};
+
+export function UpdateClient({ uid }: Props) {
   const [showModal, setShowModal] = useState(false);
 
   return (
