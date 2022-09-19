@@ -17,7 +17,7 @@ import {
   GroupsContainer,
 } from "./styles";
 
-import { Button } from "native-base";
+import { Button, HStack, Image, VStack } from "native-base";
 import { Entypo } from "@expo/vector-icons";
 import { AuthContext } from "../../../contexts/auth";
 import { showToast } from "@components/ToastMessage";
@@ -64,28 +64,40 @@ export function LicencesData({ data }: Props) {
     <Container>
       <Status expired />
       <Content>
-        <Header>
-          <Title>{data.mac}</Title>
-        </Header>
-
         <Footer>
-          <Info>
-            <MaterialIcons
-              name="date-range"
-              size={16}
-              color={theme.COLORS.SUBTEXT}
+          <HStack>
+            <Image
+              borderRadius={100}
+              source={{
+                uri: "https://png.pngtree.com/png-vector/20190120/ourlarge/pngtree-gallery-vector-icon-png-image_470660.jpg",
+              }}
+              alt="Alternate Text"
+              size="md"
+              mt={8}
             />
-            <Label>{`${data.day}/${data.month}/${data.year}`}</Label>
-          </Info>
+            <VStack ml={5}>
+              <Header>
+                <Title>{data.mac}</Title>
+              </Header>
+              <Info>
+                <MaterialIcons
+                  name="date-range"
+                  size={16}
+                  color={theme.COLORS.SUBTEXT}
+                />
+                <Label>{`${data.day}/${data.month}/${data.year}`}</Label>
+              </Info>
 
-          <Info>
-            <MaterialIcons
-              name="person"
-              size={16}
-              color={theme.COLORS.SUBTEXT}
-            />
-            <Label>{data.created_by}</Label>
-          </Info>
+              <Info>
+                <MaterialIcons
+                  name="person"
+                  size={16}
+                  color={theme.COLORS.SUBTEXT}
+                />
+                <Label>{data.created_by}</Label>
+              </Info>
+            </VStack>
+          </HStack>
           <GroupsContainer>
             <UpdateLicense uid={uid} />
             <Button
@@ -94,7 +106,7 @@ export function LicencesData({ data }: Props) {
               size={8}
               onPress={handleDeleteLicences}
             >
-              <Entypo name="trash" size={15} color="black" />
+              <Entypo name="trash" size={12} color="black" />
             </Button>
           </GroupsContainer>
         </Footer>

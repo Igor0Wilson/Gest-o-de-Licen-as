@@ -2,7 +2,6 @@ import React, { useState, createContext, ReactNode, useEffect } from "react";
 
 import auth, { FirebaseAuthTypes } from "@react-native-firebase/auth";
 import firestore from "@react-native-firebase/firestore";
-import { Alert } from "react-native";
 import { showToast } from "@components/ToastMessage";
 
 type UserContextProps = {

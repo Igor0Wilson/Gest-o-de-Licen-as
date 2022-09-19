@@ -92,9 +92,6 @@ export function UpdateLicenceForm({ uid }: LicenceFormProps) {
       isExpired = true;
     }
 
-    console.log(currentDay);
-    console.log(isExpired);
-
     firestore()
       .collection("Licences")
       .doc(uid)

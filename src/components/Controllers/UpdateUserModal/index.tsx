@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-import { Button, Center, FormControl, Modal } from "native-base";
+import { Button, Center, Modal } from "native-base";
 import { Entypo } from "@expo/vector-icons";
 import { UpdateUserForm } from "@components/Forms/UpdateUserForm";
 

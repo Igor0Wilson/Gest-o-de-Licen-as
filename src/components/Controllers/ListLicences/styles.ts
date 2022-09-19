@@ -22,6 +22,7 @@ export const Content = styled.View`
 
 export const Header = styled.View`
   flex-direction: row;
+  margin-top: 15px;
 `;
 
 export const Status = styled.View<LicencesStyleProps>`

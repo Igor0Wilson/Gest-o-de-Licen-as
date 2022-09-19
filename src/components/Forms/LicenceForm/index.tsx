@@ -9,7 +9,6 @@ import {
   Box,
   Button,
   Center,
-  FormControl,
   HStack,
   Icon,
   Input,
@@ -20,6 +19,7 @@ import { useForm, Controller } from "react-hook-form";
 import { Switch } from "react-native-gesture-handler";
 import { AuthContext } from "../../../contexts/auth";
 import { showToast } from "@components/ToastMessage";
+import { ImageUpload } from "@components/ImageUpload";
 
 type LicenceFormProps = {
   mac: string;
@@ -61,216 +61,215 @@ export function LicenceForm() {
   }
   return (
     <Box alignItems="center">
-      <FormControl isRequired w="full" maxW="500px">
-        <Form>
-          <Title>
-            <AntDesign name="idcard" size={30} color="black" /> Adicionar
-            Licenças
-          </Title>
+      <Form>
+        <Title>
+          <AntDesign name="idcard" size={30} color="black" /> Adicionar Licenças
+        </Title>
 
-          <Stack mt={3} space={4} w="full" maxW="500px">
-            <Controller
-              defaultValue=""
-              control={control}
-              name="mac"
-              render={({ field: { onBlur, value, onChange } }) => (
-                <Input
-                  placeholder=" Digite o mac do cliente"
-                  error={errors.mac}
-                  errorText={errors.mac?.message}
-                  onBlur={onBlur}
-                  value={value}
-                  onChangeText={onChange}
-                  variant="underlined"
-                  // maxLength={23}
-                  size="lg"
-                  autoCapitalize="none"
-                  InputLeftElement={
-                    <Icon
-                      as={
-                        <MaterialIcons
-                          name="computer"
-                          size={5}
-                          ml={2}
-                          color="muted.400"
-                        />
-                      }
-                    />
-                  }
-                />
-              )}
-              rules={{
-                required: {
-                  value: true,
-                  message: "Mac do cliente é um campo obrigatório",
-                },
-              }}
-            />
-            <ErrorText>{errors.mac?.message}</ErrorText>
+        <Stack mt={3} space={4} w="full" maxW="500px">
+          <Controller
+            defaultValue=""
+            control={control}
+            name="mac"
+            render={({ field: { onBlur, value, onChange } }) => (
+              <Input
+                placeholder=" Digite o mac do cliente"
+                error={errors.mac}
+                errorText={errors.mac?.message}
+                onBlur={onBlur}
+                value={value}
+                onChangeText={onChange}
+                variant="underlined"
+                // maxLength={23}
+                size="lg"
+                autoCapitalize="none"
+                InputLeftElement={
+                  <Icon
+                    as={
+                      <MaterialIcons
+                        name="computer"
+                        size={5}
+                        ml={2}
+                        color="muted.400"
+                      />
+                    }
+                  />
+                }
+              />
+            )}
+            rules={{
+              required: {
+                value: true,
+                message: "Mac do cliente é um campo obrigatório",
+              },
+            }}
+          />
+          <ErrorText>{errors.mac?.message}</ErrorText>
 
-            <Center>
-              <Text>Selecione a data de validade</Text>
-              <ErrorText>{errors.day?.message}</ErrorText>
-              <HStack space={3}>
-                <Controller
-                  defaultValue=""
-                  control={control}
-                  name="day"
-                  render={({ field: { onBlur, value, onChange } }) => (
-                    <Input
-                      w="20"
-                      placeholder="Dia"
-                      error={errors.day}
-                      errorText={errors.day?.message}
-                      onBlur={onBlur}
-                      value={value}
-                      onChangeText={onChange}
-                      variant="underlined"
-                      autoCapitalize="none"
-                      maxLength={2}
-                      size="lg"
-                      InputLeftElement={
-                        <Icon
-                          as={
-                            <MaterialIcons
-                              name="date-range"
-                              size={24}
-                              color="black"
-                            />
-                          }
-                        />
-                      }
-                    />
-                  )}
-                  rules={{
-                    required: {
-                      value: true,
-                      message: "É necessário definir a data de vencimento!",
-                    },
-                  }}
-                />
+          <Center>
+            <Text>Selecione a data de validade</Text>
+            <ErrorText>{errors.day?.message}</ErrorText>
+            <HStack space={3}>
+              <Controller
+                defaultValue=""
+                control={control}
+                name="day"
+                render={({ field: { onBlur, value, onChange } }) => (
+                  <Input
+                    w="20"
+                    placeholder="Dia"
+                    error={errors.day}
+                    errorText={errors.day?.message}
+                    onBlur={onBlur}
+                    value={value}
+                    onChangeText={onChange}
+                    variant="underlined"
+                    autoCapitalize="none"
+                    maxLength={2}
+                    size="lg"
+                    InputLeftElement={
+                      <Icon
+                        as={
+                          <MaterialIcons
+                            name="date-range"
+                            size={24}
+                            color="black"
+                          />
+                        }
+                      />
+                    }
+                  />
+                )}
+                rules={{
+                  required: {
+                    value: true,
+                    message: "É necessário definir a data de vencimento!",
+                  },
+                }}
+              />
 
-                <Controller
-                  control={control}
-                  name="month"
-                  render={({ field: { onBlur, value, onChange } }) => (
-                    <Input
-                      w="20"
-                      placeholder="Mês"
-                      error={errors.month}
-                      errorText={errors.month?.message}
-                      onBlur={onBlur}
-                      value={value}
-                      onChangeText={onChange}
-                      variant="underlined"
-                      maxLength={2}
-                      autoCapitalize="none"
-                      size="lg"
-                      InputLeftElement={
-                        <Icon
-                          as={
-                            <MaterialIcons
-                              name="date-range"
-                              size={24}
-                              color="black"
-                            />
-                          }
-                        />
-                      }
-                    />
-                  )}
-                  rules={{
-                    required: {
-                      value: true,
-                      message:
-                        "É necessário definir a data de vencimento da licença!",
-                    },
-                  }}
-                />
+              <Controller
+                control={control}
+                name="month"
+                render={({ field: { onBlur, value, onChange } }) => (
+                  <Input
+                    w="20"
+                    placeholder="Mês"
+                    error={errors.month}
+                    errorText={errors.month?.message}
+                    onBlur={onBlur}
+                    value={value}
+                    onChangeText={onChange}
+                    variant="underlined"
+                    maxLength={2}
+                    autoCapitalize="none"
+                    size="lg"
+                    InputLeftElement={
+                      <Icon
+                        as={
+                          <MaterialIcons
+                            name="date-range"
+                            size={24}
+                            color="black"
+                          />
+                        }
+                      />
+                    }
+                  />
+                )}
+                rules={{
+                  required: {
+                    value: true,
+                    message:
+                      "É necessário definir a data de vencimento da licença!",
+                  },
+                }}
+              />
 
-                <Controller
-                  control={control}
-                  name="year"
-                  render={({ field: { onBlur, value, onChange } }) => (
-                    <Input
-                      w="20"
-                      placeholder="Ano"
-                      error={errors.year}
-                      errorText={errors.year?.message}
-                      onBlur={onBlur}
-                      value={value}
-                      maxLength={4}
-                      onChangeText={onChange}
-                      variant="underlined"
-                      autoCapitalize="none"
-                      size="lg"
-                      InputLeftElement={
-                        <Icon
-                          as={
-                            <MaterialIcons
-                              name="date-range"
-                              size={24}
-                              color="black"
-                            />
-                          }
-                        />
-                      }
-                    />
-                  )}
-                  rules={{
-                    required: {
-                      value: true,
-                      message:
-                        "É necessário definir a data de vencimento da licença!",
-                    },
-                  }}
-                />
+              <Controller
+                control={control}
+                name="year"
+                render={({ field: { onBlur, value, onChange } }) => (
+                  <Input
+                    w="20"
+                    placeholder="Ano"
+                    error={errors.year}
+                    errorText={errors.year?.message}
+                    onBlur={onBlur}
+                    value={value}
+                    maxLength={4}
+                    onChangeText={onChange}
+                    variant="underlined"
+                    autoCapitalize="none"
+                    size="lg"
+                    InputLeftElement={
+                      <Icon
+                        as={
+                          <MaterialIcons
+                            name="date-range"
+                            size={24}
+                            color="black"
+                          />
+                        }
+                      />
+                    }
+                  />
+                )}
+                rules={{
+                  required: {
+                    value: true,
+                    message:
+                      "É necessário definir a data de vencimento da licença!",
+                  },
+                }}
+              />
+            </HStack>
+          </Center>
+
+          <Input
+            placeholder=" Digite o telefone do cliente"
+            size="lg"
+            isDisabled
+            defaultValue={userData.name}
+            variant="underlined"
+            autoCapitalize="none"
+            InputLeftElement={
+              <Icon
+                as={
+                  <MaterialIcons
+                    name="person"
+                    size={5}
+                    ml={2}
+                    color="muted.400"
+                  />
+                }
+              />
+            }
+          />
+
+          <Controller
+            defaultValue={false}
+            control={control}
+            name="isValid"
+            render={({ field: { onBlur, value, onChange } }) => (
+              <HStack alignItems="center" space={4}>
+                <Switch size="md" onValueChange={onChange} value={value} />
+                <Text>Validado pelo administrador?</Text>
               </HStack>
-            </Center>
+            )}
+          />
 
-            <Input
-              placeholder=" Digite o telefone do cliente"
-              size="lg"
-              isDisabled
-              defaultValue={userData.name}
-              variant="underlined"
-              autoCapitalize="none"
-              InputLeftElement={
-                <Icon
-                  as={
-                    <MaterialIcons
-                      name="person"
-                      size={5}
-                      ml={2}
-                      color="muted.400"
-                    />
-                  }
-                />
-              }
-            />
+          <ImageUpload />
 
-            <Controller
-              defaultValue={false}
-              control={control}
-              name="isValid"
-              render={({ field: { onBlur, value, onChange } }) => (
-                <HStack alignItems="center" space={4}>
-                  <Switch size="md" onValueChange={onChange} value={value} />
-                  <Text>Validado pelo administrador?</Text>
-                </HStack>
-              )}
-            />
-
-            <Button
-              onPress={handleSubmit(handleNewLicence)}
-              spinnerPlacement="end"
-              isLoadingText="Carregando"
-            >
-              Cadastrar
-            </Button>
-          </Stack>
-        </Form>
-      </FormControl>
+          <Button
+            onPress={handleSubmit(handleNewLicence)}
+            spinnerPlacement="end"
+            isLoadingText="Carregando"
+          >
+            Cadastrar
+          </Button>
+        </Stack>
+      </Form>
     </Box>
   );
 }
