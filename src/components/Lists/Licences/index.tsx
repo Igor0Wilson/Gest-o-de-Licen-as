@@ -17,7 +17,7 @@ export function Licences() {
   const [licences, setLicences] = useState<LicencesProps[]>([]);
 
   const date = new Date();
-  const currentDay = date.getDate();
+  const currentDay = date.getDate() - 1;
   const currentMonth = date.getMonth() + 1;
   const currentYear = date.getFullYear();
 

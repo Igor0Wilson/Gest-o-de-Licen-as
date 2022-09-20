@@ -4,6 +4,7 @@ import { AntDesign } from "@expo/vector-icons";
 import { MaterialIcons } from "@expo/vector-icons";
 
 import firestore from "@react-native-firebase/firestore";
+import storage from "@react-native-firebase/storage";
 
 import {
   Box,
@@ -14,12 +15,15 @@ import {
   Input,
   Stack,
   Text,
+  Image,
 } from "native-base";
 import { useForm, Controller } from "react-hook-form";
 import { Switch } from "react-native-gesture-handler";
 import { AuthContext } from "../../../contexts/auth";
 import { showToast } from "@components/ToastMessage";
-import { ImageUpload } from "@components/ImageUpload";
+import { View, Platform, Alert } from "react-native";
+import ImagePicker from "react-native-image-crop-picker";
+import { Ionicons } from "@expo/vector-icons";
 
 type LicenceFormProps = {
   mac: string;
@@ -30,35 +34,78 @@ type LicenceFormProps = {
 };
 
 export function LicenceForm() {
+  const [loading, setLoading] = useState(false);
+  const [image, setImage] = useState<string>("");
+  const [uploading, setUploading] = useState(false);
   const { userData } = useContext(AuthContext);
 
   const {
     handleSubmit,
     control,
+    setValue,
     formState: { errors },
   } = useForm<LicenceFormProps>();
 
-  function handleNewLicence(data: LicenceFormProps) {
-    firestore()
-      .collection("Licences")
-      .add({
-        mac: data.mac,
-        day: data.day,
-        month: data.month,
-        year: data.year,
-        isValid: data.isValid,
-        expired: false,
-        created_by: userData.name,
-        createdAt: firestore.FieldValue.serverTimestamp(),
-        updatedAt: firestore.FieldValue.serverTimestamp(),
-      })
-      .then(() => {
-        showToast("emerald.500", "Licença cadastrada com sucesso!");
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+  const onSelectImage = () => {
+    ImagePicker.openPicker({
+      width: 300,
+      height: 400,
+      cropping: true,
+    }).then((image) => {
+      console.log(image.path);
+      const imageUri = Platform.OS === "ios" ? image.sourceURL : image.path;
+      setImage(imageUri);
+    });
+  };
+
+  async function handleNewLicence(data: LicenceFormProps) {
+    const uploadUri = image;
+    let filename = uploadUri?.substring(uploadUri?.lastIndexOf("/") + 1);
+
+    setUploading(true);
+
+    try {
+      await storage().ref(filename).putFile(uploadUri);
+      await firestore()
+        .collection("Licences")
+        .add({
+          mac: data.mac,
+          day: data.day,
+          month: data.month,
+          year: data.year,
+          isValid: data.isValid,
+          expired: false,
+          imagePath: filename,
+          created_by: userData.name,
+          createdAt: firestore.FieldValue.serverTimestamp(),
+          updatedAt: firestore.FieldValue.serverTimestamp(),
+        })
+        .then(() => {
+          showToast("emerald.500", "Licença cadastrada com sucesso!");
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+
+      setLoading(false);
+      setUploading(false);
+      setValue("mac", "");
+      setValue("day", "");
+      setValue("month", "");
+      setValue("year", "");
+      setValue("isValid", false);
+    } catch (error) {
+      console.log(error);
+    }
+
+    setImage("");
   }
+
+  function sendLicenceData(data: LicenceFormProps) {
+    setLoading(true);
+    handleNewLicence(data);
+  }
+
   return (
     <Box alignItems="center">
       <Form>
@@ -258,11 +305,39 @@ export function LicenceForm() {
               </HStack>
             )}
           />
-
-          <ImageUpload />
-
+          <Center>
+            <HStack alignItems="center" space={4}>
+              {image != "" ? (
+                <Image
+                  borderRadius={100}
+                  alt="Alternate Text"
+                  size="sm"
+                  source={{ uri: image }}
+                />
+              ) : (
+                <Image
+                  borderRadius={100}
+                  source={{
+                    uri: "https://png.pngtree.com/png-vector/20190120/ourlarge/pngtree-gallery-vector-icon-png-image_470660.jpg",
+                  }}
+                  alt="Alternate Text"
+                  size="sm"
+                />
+              )}
+              <Button
+                size="sm"
+                onPress={onSelectImage}
+                leftIcon={
+                  <Icon as={Ionicons} name="cloud-upload-outline" size="sm" />
+                }
+              >
+                Carregar imagem...
+              </Button>
+            </HStack>
+          </Center>
           <Button
-            onPress={handleSubmit(handleNewLicence)}
+            isLoading={loading}
+            onPress={handleSubmit(sendLicenceData)}
             spinnerPlacement="end"
             isLoadingText="Carregando"
           >

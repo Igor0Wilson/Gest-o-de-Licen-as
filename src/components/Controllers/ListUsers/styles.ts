@@ -17,7 +17,7 @@ export const Content = styled.View`
   height: 120px;
   padding: 0 15px;
   justify-content: center;
-  background-color: ${({ theme }) => theme.COLORS.WHITE};
+  background-color: #fff;
 `;
 
 export const Header = styled.View`
