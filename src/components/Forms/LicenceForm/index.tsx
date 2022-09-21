@@ -66,6 +66,7 @@ export function LicenceForm() {
 
     try {
       await storage().ref(filename).putFile(uploadUri);
+      const url = await storage().ref(filename).getDownloadURL();
       await firestore()
         .collection("Licences")
         .add({
@@ -75,7 +76,7 @@ export function LicenceForm() {
           year: data.year,
           isValid: data.isValid,
           expired: false,
-          imagePath: filename,
+          imagePath: url,
           created_by: userData.name,
           createdAt: firestore.FieldValue.serverTimestamp(),
           updatedAt: firestore.FieldValue.serverTimestamp(),

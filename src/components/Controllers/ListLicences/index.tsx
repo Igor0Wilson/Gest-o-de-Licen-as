@@ -28,6 +28,7 @@ export type LicencesProps = LicencesStyleProps & {
   mac: string;
   day: Number;
   month: Number;
+  imagePath: string;
   year: Number;
   isValid: boolean;
   created_by: string;
@@ -69,7 +70,7 @@ export function LicencesData({ data }: Props) {
             <Image
               borderRadius={100}
               source={{
-                uri: "https://png.pngtree.com/png-vector/20190120/ourlarge/pngtree-gallery-vector-icon-png-image_470660.jpg",
+                uri: data.imagePath,
               }}
               alt="Alternate Text"
               size="md"
