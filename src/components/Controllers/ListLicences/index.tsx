@@ -20,6 +20,7 @@ import {
 import { Button, HStack, Image, VStack } from "native-base";
 import { Entypo } from "@expo/vector-icons";
 import { AuthContext } from "../../../contexts/auth";
+import { Ionicons } from "@expo/vector-icons";
 import { showToast } from "@components/ToastMessage";
 import { UpdateLicense } from "../UpdateLicenceModal";
 
@@ -28,6 +29,7 @@ export type LicencesProps = LicencesStyleProps & {
   mac: string;
   day: Number;
   month: Number;
+  client: string;
   imagePath: string;
   year: Number;
   isValid: boolean;
@@ -95,19 +97,28 @@ export function LicencesData({ data }: Props) {
                   size={16}
                   color={theme.COLORS.SUBTEXT}
                 />
-                <Label>{data.created_by}</Label>
+                <Label>{data.client}</Label>
+              </Info>
+
+              <Info>
+                <Ionicons
+                  name="create"
+                  size={16}
+                  color={theme.COLORS.SUBTEXT}
+                />
+                <Label>{data.updatedBy}</Label>
               </Info>
             </VStack>
           </HStack>
           <GroupsContainer>
             <UpdateLicense uid={uid} />
             <Button
-              ml={1}
+              ml={2}
               colorScheme="danger"
-              size={8}
+              size={10}
               onPress={handleDeleteLicences}
             >
-              <Entypo name="trash" size={12} color="black" />
+              <Entypo name="trash" size={20} color="black" />
             </Button>
           </GroupsContainer>
         </Footer>

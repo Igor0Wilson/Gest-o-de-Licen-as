@@ -12,8 +12,8 @@ export function UpdateLicense({ uid }: LicenceFormProps) {
 
   return (
     <Center>
-      <Button onPress={() => setShowModal(true)}>
-        <Entypo name="edit" size={12} color="black" />
+      <Button ml={-5} size={10} onPress={() => setShowModal(true)}>
+        <Entypo name="edit" size={20} color="black" />
       </Button>
       <Modal
         size="xl"

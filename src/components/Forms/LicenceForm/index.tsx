@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { ErrorText, Form, Title } from "./styles";
 import { AntDesign } from "@expo/vector-icons";
 import { MaterialIcons } from "@expo/vector-icons";
@@ -16,20 +16,25 @@ import {
   Stack,
   Text,
   Image,
+  Select,
+  VStack,
+  CheckIcon,
 } from "native-base";
 import { useForm, Controller } from "react-hook-form";
 import { Switch } from "react-native-gesture-handler";
 import { AuthContext } from "../../../contexts/auth";
 import { showToast } from "@components/ToastMessage";
-import { View, Platform, Alert } from "react-native";
+import { Platform } from "react-native";
 import ImagePicker from "react-native-image-crop-picker";
 import { Ionicons } from "@expo/vector-icons";
+import { ClientProps } from "@components/Controllers/ListClient";
 
 type LicenceFormProps = {
   mac: string;
   day: Number;
   month: Number;
   year: Number;
+  client: string;
   isValid: boolean;
 };
 
@@ -38,6 +43,24 @@ export function LicenceForm() {
   const [image, setImage] = useState<string>("");
   const [uploading, setUploading] = useState(false);
   const { userData } = useContext(AuthContext);
+  const [client, setClient] = useState<ClientProps[]>([]);
+
+  useEffect(() => {
+    const subscriber = firestore()
+      .collection("Client")
+      .onSnapshot((querySnapshot) => {
+        const data = querySnapshot.docs.map((doc) => {
+          return {
+            id: doc.id,
+            ...doc.data(),
+          };
+        }) as ClientProps[];
+
+        setClient(data);
+      });
+
+    return () => subscriber();
+  }, []);
 
   const {
     handleSubmit,
@@ -45,6 +68,14 @@ export function LicenceForm() {
     setValue,
     formState: { errors },
   } = useForm<LicenceFormProps>();
+
+  const clientOptions = client.map((client) => (
+    <Select.Item
+      key={`client_${client.id}`}
+      label={client.name}
+      value={client.name}
+    />
+  ));
 
   const onSelectImage = () => {
     ImagePicker.openPicker({
@@ -74,10 +105,12 @@ export function LicenceForm() {
           day: data.day,
           month: data.month,
           year: data.year,
+          client: data.client,
           isValid: data.isValid,
           expired: false,
           imagePath: url,
-          created_by: userData.name,
+          createdBy: userData.name,
+          updatedBy: userData.name,
           createdAt: firestore.FieldValue.serverTimestamp(),
           updatedAt: firestore.FieldValue.serverTimestamp(),
         })
@@ -94,6 +127,7 @@ export function LicenceForm() {
       setValue("day", "");
       setValue("month", "");
       setValue("year", "");
+      setValue("client", "");
       setValue("isValid", false);
     } catch (error) {
       console.log(error);
@@ -114,7 +148,7 @@ export function LicenceForm() {
           <AntDesign name="idcard" size={30} color="black" /> Adicionar Licenças
         </Title>
 
-        <Stack mt={3} space={4} w="full" maxW="500px">
+        <Stack mt={-3} space={4} w="full" maxW="500px">
           <Controller
             defaultValue=""
             control={control}
@@ -156,10 +190,9 @@ export function LicenceForm() {
 
           <Center>
             <Text>Selecione a data de validade</Text>
-            <ErrorText>{errors.day?.message}</ErrorText>
-            <HStack space={3}>
+
+            <HStack space={3} mb={1}>
               <Controller
-                defaultValue=""
                 control={control}
                 name="day"
                 render={({ field: { onBlur, value, onChange } }) => (
@@ -272,40 +305,56 @@ export function LicenceForm() {
                 }}
               />
             </HStack>
+            <ErrorText>{errors.day?.message}</ErrorText>
           </Center>
 
-          <Input
-            placeholder=" Digite o telefone do cliente"
-            size="lg"
-            isDisabled
-            defaultValue={userData.name}
-            variant="underlined"
-            autoCapitalize="none"
-            InputLeftElement={
-              <Icon
-                as={
-                  <MaterialIcons
-                    name="person"
-                    size={5}
-                    ml={2}
-                    color="muted.400"
-                  />
-                }
-              />
-            }
-          />
-
           <Controller
-            defaultValue={false}
             control={control}
-            name="isValid"
+            name="client"
             render={({ field: { onBlur, value, onChange } }) => (
-              <HStack alignItems="center" space={4}>
-                <Switch size="md" onValueChange={onChange} value={value} />
-                <Text>Validado pelo administrador?</Text>
-              </HStack>
+              <Select
+                shadow={20}
+                selectedValue={value}
+                error={errors.client}
+                errorText={errors.client?.message}
+                onBlur={onBlur}
+                minWidth="200"
+                size="lg"
+                variant="underlined"
+                placeholder="Selecione o cliente"
+                _selectedItem={{
+                  bg: "teal.600",
+                  endIcon: <CheckIcon size="1" />,
+                }}
+                onValueChange={onChange}
+              >
+                {clientOptions}
+              </Select>
             )}
+            rules={{
+              required: {
+                value: true,
+                message:
+                  "É necessário definir o cliente proprietario da licença!",
+              },
+            }}
           />
+          <ErrorText>{errors.client?.message}</ErrorText>
+
+          <HStack space={3}>
+            <Controller
+              defaultValue={false}
+              control={control}
+              name="isValid"
+              render={({ field: { value, onChange } }) => (
+                <HStack alignItems="center" space={4}>
+                  <Switch size="md" onValueChange={onChange} value={value} />
+                  <Text>Validado pelo administrador?</Text>
+                </HStack>
+              )}
+            />
+          </HStack>
+
           <Center>
             <HStack alignItems="center" space={4}>
               {image != "" ? (

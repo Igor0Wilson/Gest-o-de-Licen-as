@@ -19,6 +19,7 @@ import {
 } from "native-base";
 import { useForm, Controller } from "react-hook-form";
 import { Alert } from "react-native";
+import { showToast } from "@components/ToastMessage";
 
 type ClientFormProps = {
   name: string;
@@ -51,7 +52,7 @@ export function ClientForm() {
         updatedAt: firestore.FieldValue.serverTimestamp(),
       })
       .then(() => {
-        Alert.alert("Cadastro realizado!", "Cliente cadastrado com sucesso!");
+        showToast("emerald.500", "Cliente cadastrado com sucesso!");
       })
       .catch((error) => {
         console.log(error);
