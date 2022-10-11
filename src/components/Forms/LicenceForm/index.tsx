@@ -17,7 +17,6 @@ import {
   Text,
   Image,
   Select,
-  VStack,
   CheckIcon,
 } from "native-base";
 import { useForm, Controller } from "react-hook-form";
@@ -40,7 +39,7 @@ type LicenceFormProps = {
 
 export function LicenceForm() {
   const [loading, setLoading] = useState(false);
-  const [image, setImage] = useState<string>("");
+  const [image, setImage] = useState("");
   const [uploading, setUploading] = useState(false);
   const { userData } = useContext(AuthContext);
   const [client, setClient] = useState<ClientProps[]>([]);
@@ -83,7 +82,6 @@ export function LicenceForm() {
       height: 400,
       cropping: true,
     }).then((image) => {
-      console.log(image.path);
       const imageUri = Platform.OS === "ios" ? image.sourceURL : image.path;
       setImage(imageUri);
     });
@@ -108,17 +106,18 @@ export function LicenceForm() {
           client: data.client,
           isValid: data.isValid,
           expired: false,
+          imageName: filename,
           imagePath: url,
-          createdBy: userData.name,
-          updatedBy: userData.name,
-          createdAt: firestore.FieldValue.serverTimestamp(),
-          updatedAt: firestore.FieldValue.serverTimestamp(),
+          created_by: userData.name,
+          updated_by: userData.name,
+          created_at: firestore.FieldValue.serverTimestamp(),
+          updated_at: firestore.FieldValue.serverTimestamp(),
         })
         .then(() => {
           showToast("emerald.500", "Licença cadastrada com sucesso!");
         })
         .catch((error) => {
-          console.log(error);
+          throw error;
         });
 
       setLoading(false);
@@ -130,7 +129,7 @@ export function LicenceForm() {
       setValue("client", "");
       setValue("isValid", false);
     } catch (error) {
-      console.log(error);
+      throw error;
     }
 
     setImage("");
@@ -162,7 +161,7 @@ export function LicenceForm() {
                 value={value}
                 onChangeText={onChange}
                 variant="underlined"
-                // maxLength={23}
+                maxLength={17}
                 size="lg"
                 autoCapitalize="none"
                 InputLeftElement={
@@ -375,6 +374,7 @@ export function LicenceForm() {
                 />
               )}
               <Button
+                bg={"warning.800"}
                 size="sm"
                 onPress={onSelectImage}
                 leftIcon={
@@ -386,6 +386,7 @@ export function LicenceForm() {
             </HStack>
           </Center>
           <Button
+            bg={"primary.800"}
             isLoading={loading}
             onPress={handleSubmit(sendLicenceData)}
             spinnerPlacement="end"

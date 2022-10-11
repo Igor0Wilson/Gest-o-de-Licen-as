@@ -19,8 +19,9 @@ export function NewLicence() {
     <>
       <Button
         variant="solid"
-        leftIcon={<AntDesign name="idcard" size={24} color="white" />}
+        leftIcon={<AntDesign name="addfile" size={24} color="white" />}
         onPress={handleSnapPress}
+        bg={"primary.800"}
       >
         Adicionar Licença
       </Button>

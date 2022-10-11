@@ -1,17 +1,8 @@
 import React, { useState, useContext } from "react";
-import { useNavigation } from "@react-navigation/native";
 
 import { FooterButton } from "@components/Controllers/FooterButton";
 import { Form, Title, Footer } from "./styles";
-import {
-  Box,
-  Button,
-  FormControl,
-  HStack,
-  Icon,
-  Input,
-  Stack,
-} from "native-base";
+import { Box, Button, FormControl, Icon, Input, Stack } from "native-base";
 import { useForm, Controller } from "react-hook-form";
 import { ErrorText } from "../RegisterForm/styles";
 import { AuthContext } from "../../../contexts/auth";
@@ -29,7 +20,6 @@ const EMAIL_REGEX =
   /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
 export function SignInForm() {
-  const [loading, setLoading] = useState(false);
   const [show, setShow] = useState(false);
 
   const { signIn } = useContext(AuthContext);
@@ -41,8 +31,7 @@ export function SignInForm() {
   } = useForm<SignInFormProps>();
 
   function handleSignIn(data: SignInFormProps) {
-    setLoading(true);
-    signIn(data.email, data.password);
+    signIn(data);
   }
 
   function handleForgotPassword() {}
@@ -59,7 +48,7 @@ export function SignInForm() {
               name="email"
               render={({ field: { onBlur, value, onChange } }) => (
                 <Input
-                  placeholder="  Digite o email do usuário"
+                  placeholder="Digite o email do usuário"
                   error={errors.email}
                   errorText={errors.email?.message}
                   onBlur={onBlur}
@@ -71,6 +60,7 @@ export function SignInForm() {
                   size="lg"
                   InputLeftElement={
                     <Icon
+                      mr={2}
                       as={<Fontisto name="email" size={5} color="muted.400" />}
                     />
                   }
@@ -95,7 +85,7 @@ export function SignInForm() {
               name="password"
               render={({ field: { onBlur, value, onChange } }) => (
                 <Input
-                  placeholder=" Digite a senha do usuário"
+                  placeholder="Digite a senha do usuário"
                   error={errors.password}
                   errorText={errors.password?.message}
                   onBlur={onBlur}
@@ -113,7 +103,7 @@ export function SignInForm() {
                         />
                       }
                       size={5}
-                      mr="2"
+                      mr={2}
                       color="muted.400"
                       onPress={() => setShow(!show)}
                     />
@@ -122,6 +112,7 @@ export function SignInForm() {
                     <Icon
                       as={<Entypo name="lock" size={24} color="black" />}
                       size={5}
+                      mr={2}
                       color="muted.400"
                       onPress={() => setShow(!show)}
                     />

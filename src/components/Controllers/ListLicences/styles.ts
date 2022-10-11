@@ -15,6 +15,7 @@ export const Container = styled.View`
 export const Content = styled.View`
   flex: 1;
   height: 120px;
+  margin-top: -10px;
   padding: 0 15px;
   justify-content: center;
   background-color: #fff;
@@ -22,6 +23,7 @@ export const Content = styled.View`
 
 export const Header = styled.View`
   flex-direction: row;
+  width: 160px;
   margin-top: 15px;
 `;
 
@@ -45,6 +47,18 @@ export const Info = styled.View`
   align-items: center;
 `;
 
+export const UserDiv = styled.View`
+  margin-top: 20px;
+  flex-direction: row;
+  align-items: center;
+`;
+
+export const ClientDiv = styled.View`
+  margin-left: 5px;
+  flex-direction: row;
+  align-items: center;
+`;
+
 export const Footer = styled.View`
   width: 100%;
   justify-content: space-between;
@@ -60,5 +74,6 @@ export const Label = styled.Text`
 
 export const GroupsContainer = styled.View`
   margin-left: 80%;
+  margin-top: -40px;
   flex-direction: row;
 `;

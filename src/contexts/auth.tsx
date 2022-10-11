@@ -27,6 +27,11 @@ type ContextProps = {
   };
 };
 
+type signInProps = {
+  email: string;
+  password: string;
+};
+
 const ContextProps = {
   user: Boolean,
   signed: Boolean,
@@ -84,9 +89,9 @@ export default function AuthProvider({ children }: UserContextProps) {
       .finally(() => setIsLoading(false));
   }
 
-  function signIn(email: string, password: string) {
+  function signIn(data: signInProps) {
     auth()
-      .signInWithEmailAndPassword(email, password)
+      .signInWithEmailAndPassword(data.email, data.password)
       .then(async (value) => {
         let uid = value.user.uid;
         const userData = await firestore().collection("Users").doc(uid).get();

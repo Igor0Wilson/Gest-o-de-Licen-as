@@ -1,8 +1,6 @@
-import React, { useContext } from "react";
+import React from "react";
 import { MaterialIcons } from "@expo/vector-icons";
 import { useTheme } from "styled-components/native";
-
-import firestore from "@react-native-firebase/firestore";
 
 import {
   Container,
@@ -13,16 +11,16 @@ import {
   Label,
   Info,
   Footer,
+  ClientDiv,
   LicencesStyleProps,
   GroupsContainer,
+  UserDiv,
 } from "./styles";
 
-import { Button, HStack, Image, VStack } from "native-base";
-import { Entypo } from "@expo/vector-icons";
-import { AuthContext } from "../../../contexts/auth";
+import { HStack, Image, VStack } from "native-base";
 import { Ionicons } from "@expo/vector-icons";
-import { showToast } from "@components/ToastMessage";
 import { UpdateLicense } from "../UpdateLicenceModal";
+import { DeleteLicence } from "../Popover/DeleteLicences";
 
 export type LicencesProps = LicencesStyleProps & {
   id: string;
@@ -30,10 +28,12 @@ export type LicencesProps = LicencesStyleProps & {
   day: Number;
   month: Number;
   client: string;
+  imageName: string;
   imagePath: string;
   year: Number;
   isValid: boolean;
   created_by: string;
+  updated_by: string;
 };
 
 type Props = {
@@ -41,27 +41,7 @@ type Props = {
 };
 
 export function LicencesData({ data }: Props) {
-  const { userData } = useContext(AuthContext);
-
   const theme = useTheme();
-
-  const uid = data.id;
-
-  function handleDeleteLicences() {
-    if (userData.role === "adm") {
-      firestore()
-        .collection("Licences")
-        .doc(uid)
-        .delete()
-        .then(() => showToast("emerald.500", "Licença deletada com sucesso!"))
-        .catch((error) => console.log(error));
-    } else {
-      showToast(
-        "danger.400",
-        "Você não tem permissão para executar esta ação!"
-      );
-    }
-  }
 
   return (
     <Container>
@@ -76,7 +56,7 @@ export function LicencesData({ data }: Props) {
               }}
               alt="Alternate Text"
               size="md"
-              mt={8}
+              mt={5}
             />
             <VStack ml={5}>
               <Header>
@@ -106,20 +86,13 @@ export function LicencesData({ data }: Props) {
                   size={16}
                   color={theme.COLORS.SUBTEXT}
                 />
-                <Label>{data.updatedBy}</Label>
+                <Label>{data.updated_by}</Label>
               </Info>
             </VStack>
           </HStack>
           <GroupsContainer>
-            <UpdateLicense uid={uid} />
-            <Button
-              ml={2}
-              colorScheme="danger"
-              size={10}
-              onPress={handleDeleteLicences}
-            >
-              <Entypo name="trash" size={20} color="black" />
-            </Button>
+            <UpdateLicense data={data} />
+            <DeleteLicence data={data} />
           </GroupsContainer>
         </Footer>
       </Content>

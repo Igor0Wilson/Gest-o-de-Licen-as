@@ -32,7 +32,7 @@ import { ClientProps } from "@components/Controllers/ListClient";
 
 export type LicenceFormProps = {
   imagePath: string;
-  uid: string;
+  id: string;
   mac: string;
   day: Number;
   month: Number;
@@ -43,7 +43,11 @@ export type LicenceFormProps = {
   isValid: boolean;
 };
 
-export function UpdateLicenceForm({ uid }: LicenceFormProps) {
+type Props = {
+  data: LicenceFormProps;
+};
+
+export function UpdateLicenceForm({ data }: Props) {
   const [loading, setLoading] = useState(false);
   const [image, setImage] = useState("");
   const [uploading, setUploading] = useState(false);
@@ -75,7 +79,7 @@ export function UpdateLicenceForm({ uid }: LicenceFormProps) {
   useEffect(() => {
     firestore()
       .collection("Licences")
-      .doc(uid)
+      .doc(data.id)
       .get()
       .then((data) => setLicencesData(data._data))
       .catch((error) => console.log(error));
@@ -152,7 +156,7 @@ export function UpdateLicenceForm({ uid }: LicenceFormProps) {
 
       firestore()
         .collection("Licences")
-        .doc(uid)
+        .doc(data.id)
         .update({
           mac: data.mac,
           day: data.day,

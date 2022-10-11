@@ -21,45 +21,11 @@ export function Licences() {
   const currentMonth = date.getMonth() + 1;
   const currentYear = date.getFullYear();
 
-  function updateExpired(id: string) {
+  function updatedExpired(id: string) {
     firestore().collection("Licences").doc(id).update({
       expired: true,
       updatedAt: firestore.FieldValue.serverTimestamp(),
     });
-  }
-
-  function isExpired(data: LicencesProps) {
-    if (
-      data.day < currentDay &&
-      data.month <= currentMonth &&
-      data.year <= currentYear
-    ) {
-      updateExpired(data.id);
-    } else if (
-      data.day >= currentDay &&
-      data.month >= currentMonth &&
-      data.year < currentYear
-    ) {
-      updateExpired(data.id);
-    } else if (
-      data.day > currentDay &&
-      data.month < currentMonth &&
-      data.year > currentYear
-    ) {
-      updateExpired(data.id);
-    } else if (
-      data.day < currentDay &&
-      data.month < currentMonth &&
-      data.year < currentYear
-    ) {
-      updateExpired(data.id);
-    } else if (
-      data.day < currentDay &&
-      data.month > currentMonth &&
-      data.year < currentYear
-    ) {
-      updateExpired(data.id);
-    }
   }
 
   useEffect(() => {
@@ -84,14 +50,28 @@ export function Licences() {
   }, [expired]);
 
   useEffect(() => {
-    let data;
+    function expiredLicence() {
+      licences.forEach((data) => {
+        if (
+          data.day < currentDay &&
+          data.month == currentMonth &&
+          data.year == currentYear
+        ) {
+          updatedExpired(data.id);
+        } else if (
+          data.day >= currentDay &&
+          data.month < currentMonth &&
+          data.year == currentYear
+        ) {
+          updatedExpired(data.id);
+        } else if (data.year < currentYear) {
+          updatedExpired(data.id);
+        }
+      });
+    }
 
-    licences.forEach((licences) => {
-      data = licences;
-    });
-
-    if (data !== undefined) {
-      isExpired(data);
+    if (licences) {
+      expiredLicence();
     }
   }, []);
 

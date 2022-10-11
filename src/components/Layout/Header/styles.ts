@@ -1,4 +1,4 @@
-import styled from 'styled-components/native';
+import styled from "styled-components/native";
 
 export const Container = styled.View`
   justify-content: flex-start;
@@ -15,11 +15,11 @@ export const Greeting = styled.View``;
 export const Title = styled.Text`
   font-size: 24px;
   font-family: ${({ theme }) => theme.FONTS.TITLE};
-  color: ${({ theme }) => theme.COLORS.TEXT};
+  color: #fff;
 `;
 
 export const SubTitle = styled.Text`
-  font-size: 13px;
+  font-size: 15px;
   font-family: ${({ theme }) => theme.FONTS.TEXT};
-  color: ${({ theme }) => theme.COLORS.SUBTEXT};
+  color: #fff;
 `;
