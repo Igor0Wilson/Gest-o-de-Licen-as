@@ -11,10 +11,8 @@ import {
   Label,
   Info,
   Footer,
-  ClientDiv,
   LicencesStyleProps,
   GroupsContainer,
-  UserDiv,
 } from "./styles";
 
 import { HStack, Image, VStack } from "native-base";
@@ -43,6 +41,10 @@ type Props = {
 export function LicencesData({ data }: Props) {
   const theme = useTheme();
 
+  let imagePath = data.imagePath
+    ? data.imagePath
+    : "https://firebasestorage.googleapis.com/v0/b/controle-de-licencas-e7993.appspot.com/o/pngtree-gallery-vector-icon-png-image_470660.jpg?alt=media&token=1fb2a8c8-a409-458e-9321-bab066921874";
+
   return (
     <Container>
       <Status expired />
@@ -52,7 +54,7 @@ export function LicencesData({ data }: Props) {
             <Image
               borderRadius={100}
               source={{
-                uri: data.imagePath,
+                uri: imagePath,
               }}
               alt="Alternate Text"
               size="md"

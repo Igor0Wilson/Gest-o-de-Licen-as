@@ -19,6 +19,7 @@ export function NewClient() {
   return (
     <>
       <Button
+        bg={"primary.800"}
         variant="solid"
         leftIcon={<AntDesign name="addusergroup" size={24} color="white" />}
         onPress={handleSnapPress}

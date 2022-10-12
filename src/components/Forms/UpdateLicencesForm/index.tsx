@@ -31,6 +31,7 @@ import { Load } from "@components/Controllers/Spinner";
 import { ClientProps } from "@components/Controllers/ListClient";
 
 export type LicenceFormProps = {
+  imageName: string;
   imagePath: string;
   id: string;
   mac: string;
@@ -85,6 +86,12 @@ export function UpdateLicenceForm({ data }: Props) {
       .catch((error) => console.log(error));
   }, []);
 
+  console.log(data.imageName, data.imagePath);
+
+  let imagePath = data.imagePath
+    ? data.imagePath
+    : "https://firebasestorage.googleapis.com/v0/b/controle-de-licencas-e7993.appspot.com/o/pngtree-gallery-vector-icon-png-image_470660.jpg?alt=media&token=1fb2a8c8-a409-458e-9321-bab066921874";
+
   const {
     handleSubmit,
     control,
@@ -105,81 +112,113 @@ export function UpdateLicenceForm({ data }: Props) {
       height: 400,
       cropping: true,
     }).then((image) => {
-      console.log(image.path);
       const imageUri = Platform.OS === "ios" ? image.sourceURL : image.path;
       setImage(imageUri);
     });
   };
 
   async function handleUpdateLicences(data: LicenceFormProps) {
-    const uploadUri = image;
-    let filename = uploadUri?.substring(uploadUri?.lastIndexOf("/") + 1);
-
-    setUploading(true);
-
     try {
-      await storage().ref(filename).putFile(uploadUri);
-      const url = await storage().ref(filename).getDownloadURL();
-      let isExpired = false;
+      const uploadUri = image;
+      let filename = uploadUri?.substring(uploadUri?.lastIndexOf("/") + 1);
 
-      if (
-        data.day < currentDay &&
-        data.month <= currentMonth &&
-        data.year <= currentYear
-      ) {
-        isExpired = true;
-      } else if (
-        data.day >= currentDay &&
-        data.month >= currentMonth &&
-        data.year < currentYear
-      ) {
-        isExpired = true;
-      } else if (
-        data.day > currentDay &&
-        data.month < currentMonth &&
-        data.year > currentYear
-      ) {
-        isExpired = true;
-      } else if (
-        data.day < currentDay &&
-        data.month < currentMonth &&
-        data.year < currentYear
-      ) {
-        isExpired = true;
-      } else if (
-        data.day < currentDay &&
-        data.month > currentMonth &&
-        data.year < currentYear
-      ) {
-        isExpired = true;
+      setUploading(true);
+
+      if (image !== undefined) {
+        console.log("AAAAAAAAAAA", filename, uploadUri);
+        await storage().ref(filename).putFile(uploadUri);
+        const url = await storage().ref(filename).getDownloadURL();
+        let isExpired = false;
+
+        if (
+          data.day < currentDay &&
+          data.month == currentMonth &&
+          data.year == currentYear
+        ) {
+          isExpired = true;
+        } else if (
+          data.day >= currentDay &&
+          data.month < currentMonth &&
+          data.year == currentYear
+        ) {
+          isExpired = true;
+        } else if (data.year < currentYear) {
+          isExpired = true;
+        }
+
+        firestore()
+          .collection("Licences")
+          .doc(data.id)
+          .update({
+            mac: data.mac,
+            day: data.day,
+            month: data.month,
+            year: data.year,
+            client: data.client,
+            isValid: data.isValid,
+            expired: isExpired,
+            imageName: filename,
+            imagePath: url,
+            updated_by: userData.name,
+            updated_at: firestore.FieldValue.serverTimestamp(),
+          })
+          .then(() => {
+            showToast("emerald.500", "Licença atualizada com sucesso!");
+          })
+          .catch((error) => {
+            console.log(error);
+            throw error;
+          });
+
+        setLoading(false);
+        setUploading(false);
+      } else {
+        let isExpired = false;
+
+        if (
+          data.day < currentDay &&
+          data.month == currentMonth &&
+          data.year == currentYear
+        ) {
+          isExpired = true;
+        } else if (
+          data.day >= currentDay &&
+          data.month < currentMonth &&
+          data.year == currentYear
+        ) {
+          isExpired = true;
+        } else if (data.year < currentYear) {
+          isExpired = true;
+        }
+
+        firestore()
+          .collection("Licences")
+          .doc(data.id)
+          .update({
+            mac: data.mac,
+            day: data.day,
+            month: data.month,
+            year: data.year,
+            client: data.client,
+            isValid: data.isValid,
+            expired: isExpired,
+            updated_by: userData.name,
+            updated_at: firestore.FieldValue.serverTimestamp(),
+          })
+          .then(() => {
+            showToast("emerald.500", "Licença atualizada com sucesso!");
+          })
+          .catch((error) => {
+            console.log(error);
+            throw error;
+          });
+
+        setLoading(false);
+        setUploading(false);
       }
-
-      firestore()
-        .collection("Licences")
-        .doc(data.id)
-        .update({
-          mac: data.mac,
-          day: data.day,
-          month: data.month,
-          year: data.year,
-          client: data.client,
-          isValid: data.isValid,
-          expired: isExpired,
-          imagePath: url,
-          updated_by: userData.name,
-          updated_at: firestore.FieldValue.serverTimestamp(),
-        })
-        .then(() => {
-          showToast("emerald.500", "Licença atualizada com sucesso!");
-        })
-        .catch((error) => {
-          console.log(error);
-        });
-
-      setLoading(false);
-      setUploading(false);
     } catch (error) {
       console.log(error);
+      throw error;
     }
 
     setImage("");
@@ -430,7 +469,7 @@ export function UpdateLicenceForm({ data }: Props) {
                     <Image
                       borderRadius={100}
                       source={{
-                        uri: licencesData?.imagePath,
+                        uri: imagePath,
                       }}
                       alt="Alternate Text"
                       size="sm"
@@ -438,6 +477,7 @@ export function UpdateLicenceForm({ data }: Props) {
                   )}
                   <Button
                     size="sm"
+                    bg={"warning.800"}
                     onPress={onSelectImage}
                     leftIcon={
                       <Icon
@@ -452,6 +492,7 @@ export function UpdateLicenceForm({ data }: Props) {
                 </HStack>
               </Center>
               <Button
+                bg={"primary.800"}
                 isLoading={loading}
                 onPress={handleSubmit(sendLicenceData)}
                 spinnerPlacement="end"

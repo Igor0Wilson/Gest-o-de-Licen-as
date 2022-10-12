@@ -7,7 +7,6 @@ import { Container, Header, Title, Counter } from "./styles";
 import { Load } from "@components/Controllers/Spinner";
 import { UserData, UsersProps } from "@components/Controllers/ListUsers";
 import { UseProps } from "react-native-svg";
-import { AuthContext } from "../../../contexts/auth";
 
 export function UserList() {
   const [isLoading, setIsLoading] = useState(false);

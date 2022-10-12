@@ -58,6 +58,6 @@ export const Label = styled.Text`
 `;
 
 export const GroupsContainer = styled.View`
-  margin-left: 80%;
+  margin-left: 73%;
   flex-direction: row;
 `;

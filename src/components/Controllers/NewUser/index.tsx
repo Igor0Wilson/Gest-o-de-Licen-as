@@ -19,6 +19,7 @@ export function NewUser() {
   return (
     <>
       <Button
+        bg={"primary.800"}
         variant="solid"
         leftIcon={<MaterialIcons name="person-add" size={24} color="white" />}
         onPress={handleSnapPress}

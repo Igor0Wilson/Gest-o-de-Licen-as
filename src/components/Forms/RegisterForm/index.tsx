@@ -288,6 +288,7 @@ export function Register() {
             />
 
             <Button
+              bg={"primary.800"}
               onPress={handleSubmit(handleNewUser)}
               spinnerPlacement="end"
               isLoadingText="Carregando"

@@ -3,59 +3,34 @@ import { Popover, Button, VStack, Box } from "native-base";
 import { Entypo } from "@expo/vector-icons";
 
 import firestore from "@react-native-firebase/firestore";
-import storage from "@react-native-firebase/storage";
+
 import { AuthContext } from "../../../../contexts/auth";
 import { showToast } from "@components/ToastMessage";
-import { LicencesProps } from "@components/Controllers/ListLicences";
+import { UsersProps } from "@components/Controllers/ListUsers";
 
 type Props = {
-  data: LicencesProps;
+  data: UsersProps;
 };
 
-export function DeleteLicence({ data }: Props) {
+export function DeleteUser({ data }: Props) {
   const [position, setPosition] = useState();
   const [isOpen, setIsOpen] = useState(false);
 
   const { userData } = useContext(AuthContext);
 
-  async function handleDeleteLicences(data: LicencesProps) {
-    try {
-      if (data.imageName !== undefined) {
-        if (userData.role === "colab") {
-          showToast(
-            "danger.400",
-            "Você não tem permissão para executar esta ação!"
-          );
-        } else {
-          await storage().ref(data.imageName).delete();
-          firestore()
-            .collection("Licences")
-            .doc(data.id)
-            .delete()
-            .then(() =>
-              showToast("emerald.500", "Licença deletada com sucesso!")
-            )
-            .catch((error) => console.log(error));
-        }
-      } else {
-        if (userData.role === "colab") {
-          showToast(
-            "danger.400",
-            "Você não tem permissão para executar esta ação!"
-          );
-        } else {
-          firestore()
-            .collection("Licences")
-            .doc(data.id)
-            .delete()
-            .then(() =>
-              showToast("emerald.500", "Licença deletada com sucesso!")
-            )
-            .catch((error) => console.log(error));
-        }
-      }
-    } catch (error) {
-      console.log(error);
+  async function handleDeleteLicences(data: UsersProps) {
+    if (userData.role === "colab") {
+      showToast(
+        "danger.400",
+        "Você não tem permissão para executar esta ação!"
+      );
+    } else {
+      firestore()
+        .collection("Users")
+        .doc(data.id)
+        .delete()
+        .then(() => showToast("emerald.500", "Usuário deletado com sucesso!"))
+        .catch((error) => console.log(error));
     }
   }
 
@@ -85,9 +60,9 @@ export function DeleteLicence({ data }: Props) {
           <Popover.Content w="56">
             <Popover.Arrow />
             <Popover.CloseButton onPress={() => setIsOpen(false)} />
-            <Popover.Header>Deletar Licença</Popover.Header>
+            <Popover.Header>Deletar Usuário</Popover.Header>
             <Popover.Body>
-              Tem certeza que deseja deletar esta licença?
+              Tem certeza que deseja deletar este usuário?
             </Popover.Body>
             <Popover.Footer justifyContent="flex-end">
               <Button.Group space={2}>

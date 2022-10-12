@@ -18,10 +18,10 @@ import {
   Text,
 } from "native-base";
 import { useForm, Controller } from "react-hook-form";
-import { Alert } from "react-native";
 import { showToast } from "@components/ToastMessage";
 
-type ClientFormProps = {
+export type ClientFormProps = {
+  id: string;
   name: string;
   email: string;
   phone: string;
@@ -32,11 +32,12 @@ const EMAIL_REGEX =
   /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
 export function ClientForm() {
-  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const {
     handleSubmit,
     control,
+    setValue,
     formState: { errors },
   } = useForm<ClientFormProps>();
 
@@ -56,8 +57,12 @@ export function ClientForm() {
       })
       .catch((error) => {
         console.log(error);
-      })
-      .finally(() => setIsLoading(false));
+      });
+
+    setValue("name", "");
+    setValue("email", "");
+    setValue("phone", "");
+    setValue("isValid", false);
   }
 
   return (
@@ -76,7 +81,7 @@ export function ClientForm() {
               name="name"
               render={({ field: { onBlur, value, onChange } }) => (
                 <Input
-                  placeholder=" Digite o nome do cliente"
+                  placeholder="Digite o nome do cliente"
                   error={errors.name}
                   errorText={errors.name?.message}
                   onBlur={onBlur}
@@ -88,6 +93,7 @@ export function ClientForm() {
                   autoCapitalize="none"
                   InputLeftElement={
                     <Icon
+                      mr={2}
                       as={
                         <MaterialIcons
                           name="person"
@@ -115,7 +121,7 @@ export function ClientForm() {
               name="email"
               render={({ field: { onBlur, value, onChange } }) => (
                 <Input
-                  placeholder=" Digite o email do cliente"
+                  placeholder="Digite o email do cliente"
                   error={errors.email}
                   errorText={errors.email?.message}
                   onBlur={onBlur}
@@ -126,6 +132,7 @@ export function ClientForm() {
                   size="lg"
                   InputLeftElement={
                     <Icon
+                      mr={2}
                       as={
                         <Fontisto
                           name="email"
@@ -157,7 +164,7 @@ export function ClientForm() {
               name="phone"
               render={({ field: { onBlur, value, onChange } }) => (
                 <Input
-                  placeholder=" Digite o telefone do cliente"
+                  placeholder="Digite o telefone do cliente"
                   error={errors.phone}
                   errorText={errors.phone?.message}
                   onBlur={onBlur}
@@ -168,6 +175,7 @@ export function ClientForm() {
                   autoCapitalize="none"
                   InputLeftElement={
                     <Icon
+                      mr={2}
                       as={
                         <MaterialIcons
                           name="phone"
@@ -202,6 +210,7 @@ export function ClientForm() {
             />
 
             <Button
+              bg={"primary.800"}
               onPress={handleSubmit(handleNewClient)}
               spinnerPlacement="end"
               isLoadingText="Carregando"

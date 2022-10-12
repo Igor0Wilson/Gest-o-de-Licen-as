@@ -22,6 +22,7 @@ import { EvilIcons } from "@expo/vector-icons";
 import { AuthContext } from "../../../contexts/auth";
 import { showToast } from "@components/ToastMessage";
 import { UpdateUser } from "../UpdateUserModal";
+import { DeleteUser } from "../Popover/DeleteUser";
 
 export type UsersProps = {
   id: string;
@@ -93,14 +94,7 @@ export function UserData({ data }: Props) {
           </Info>
           <GroupsContainer>
             <UpdateUser uid={uid} />
-            <Button
-              ml={1}
-              colorScheme="danger"
-              size={8}
-              onPress={handleDeleteUser}
-            >
-              <Entypo name="trash" size={15} color="black" />
-            </Button>
+            <DeleteUser data={data} />
           </GroupsContainer>
         </Footer>
       </Content>

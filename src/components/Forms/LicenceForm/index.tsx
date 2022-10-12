@@ -94,40 +94,73 @@ export function LicenceForm() {
     setUploading(true);
 
     try {
-      await storage().ref(filename).putFile(uploadUri);
-      const url = await storage().ref(filename).getDownloadURL();
-      await firestore()
-        .collection("Licences")
-        .add({
-          mac: data.mac,
-          day: data.day,
-          month: data.month,
-          year: data.year,
-          client: data.client,
-          isValid: data.isValid,
-          expired: false,
-          imageName: filename,
-          imagePath: url,
-          created_by: userData.name,
-          updated_by: userData.name,
-          created_at: firestore.FieldValue.serverTimestamp(),
-          updated_at: firestore.FieldValue.serverTimestamp(),
-        })
-        .then(() => {
-          showToast("emerald.500", "Licença cadastrada com sucesso!");
-        })
-        .catch((error) => {
-          throw error;
-        });
+      if (image !== "") {
+        await storage().ref(filename).putFile(uploadUri);
+        const url = await storage().ref(filename).getDownloadURL();
+        await firestore()
+          .collection("Licences")
+          .add({
+            mac: data.mac,
+            day: data.day,
+            month: data.month,
+            year: data.year,
+            client: data.client,
+            isValid: data.isValid,
+            expired: false,
+            imageName: filename,
+            imagePath: url,
+            created_by: userData.name,
+            updated_by: userData.name,
+            created_at: firestore.FieldValue.serverTimestamp(),
+            updated_at: firestore.FieldValue.serverTimestamp(),
+          })
+          .then(() => {
+            showToast("emerald.500", "Licença cadastrada com sucesso!");
+          })
+          .catch((error) => {
+            throw error;
+          });
 
-      setLoading(false);
-      setUploading(false);
-      setValue("mac", "");
-      setValue("day", "");
-      setValue("month", "");
-      setValue("year", "");
-      setValue("client", "");
-      setValue("isValid", false);
+        setLoading(false);
+        setUploading(false);
+        setValue("mac", "");
+        setValue("day", "");
+        setValue("month", "");
+        setValue("year", "");
+        setValue("client", "");
+        setValue("isValid", false);
+      } else {
+        await firestore()
+          .collection("Licences")
+          .add({
+            mac: data.mac,
+            day: data.day,
+            month: data.month,
+            year: data.year,
+            client: data.client,
+            isValid: data.isValid,
+            expired: false,
+            created_by: userData.name,
+            updated_by: userData.name,
+            created_at: firestore.FieldValue.serverTimestamp(),
+            updated_at: firestore.FieldValue.serverTimestamp(),
+          })
+          .then(() => {
+            showToast("emerald.500", "Licença cadastrada com sucesso!");
+          })
+          .catch((error) => {
+            throw error;
+          });
+
+        setLoading(false);
+        setUploading(false);
+        setValue("mac", "");
+        setValue("day", "");
+        setValue("month", "");
+        setValue("year", "");
+        setValue("client", "");
+        setValue("isValid", false);
+      }
     } catch (error) {
       throw error;
     }
@@ -367,7 +400,7 @@ export function LicenceForm() {
                 <Image
                   borderRadius={100}
                   source={{
-                    uri: "https://png.pngtree.com/png-vector/20190120/ourlarge/pngtree-gallery-vector-icon-png-image_470660.jpg",
+                    uri: "https://firebasestorage.googleapis.com/v0/b/controle-de-licencas-e7993.appspot.com/o/pngtree-gallery-vector-icon-png-image_470660.jpg?alt=media&token=1fb2a8c8-a409-458e-9321-bab066921874",
                   }}
                   alt="Alternate Text"
                   size="sm"

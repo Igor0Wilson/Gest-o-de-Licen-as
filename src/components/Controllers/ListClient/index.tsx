@@ -1,8 +1,6 @@
-import React, { useContext } from "react";
+import React from "react";
 import { MaterialIcons } from "@expo/vector-icons";
 import { useTheme } from "styled-components/native";
-
-import firestore from "@react-native-firebase/firestore";
 
 import {
   Container,
@@ -17,11 +15,8 @@ import {
   GroupsContainer,
 } from "./styles";
 
-import { Button } from "native-base";
-import { Entypo } from "@expo/vector-icons";
 import { UpdateClient } from "../UpdateClientModal";
-import { AuthContext } from "../../../contexts/auth";
-import { showToast } from "@components/ToastMessage";
+import { DeleteClient } from "../Popover/DeleteClient";
 
 export type ClientProps = ClientStyleProps & {
   id: string;
@@ -36,27 +31,9 @@ type Props = {
 };
 
 export function ClientData({ data }: Props) {
-  const { userData } = useContext(AuthContext);
-
   const theme = useTheme();
 
   const uid = data.id;
-
-  function handleDeleteClient() {
-    if (userData.role === "adm") {
-      firestore()
-        .collection("Client")
-        .doc(uid)
-        .delete()
-        .then(() => showToast("emerald.500", "Cliente deletado com sucesso!"))
-        .catch((error) => console.log(error));
-    } else {
-      showToast(
-        "danger.400",
-        "Você não tem permissão para executar esta ação!"
-      );
-    }
-  }
 
   return (
     <Container>
@@ -86,14 +63,7 @@ export function ClientData({ data }: Props) {
           </Info>
           <GroupsContainer>
             <UpdateClient uid={uid} />
-            <Button
-              ml={1}
-              colorScheme="danger"
-              size={8}
-              onPress={handleDeleteClient}
-            >
-              <Entypo name="trash" size={15} color="black" />
-            </Button>
+            <DeleteClient data={data} />
           </GroupsContainer>
         </Footer>
       </Content>

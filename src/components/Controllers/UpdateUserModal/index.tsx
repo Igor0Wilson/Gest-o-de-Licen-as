@@ -13,8 +13,8 @@ export function UpdateUser({ uid }: Props) {
 
   return (
     <Center>
-      <Button onPress={() => setShowModal(true)}>
-        <Entypo name="edit" size={12} color="black" />
+      <Button size={10} onPress={() => setShowModal(true)}>
+        <Entypo size={20} name="edit" color="black" />
       </Button>
       <Modal
         size="xl"
