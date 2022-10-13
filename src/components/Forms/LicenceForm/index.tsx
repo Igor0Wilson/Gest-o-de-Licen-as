@@ -83,6 +83,7 @@ export function LicenceForm() {
       cropping: true,
     }).then((image) => {
       const imageUri = Platform.OS === "ios" ? image.sourceURL : image.path;
+      // @ts-ignore
       setImage(imageUri);
     });
   };
@@ -188,6 +189,7 @@ export function LicenceForm() {
             render={({ field: { onBlur, value, onChange } }) => (
               <Input
                 placeholder=" Digite o mac do cliente"
+                // @ts-ignore
                 error={errors.mac}
                 errorText={errors.mac?.message}
                 onBlur={onBlur}
@@ -234,6 +236,7 @@ export function LicenceForm() {
                     error={errors.day}
                     errorText={errors.day?.message}
                     onBlur={onBlur}
+                    // @ts-ignore
                     value={value}
                     onChangeText={onChange}
                     variant="underlined"
@@ -271,6 +274,7 @@ export function LicenceForm() {
                     error={errors.month}
                     errorText={errors.month?.message}
                     onBlur={onBlur}
+                    // @ts-ignore
                     value={value}
                     onChangeText={onChange}
                     variant="underlined"
@@ -309,6 +313,7 @@ export function LicenceForm() {
                     error={errors.year}
                     errorText={errors.year?.message}
                     onBlur={onBlur}
+                    // @ts-ignore
                     value={value}
                     maxLength={4}
                     onChangeText={onChange}
@@ -347,6 +352,7 @@ export function LicenceForm() {
               <Select
                 shadow={20}
                 selectedValue={value}
+                // @ts-ignore
                 error={errors.client}
                 errorText={errors.client?.message}
                 onBlur={onBlur}
@@ -418,13 +424,7 @@ export function LicenceForm() {
               </Button>
             </HStack>
           </Center>
-          <Button
-            bg={"primary.800"}
-            isLoading={loading}
-            onPress={handleSubmit(sendLicenceData)}
-            spinnerPlacement="end"
-            isLoadingText="Carregando"
-          >
+          <Button bg={"primary.800"} onPress={handleSubmit(sendLicenceData)}>
             Cadastrar
           </Button>
         </Stack>

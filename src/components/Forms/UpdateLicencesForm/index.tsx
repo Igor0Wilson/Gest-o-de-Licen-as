@@ -45,10 +45,10 @@ export type LicenceFormProps = {
 };
 
 type Props = {
-  data: LicenceFormProps;
+  uid: string;
 };
 
-export function UpdateLicenceForm({ data }: Props) {
+export function UpdateLicenceForm({ uid }: Props) {
   const [loading, setLoading] = useState(false);
   const [image, setImage] = useState("");
   const [uploading, setUploading] = useState(false);
@@ -80,16 +80,14 @@ export function UpdateLicenceForm({ data }: Props) {
   useEffect(() => {
     firestore()
       .collection("Licences")
-      .doc(data.id)
+      .doc(uid)
       .get()
-      .then((data) => setLicencesData(data._data))
-      .catch((error) => console.log(error));
+      // @ts-ignore
+      .then((data) => setLicencesData(data._data));
   }, []);
 
-  console.log(data.imageName, data.imagePath);
-
-  let imagePath = data.imagePath
-    ? data.imagePath
+  let imagePath = licencesData?.imagePath
+    ? licencesData.imagePath
     : "https://firebasestorage.googleapis.com/v0/b/controle-de-licencas-e7993.appspot.com/o/pngtree-gallery-vector-icon-png-image_470660.jpg?alt=media&token=1fb2a8c8-a409-458e-9321-bab066921874";
 
   const {
@@ -113,6 +111,7 @@ export function UpdateLicenceForm({ data }: Props) {
       cropping: true,
     }).then((image) => {
       const imageUri = Platform.OS === "ios" ? image.sourceURL : image.path;
+      // @ts-ignore
       setImage(imageUri);
     });
   };
@@ -124,8 +123,7 @@ export function UpdateLicenceForm({ data }: Props) {
 
       setUploading(true);
 
-      if (image !== undefined) {
-        console.log("AAAAAAAAAAA", filename, uploadUri);
+      if (image !== "") {
         await storage().ref(filename).putFile(uploadUri);
         const url = await storage().ref(filename).getDownloadURL();
         let isExpired = false;
@@ -148,7 +146,7 @@ export function UpdateLicenceForm({ data }: Props) {
 
         firestore()
           .collection("Licences")
-          .doc(data.id)
+          .doc(uid)
           .update({
             mac: data.mac,
             day: data.day,
@@ -166,7 +164,7 @@ export function UpdateLicenceForm({ data }: Props) {
             showToast("emerald.500", "Licença atualizada com sucesso!");
           })
           .catch((error) => {
-            console.log(error);
+            setLoading(false);
             throw error;
           });
 
@@ -193,7 +191,7 @@ export function UpdateLicenceForm({ data }: Props) {
 
         firestore()
           .collection("Licences")
-          .doc(data.id)
+          .doc(uid)
           .update({
             mac: data.mac,
             day: data.day,
@@ -209,7 +207,7 @@ export function UpdateLicenceForm({ data }: Props) {
             showToast("emerald.500", "Licença atualizada com sucesso!");
           })
           .catch((error) => {
-            console.log(error);
+            setLoading(false);
             throw error;
           });
 
@@ -217,7 +215,6 @@ export function UpdateLicenceForm({ data }: Props) {
         setUploading(false);
       }
     } catch (error) {
-      console.log(error);
       throw error;
     }
 
@@ -249,13 +246,14 @@ export function UpdateLicenceForm({ data }: Props) {
                 render={({ field: { onBlur, value, onChange } }) => (
                   <Input
                     placeholder=" Digite o mac do cliente"
+                    // @ts-ignore
                     error={errors.mac}
                     errorText={errors.mac?.message}
                     onBlur={onBlur}
                     value={value}
                     onChangeText={onChange}
                     variant="underlined"
-                    // maxLength={23}
+                    maxLength={17}
                     size="lg"
                     autoCapitalize="none"
                     InputLeftElement={
@@ -296,6 +294,7 @@ export function UpdateLicenceForm({ data }: Props) {
                         error={errors.day}
                         errorText={errors.day?.message}
                         onBlur={onBlur}
+                        // @ts-ignore
                         value={value}
                         onChangeText={onChange}
                         variant="underlined"
@@ -334,6 +333,7 @@ export function UpdateLicenceForm({ data }: Props) {
                         error={errors.month}
                         errorText={errors.month?.message}
                         onBlur={onBlur}
+                        // @ts-ignore
                         value={value}
                         onChangeText={onChange}
                         variant="underlined"
@@ -373,6 +373,7 @@ export function UpdateLicenceForm({ data }: Props) {
                         error={errors.year}
                         errorText={errors.year?.message}
                         onBlur={onBlur}
+                        // @ts-ignore
                         value={value}
                         maxLength={4}
                         onChangeText={onChange}
@@ -412,6 +413,7 @@ export function UpdateLicenceForm({ data }: Props) {
                   <Select
                     shadow={20}
                     selectedValue={value}
+                    // @ts-ignore
                     error={errors.client}
                     errorText={errors.client?.message}
                     onBlur={onBlur}
@@ -446,6 +448,7 @@ export function UpdateLicenceForm({ data }: Props) {
                   render={({ field: { value, onChange } }) => (
                     <HStack alignItems="center" space={4}>
                       <Switch
+                        // @ts-ignore
                         size="md"
                         onValueChange={onChange}
                         value={value}
@@ -476,8 +479,8 @@ export function UpdateLicenceForm({ data }: Props) {
                     />
                   )}
                   <Button
-                    size="sm"
                     bg={"warning.800"}
+                    size="sm"
                     onPress={onSelectImage}
                     leftIcon={
                       <Icon
@@ -498,7 +501,7 @@ export function UpdateLicenceForm({ data }: Props) {
                 spinnerPlacement="end"
                 isLoadingText="Carregando"
               >
-                Cadastrar
+                Concluir
               </Button>
             </Stack>
           </Form>

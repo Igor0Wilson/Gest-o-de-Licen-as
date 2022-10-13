@@ -29,8 +29,7 @@ export function DeleteUser({ data }: Props) {
         .collection("Users")
         .doc(data.id)
         .delete()
-        .then(() => showToast("emerald.500", "Usuário deletado com sucesso!"))
-        .catch((error) => console.log(error));
+        .then(() => showToast("emerald.500", "Usuário deletado com sucesso!"));
     }
   }
 

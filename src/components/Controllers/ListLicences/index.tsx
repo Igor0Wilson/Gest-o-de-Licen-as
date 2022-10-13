@@ -45,6 +45,8 @@ export function LicencesData({ data }: Props) {
     ? data.imagePath
     : "https://firebasestorage.googleapis.com/v0/b/controle-de-licencas-e7993.appspot.com/o/pngtree-gallery-vector-icon-png-image_470660.jpg?alt=media&token=1fb2a8c8-a409-458e-9321-bab066921874";
 
+  const uid = data.id;
+
   return (
     <Container>
       <Status expired />
@@ -93,7 +95,7 @@ export function LicencesData({ data }: Props) {
             </VStack>
           </HStack>
           <GroupsContainer>
-            <UpdateLicense data={data} />
+            <UpdateLicense uid={uid} />
             <DeleteLicence data={data} />
           </GroupsContainer>
         </Footer>

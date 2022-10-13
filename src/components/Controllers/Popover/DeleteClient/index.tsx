@@ -19,7 +19,7 @@ export function DeleteClient({ data }: Props) {
   const { userData } = useContext(AuthContext);
 
   async function handleDeleteLicences(data: ClientFormProps) {
-    if (userData.role === "colab") {
+    if (userData?.role === "colab") {
       showToast(
         "danger.400",
         "Você não tem permissão para executar esta ação!"
@@ -29,8 +29,7 @@ export function DeleteClient({ data }: Props) {
         .collection("Client")
         .doc(data.id)
         .delete()
-        .then(() => showToast("emerald.500", "Cliente deletado com sucesso!"))
-        .catch((error) => console.log(error));
+        .then(() => showToast("emerald.500", "Cliente deletado com sucesso!"));
     }
   }
 

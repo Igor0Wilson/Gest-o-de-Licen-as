@@ -52,8 +52,7 @@ export function UserData({ data }: Props) {
         .collection("Users")
         .doc(uid)
         .delete()
-        .then(() => showToast("emerald.500", "Usuário deletado com sucesso!"))
-        .catch((error) => console.log(error));
+        .then(() => showToast("emerald.500", "Usuário deletado com sucesso!"));
     } else {
       showToast(
         "danger.400",

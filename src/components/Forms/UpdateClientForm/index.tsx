@@ -47,8 +47,8 @@ export function UpdateClientForm({ uid }: Props) {
       .collection("Client")
       .doc(uid)
       .get()
-      .then((data) => setClientData(data._data))
-      .catch((error) => console.log(error));
+      // @ts-ignore
+      .then((data) => setClientData(data._data));
   }, []);
 
   const {
@@ -60,11 +60,13 @@ export function UpdateClientForm({ uid }: Props) {
   function handleUpdateClient(data: ClientFormProps) {
     setIsLoading(true);
     if (
+      // @ts-ignore
       clientData?.isValid === false ||
+      // @ts-ignore
       (clientData?.isValid === true && userData.role === "adm")
     ) {
       firestore()
-        .collection("Licences")
+        .collection("Client")
         .doc(uid)
         .update({
           name: data.name,
@@ -80,9 +82,8 @@ export function UpdateClientForm({ uid }: Props) {
           );
         })
         .catch((error) => {
-          console.log(error);
-        })
-        .finally(() => setIsLoading(false));
+          throw error;
+        });
     } else {
       showToast(
         "danger.400",
@@ -103,12 +104,14 @@ export function UpdateClientForm({ uid }: Props) {
 
         <Stack mt={3} space={4} w="full" maxW="500px">
           <Controller
+            // @ts-ignore
             defaultValue={clientData?.name}
             control={control}
             name="name"
             render={({ field: { onBlur, value, onChange } }) => (
               <Input
                 placeholder=" Digite o nome do cliente"
+                // @ts-ignore
                 error={errors.name}
                 errorText={errors.name?.message}
                 onBlur={onBlur}
@@ -141,12 +144,14 @@ export function UpdateClientForm({ uid }: Props) {
           <ErrorText>{errors.name?.message}</ErrorText>
 
           <Controller
+            // @ts-ignore
             defaultValue={clientData?.email}
             control={control}
             name="email"
             render={({ field: { onBlur, value, onChange } }) => (
               <Input
                 placeholder=" Digite o email do cliente"
+                // @ts-ignore
                 error={errors.email}
                 errorText={errors.email?.message}
                 onBlur={onBlur}
@@ -183,12 +188,14 @@ export function UpdateClientForm({ uid }: Props) {
           <ErrorText>{errors.email?.message}</ErrorText>
 
           <Controller
+            // @ts-ignore
             defaultValue={clientData?.telephone}
             control={control}
             name="phone"
             render={({ field: { onBlur, value, onChange } }) => (
               <Input
                 placeholder=" Digite o telefone do cliente"
+                // @ts-ignore
                 error={errors.phone}
                 errorText={errors.phone?.message}
                 onBlur={onBlur}
@@ -221,6 +228,7 @@ export function UpdateClientForm({ uid }: Props) {
           <ErrorText>{errors.phone?.message}</ErrorText>
 
           <Controller
+            // @ts-ignore
             defaultValue={clientData?.isValid}
             control={control}
             name="isValid"
@@ -233,10 +241,9 @@ export function UpdateClientForm({ uid }: Props) {
           />
 
           <Button
-            isLoading={isLoading}
+            bg={"primary.800"}
             onPress={handleSubmit(handleUpdateClient)}
             spinnerPlacement="end"
-            isLoadingText="Carregando"
           >
             Concluir
           </Button>

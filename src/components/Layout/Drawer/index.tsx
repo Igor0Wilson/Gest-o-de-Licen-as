@@ -15,6 +15,7 @@ import { AuthContext } from "../../../contexts/auth";
 import { AntDesign } from "@expo/vector-icons";
 
 export function Drawer({ ...props }) {
+  // @ts-ignore
   const { signOut, userData } = useContext(AuthContext);
 
   function handleSignOut() {

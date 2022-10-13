@@ -8,10 +8,10 @@ import {
 } from "@components/Forms/UpdateLicencesForm";
 
 type Props = {
-  data: LicenceFormProps;
+  uid: string;
 };
 
-export function UpdateLicense({ data }: Props) {
+export function UpdateLicense({ uid }: Props) {
   const [showModal, setShowModal] = useState(false);
 
   return (
@@ -28,7 +28,7 @@ export function UpdateLicense({ data }: Props) {
         <Modal.Content maxWidth="400px">
           <Modal.CloseButton />
           <Modal.Body>
-            <UpdateLicenceForm data={data} />
+            <UpdateLicenceForm uid={uid} />
           </Modal.Body>
         </Modal.Content>
       </Modal>

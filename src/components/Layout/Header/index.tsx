@@ -1,11 +1,8 @@
-import React from 'react';
-import { LogoutButton } from '../LogoutButton';
+import React from "react";
 
-import { Container, Greeting, Title, SubTitle } from './styles';
+import { Container, Greeting, Title, SubTitle } from "./styles";
 
 export function Header() {
-  
-
   return (
     <Container>
       <Greeting>

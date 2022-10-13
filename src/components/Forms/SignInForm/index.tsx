@@ -1,6 +1,5 @@
 import React, { useState, useContext } from "react";
 
-import { FooterButton } from "@components/Controllers/FooterButton";
 import { Form, Title, Footer } from "./styles";
 import { Box, Button, FormControl, Icon, Input, Stack } from "native-base";
 import { useForm, Controller } from "react-hook-form";
@@ -31,6 +30,7 @@ export function SignInForm() {
   } = useForm<SignInFormProps>();
 
   function handleSignIn(data: SignInFormProps) {
+    // @ts-ignore
     signIn(data);
   }
 
@@ -49,6 +49,7 @@ export function SignInForm() {
               render={({ field: { onBlur, value, onChange } }) => (
                 <Input
                   placeholder="Digite o email do usuário"
+                  // @ts-ignore
                   error={errors.email}
                   errorText={errors.email?.message}
                   onBlur={onBlur}
@@ -86,6 +87,7 @@ export function SignInForm() {
               render={({ field: { onBlur, value, onChange } }) => (
                 <Input
                   placeholder="Digite a senha do usuário"
+                  // @ts-ignore
                   error={errors.password}
                   errorText={errors.password?.message}
                   onBlur={onBlur}
@@ -137,13 +139,13 @@ export function SignInForm() {
               Entrar
             </Button>
 
-            <Footer>
+            {/* <Footer>
               <FooterButton
                 title="Esqueci senha"
                 icon="email"
                 onPress={handleForgotPassword}
               />
-            </Footer>
+            </Footer> */}
           </Stack>
         </Form>
       </FormControl>

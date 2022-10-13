@@ -1,7 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 
 import firestore from "@react-native-firebase/firestore";
-import auth from "@react-native-firebase/auth";
 
 import { ErrorText, Form, Title } from "./styles";
 import { MaterialIcons } from "@expo/vector-icons";
@@ -32,9 +31,6 @@ type UserFormProps = {
   role: string;
 };
 
-const EMAIL_REGEX =
-  /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-
 type Props = {
   uid: string;
 };
@@ -50,8 +46,8 @@ export function UpdateUserForm({ uid }: Props) {
       .collection("Users")
       .doc(uid)
       .get()
-      .then((data) => setUsersData(data._data))
-      .catch((error) => console.log(error));
+      // @ts-ignore
+      .then((data) => setUsersData(data._data));
   }, []);
 
   const {
@@ -62,7 +58,7 @@ export function UpdateUserForm({ uid }: Props) {
 
   function handleUpdateUser(data: UserFormProps) {
     setIsLoading(true);
-    if (userData?.role !== "adm" || usersData?.isActive === true) {
+    if (userData?.role !== "adm") {
       showToast("danger.400", "Você não tem permissão para editar");
     } else {
       firestore()
@@ -83,15 +79,14 @@ export function UpdateUserForm({ uid }: Props) {
           );
         })
         .catch((error) => {
-          console.log(error);
-        })
-        .finally(() => setIsLoading(false));
+          throw error;
+        });
     }
   }
 
-  function handleResetPassword(data: UserFormProps) {
-    auth().sendPasswordResetEmail(data.email);
-  }
+  // function handleResetPassword(data: UserFormProps) {
+  //   auth().sendPasswordResetEmail(data.email);
+  // }
 
   const updatedUsersForm =
     usersData === undefined ? (
@@ -105,12 +100,14 @@ export function UpdateUserForm({ uid }: Props) {
 
         <Stack mt={3} space={4} w="full" maxW="500px">
           <Controller
+            // @ts-ignore
             defaultValue={usersData?.name}
             control={control}
             name="name"
             render={({ field: { onBlur, value, onChange } }) => (
               <Input
                 placeholder=" Digite o nome do cliente"
+                // @ts-ignore
                 error={errors.name}
                 errorText={errors.name?.message}
                 onBlur={onBlur}
@@ -143,11 +140,13 @@ export function UpdateUserForm({ uid }: Props) {
           <ErrorText>{errors.name?.message}</ErrorText>
 
           <Controller
+            // @ts-ignore
             defaultValue={usersData?.email}
             control={control}
             name="email"
             render={({ field: { onBlur, value, onChange } }) => (
               <Input
+                // @ts-ignore
                 error={errors.email}
                 errorText={errors.email?.message}
                 onBlur={onBlur}
@@ -174,12 +173,14 @@ export function UpdateUserForm({ uid }: Props) {
           />
 
           <Controller
+            // @ts-ignore
             defaultValue={usersData?.telephone}
             control={control}
             name="telephone"
             render={({ field: { onBlur, value, onChange } }) => (
               <Input
                 placeholder=" Digite o telefone do usuario"
+                // @ts-ignore
                 error={errors.telephone}
                 errorText={errors.telephone?.message}
                 onBlur={onBlur}
@@ -213,6 +214,7 @@ export function UpdateUserForm({ uid }: Props) {
 
           <HStack justifyContent="center">
             <Controller
+              // @ts-ignore
               defaultValue={usersData?.role}
               control={control}
               name="role"
@@ -252,14 +254,12 @@ export function UpdateUserForm({ uid }: Props) {
           />
 
           <Button
-            isLoading={isLoading}
+            bg={"primary.800"}
             onPress={handleSubmit(handleUpdateUser)}
             spinnerPlacement="end"
-            isLoadingText="Carregando"
           >
             Concluir
           </Button>
-          {/* <Button onPress={handleResetPassword}>Resetar senha</Button> */}
         </Stack>
       </Form>
     );

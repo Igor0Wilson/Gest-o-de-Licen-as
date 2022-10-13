@@ -41,8 +41,6 @@ export function Register() {
 
   const { signUp, userData } = useContext(AuthContext);
 
-  console.log("Role", userData?.role);
-
   const {
     handleSubmit,
     control,
@@ -51,6 +49,7 @@ export function Register() {
 
   function handleNewUser(data: UserFormProps) {
     if (userData?.role === "adm") {
+      // @ts-ignore
       signUp(
         data.name,
         data.email,
@@ -84,6 +83,7 @@ export function Register() {
               render={({ field: { onBlur, value, onChange } }) => (
                 <Input
                   placeholder=" Digite o nome do usuário"
+                  // @ts-ignore
                   error={errors.name}
                   errorText={errors.name?.message}
                   onBlur={onBlur}
@@ -122,6 +122,7 @@ export function Register() {
               render={({ field: { onBlur, value, onChange } }) => (
                 <Input
                   placeholder=" Digite o email do usuário"
+                  // @ts-ignore
                   error={errors.email}
                   errorText={errors.email?.message}
                   onBlur={onBlur}
@@ -164,6 +165,7 @@ export function Register() {
               render={({ field: { onBlur, value, onChange } }) => (
                 <Input
                   placeholder=" Digite o telefone do usuário"
+                  // @ts-ignore
                   error={errors.phone}
                   errorText={errors.phone?.message}
                   onBlur={onBlur}
@@ -202,6 +204,7 @@ export function Register() {
               render={({ field: { onBlur, value, onChange } }) => (
                 <Input
                   placeholder=" Digite a senha do usuário"
+                  // @ts-ignore
                   error={errors.password}
                   errorText={errors.password?.message}
                   onBlur={onBlur}
@@ -270,22 +273,19 @@ export function Register() {
               />
             </HStack>
 
-            <Controller
-              defaultValue={false}
-              control={control}
-              name="isActive"
-              render={({ field: { value, onChange } }) => (
-                <HStack alignItems="center" space={4}>
-                  <Switch
-                    colorScheme="danger"
-                    size="md"
-                    onValueChange={onChange}
-                    value={value}
-                  />
-                  <Text>bloqueado</Text>
-                </HStack>
-              )}
-            />
+            <HStack space={3}>
+              <Controller
+                defaultValue={false}
+                control={control}
+                name="isActive"
+                render={({ field: { value, onChange } }) => (
+                  <HStack alignItems="center" space={4}>
+                    <Switch size="md" onValueChange={onChange} value={value} />
+                    <Text>bloqueado</Text>
+                  </HStack>
+                )}
+              />
+            </HStack>
 
             <Button
               bg={"primary.800"}

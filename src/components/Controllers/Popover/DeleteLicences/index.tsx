@@ -34,8 +34,7 @@ export function DeleteLicence({ data }: Props) {
             .delete()
             .then(() =>
               showToast("emerald.500", "Licença deletada com sucesso!")
-            )
-            .catch((error) => console.log(error));
+            );
         }
       } else {
         if (userData.role === "colab") {
@@ -50,12 +49,11 @@ export function DeleteLicence({ data }: Props) {
             .delete()
             .then(() =>
               showToast("emerald.500", "Licença deletada com sucesso!")
-            )
-            .catch((error) => console.log(error));
+            );
         }
       }
     } catch (error) {
-      console.log(error);
+      throw error;
     }
   }
 

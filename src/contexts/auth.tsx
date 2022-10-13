@@ -45,7 +45,7 @@ const ContextProps = {
   signIn: {},
   signUp: {},
 };
-
+// @ts-ignore
 export const AuthContext = createContext<ContextProps>(ContextProps);
 
 export default function AuthProvider({ children }: UserContextProps) {
@@ -53,10 +53,15 @@ export default function AuthProvider({ children }: UserContextProps) {
   const [user, setUser] = useState(null);
   const [userData, setUserData] = useState({});
 
+  function signOut() {
+    auth().signOut();
+  }
+
   useEffect(() => {
     if (user === null) {
-      auth().signOut();
+      signOut();
     }
+    // @ts-ignore
     const subscriber = auth().onAuthStateChanged(setUser);
 
     return subscriber;
@@ -85,8 +90,9 @@ export default function AuthProvider({ children }: UserContextProps) {
         });
         showToast("emerald.500", "Usuário cadastrado com sucesso!");
       })
-      .catch((error) => console.log(error))
-      .finally(() => setIsLoading(false));
+      .catch((error) => {
+        throw error;
+      });
   }
 
   function signIn(data: signInProps) {
@@ -95,7 +101,14 @@ export default function AuthProvider({ children }: UserContextProps) {
       .then(async (value) => {
         let uid = value.user.uid;
         const userData = await firestore().collection("Users").doc(uid).get();
-        setUserData(userData._data);
+        // @ts-ignore
+        if (userData._data.isActive === true) {
+          signOut();
+          showToast("danger.400", "Seu usuário está bloqueado!");
+        } else {
+          // @ts-ignore
+          setUserData(userData._data);
+        }
       })
       .catch((error) => {
         switch (error.code) {
@@ -123,20 +136,17 @@ export default function AuthProvider({ children }: UserContextProps) {
       });
   }
 
-  function signOut() {
-    auth().signOut();
-  }
-
   return (
     <AuthContext.Provider
       value={{
         signed: !!user,
+        // @ts-ignore
         userData,
         user,
         signUp,
+        // @ts-ignore
         signIn,
         signOut,
-        isLoading,
       }}
     >
       {children}

@@ -56,7 +56,7 @@ export function ClientForm() {
         showToast("emerald.500", "Cliente cadastrado com sucesso!");
       })
       .catch((error) => {
-        console.log(error);
+        throw error;
       });
 
     setValue("name", "");
