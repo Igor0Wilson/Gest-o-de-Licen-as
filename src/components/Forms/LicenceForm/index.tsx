@@ -95,72 +95,79 @@ export function LicenceForm() {
     setUploading(true);
 
     try {
-      if (image !== "") {
-        await storage().ref(filename).putFile(uploadUri);
-        const url = await storage().ref(filename).getDownloadURL();
-        await firestore()
-          .collection("Licences")
-          .add({
-            mac: data.mac,
-            day: data.day,
-            month: data.month,
-            year: data.year,
-            client: data.client,
-            isValid: data.isValid,
-            expired: false,
-            imageName: filename,
-            imagePath: url,
-            created_by: userData.name,
-            updated_by: userData.name,
-            created_at: firestore.FieldValue.serverTimestamp(),
-            updated_at: firestore.FieldValue.serverTimestamp(),
-          })
-          .then(() => {
-            showToast("emerald.500", "Licença cadastrada com sucesso!");
-          })
-          .catch((error) => {
-            throw error;
-          });
-
-        setLoading(false);
-        setUploading(false);
-        setValue("mac", "");
-        setValue("day", "");
-        setValue("month", "");
-        setValue("year", "");
-        setValue("client", "");
-        setValue("isValid", false);
+      if (userData?.role !== "adm" && data.isValid === true) {
+        showToast(
+          "danger.400",
+          "Você não tem permissão para validar uma licença!"
+        );
       } else {
-        await firestore()
-          .collection("Licences")
-          .add({
-            mac: data.mac,
-            day: data.day,
-            month: data.month,
-            year: data.year,
-            client: data.client,
-            isValid: data.isValid,
-            expired: false,
-            created_by: userData.name,
-            updated_by: userData.name,
-            created_at: firestore.FieldValue.serverTimestamp(),
-            updated_at: firestore.FieldValue.serverTimestamp(),
-          })
-          .then(() => {
-            showToast("emerald.500", "Licença cadastrada com sucesso!");
-          })
-          .catch((error) => {
-            throw error;
-          });
+        if (image !== "") {
+          await storage().ref(filename).putFile(uploadUri);
+          const url = await storage().ref(filename).getDownloadURL();
+          await firestore()
+            .collection("Licences")
+            .add({
+              mac: data.mac,
+              day: data.day,
+              month: data.month,
+              year: data.year,
+              client: data.client,
+              isValid: data.isValid,
+              expired: false,
+              imageName: filename,
+              imagePath: url,
+              created_by: userData.name,
+              updated_by: userData.name,
+              created_at: firestore.FieldValue.serverTimestamp(),
+              updated_at: firestore.FieldValue.serverTimestamp(),
+            })
+            .then(() => {
+              showToast("emerald.500", "Licença cadastrada com sucesso!");
+            })
+            .catch((error) => {
+              throw error;
+            });
 
-        setLoading(false);
-        setUploading(false);
-        setValue("mac", "");
-        setValue("day", "");
-        setValue("month", "");
-        setValue("year", "");
-        setValue("client", "");
-        setValue("isValid", false);
+          setLoading(false);
+          setUploading(false);
+          setValue("mac", "");
+          setValue("day", "");
+          setValue("month", "");
+          setValue("year", "");
+          setValue("client", "");
+          setValue("isValid", false);
+        } else {
+          await firestore()
+            .collection("Licences")
+            .add({
+              mac: data.mac,
+              day: data.day,
+              month: data.month,
+              year: data.year,
+              client: data.client,
+              isValid: data.isValid,
+              expired: false,
+              created_by: userData.name,
+              updated_by: userData.name,
+              created_at: firestore.FieldValue.serverTimestamp(),
+              updated_at: firestore.FieldValue.serverTimestamp(),
+            })
+            .then(() => {
+              showToast("emerald.500", "Licença cadastrada com sucesso!");
+            })
+            .catch((error) => {
+              throw error;
+            });
+
+          setLoading(false);
+          setUploading(false);
+          setValue("mac", "");
+          setValue("day", "");
+          setValue("month", "");
+          setValue("year", "");
+          setValue("client", "");
+          setValue("isValid", false);
+        }
       }
     } catch (error) {
       throw error;
@@ -424,7 +431,13 @@ export function LicenceForm() {
               </Button>
             </HStack>
           </Center>
-          <Button bg={"primary.800"} onPress={handleSubmit(sendLicenceData)}>
+          <Button
+            isLoading={loading}
+            spinnerPlacement="end"
+            isLoadingText="Carregando"
+            bg={"primary.800"}
+            onPress={handleSubmit(sendLicenceData)}
+          >
             Cadastrar
           </Button>
         </Stack>

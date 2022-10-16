@@ -23,6 +23,7 @@ import { Entypo } from "@expo/vector-icons";
 import { FontAwesome5 } from "@expo/vector-icons";
 import { MaterialIcons } from "@expo/vector-icons";
 import { showToast } from "@components/ToastMessage";
+import { TextInputMask } from "react-native-masked-text";
 
 type UserFormProps = {
   name: string;
@@ -163,7 +164,14 @@ export function Register() {
               control={control}
               name="phone"
               render={({ field: { onBlur, value, onChange } }) => (
-                <Input
+                <TextInputMask
+                  type={"cel-phone"}
+                  options={{
+                    maskType: "BRL",
+                    withDDD: true,
+                    dddMask: "(99) ",
+                  }}
+                  customTextInput={Input}
                   placeholder=" Digite o telefone do usuário"
                   // @ts-ignore
                   error={errors.phone}

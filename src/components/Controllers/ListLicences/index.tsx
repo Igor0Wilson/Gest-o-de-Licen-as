@@ -1,6 +1,8 @@
 import React from "react";
 import { MaterialIcons } from "@expo/vector-icons";
 import { useTheme } from "styled-components/native";
+import { AntDesign } from "@expo/vector-icons";
+import { Feather } from "@expo/vector-icons";
 
 import {
   Container,
@@ -41,6 +43,19 @@ type Props = {
 export function LicencesData({ data }: Props) {
   const theme = useTheme();
 
+  const valid =
+    data.isValid === true ? (
+      <Info>
+        <AntDesign name="check" size={16} color="blue" />
+        <Label>Válidado</Label>
+      </Info>
+    ) : (
+      <Info>
+        <Feather name="x" size={16} color="red" />
+        <Label>Não validado</Label>
+      </Info>
+    );
+
   let imagePath = data.imagePath
     ? data.imagePath
     : "https://firebasestorage.googleapis.com/v0/b/controle-de-licencas-e7993.appspot.com/o/pngtree-gallery-vector-icon-png-image_470660.jpg?alt=media&token=1fb2a8c8-a409-458e-9321-bab066921874";
@@ -67,12 +82,12 @@ export function LicencesData({ data }: Props) {
                 <Title>{data.mac}</Title>
               </Header>
               <Info>
-                <MaterialIcons
-                  name="date-range"
+                <Ionicons
+                  name="create"
                   size={16}
                   color={theme.COLORS.SUBTEXT}
                 />
-                <Label>{`${data.day}/${data.month}/${data.year}`}</Label>
+                <Label>{data.updated_by}</Label>
               </Info>
 
               <Info>
@@ -83,15 +98,15 @@ export function LicencesData({ data }: Props) {
                 />
                 <Label>{data.client}</Label>
               </Info>
-
               <Info>
-                <Ionicons
-                  name="create"
+                <MaterialIcons
+                  name="date-range"
                   size={16}
                   color={theme.COLORS.SUBTEXT}
                 />
-                <Label>{data.updated_by}</Label>
+                <Label>{`${data.day}/${data.month}/${data.year}`}</Label>
               </Info>
+              {valid}
             </VStack>
           </HStack>
           <GroupsContainer>

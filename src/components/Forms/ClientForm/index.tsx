@@ -1,7 +1,9 @@
-import React, { useState } from "react";
+import React, { useContext } from "react";
 
 import firestore from "@react-native-firebase/firestore";
+import { TextInputMask } from "react-native-masked-text";
 
+import { AuthContext } from "../../../contexts/auth";
 import { ErrorText, Form, Title } from "./styles";
 import { AntDesign } from "@expo/vector-icons";
 import { MaterialIcons } from "@expo/vector-icons";
@@ -19,11 +21,11 @@ import {
 } from "native-base";
 import { useForm, Controller } from "react-hook-form";
 import { showToast } from "@components/ToastMessage";
-
 export type ClientFormProps = {
   id: string;
   name: string;
   email: string;
+  telephone: string;
   phone: string;
   isValid: boolean;
 };
@@ -32,7 +34,7 @@ const EMAIL_REGEX =
   /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
 export function ClientForm() {
-  const [isLoading, setIsLoading] = useState(false);
+  const { userData } = useContext(AuthContext);
 
   const {
     handleSubmit,
@@ -42,27 +44,36 @@ export function ClientForm() {
   } = useForm<ClientFormProps>();
 
   function handleNewClient(data: ClientFormProps) {
-    firestore()
-      .collection("Client")
-      .add({
-        name: data.name,
-        email: data.email,
-        telephone: data.phone,
-        isValid: data.isValid,
-        createdAt: firestore.FieldValue.serverTimestamp(),
-        updatedAt: firestore.FieldValue.serverTimestamp(),
-      })
-      .then(() => {
-        showToast("emerald.500", "Cliente cadastrado com sucesso!");
-      })
-      .catch((error) => {
-        throw error;
-      });
+    if (userData?.role !== "adm" && data.isValid === true) {
+      showToast(
+        "danger.400",
+        "Você não tem permissão para validar um cliente!"
+      );
+    } else {
+      firestore()
+        .collection("Client")
+        .add({
+          name: data.name,
+          email: data.email,
+          telephone: data.phone,
+          isValid: data.isValid,
+          created_by: userData.name,
+          updated_by: userData.name,
+          created_at: firestore.FieldValue.serverTimestamp(),
+          updated_at: firestore.FieldValue.serverTimestamp(),
+        })
+        .then(() => {
+          showToast("emerald.500", "Cliente cadastrado com sucesso!");
+        })
+        .catch((error) => {
+          throw error;
+        });
 
-    setValue("name", "");
-    setValue("email", "");
-    setValue("phone", "");
-    setValue("isValid", false);
+      setValue("name", "");
+      setValue("email", "");
+      setValue("phone", "");
+      setValue("isValid", false);
+    }
   }
 
   return (
@@ -163,15 +174,22 @@ export function ClientForm() {
               control={control}
               name="phone"
               render={({ field: { onBlur, value, onChange } }) => (
-                <Input
+                <TextInputMask
+                  type={"cel-phone"}
+                  options={{
+                    maskType: "BRL",
+                    withDDD: true,
+                    dddMask: "(99) ",
+                  }}
+                  customTextInput={Input}
                   placeholder="Digite o telefone do cliente"
                   error={errors.phone}
                   errorText={errors.phone?.message}
                   onBlur={onBlur}
                   value={value}
+                  variant="underlined"
                   onChangeText={onChange}
                   size="lg"
-                  variant="underlined"
                   autoCapitalize="none"
                   InputLeftElement={
                     <Icon
@@ -201,10 +219,10 @@ export function ClientForm() {
               defaultValue={false}
               control={control}
               name="isValid"
-              render={({ field: { onBlur, value, onChange } }) => (
+              render={({ field: { value, onChange } }) => (
                 <HStack alignItems="center" space={4}>
                   <Switch size="md" onValueChange={onChange} value={value} />
-                  <Text>Validado pelo administrador?</Text>
+                  <Text>Validado pelo administrador</Text>
                 </HStack>
               )}
             />

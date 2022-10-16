@@ -2,10 +2,7 @@ import React, { useState } from "react";
 
 import { Button, Center, Modal } from "native-base";
 import { Entypo } from "@expo/vector-icons";
-import {
-  LicenceFormProps,
-  UpdateLicenceForm,
-} from "@components/Forms/UpdateLicencesForm";
+import { UpdateLicenceForm } from "@components/Forms/UpdateLicencesForm";
 
 type Props = {
   uid: string;
@@ -16,7 +13,7 @@ export function UpdateLicense({ uid }: Props) {
 
   return (
     <Center>
-      <Button ml={-5} size={10} onPress={() => setShowModal(true)}>
+      <Button ml={-5} size={9} onPress={() => setShowModal(true)}>
         <Entypo name="edit" size={20} color="black" />
       </Button>
       <Modal

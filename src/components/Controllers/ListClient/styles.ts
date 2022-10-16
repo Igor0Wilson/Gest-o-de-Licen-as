@@ -17,11 +17,13 @@ export const Content = styled.View`
   height: 120px;
   padding: 0 15px;
   justify-content: center;
-  background-color: #fff;
+  margin-top: -15px;
+  /* background-color: #fff; */
 `;
 
 export const Header = styled.View`
   flex-direction: row;
+  margin-top: 20px;
 `;
 
 export const Status = styled.View<ClientStyleProps>`
@@ -59,5 +61,6 @@ export const Label = styled.Text`
 
 export const GroupsContainer = styled.View`
   margin-left: 80%;
+  margin-top: -15%;
   flex-direction: row;
 `;

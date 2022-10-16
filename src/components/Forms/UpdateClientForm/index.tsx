@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 
 import firestore from "@react-native-firebase/firestore";
+import { TextInputMask } from "react-native-masked-text";
 
 import { ErrorText, Form, Title } from "./styles";
 import { MaterialIcons } from "@expo/vector-icons";
@@ -57,38 +58,48 @@ export function UpdateClientForm({ uid }: Props) {
     formState: { errors },
   } = useForm<ClientFormProps>();
 
+  console.log(userData.role);
+
   function handleUpdateClient(data: ClientFormProps) {
     setIsLoading(true);
-    if (
-      // @ts-ignore
-      clientData?.isValid === false ||
-      // @ts-ignore
-      (clientData?.isValid === true && userData.role === "adm")
-    ) {
-      firestore()
-        .collection("Client")
-        .doc(uid)
-        .update({
-          name: data.name,
-          email: data.email,
-          telephone: data.phone,
-          isValid: data.isValid,
-          updatedAt: firestore.FieldValue.serverTimestamp(),
-        })
-        .then(() => {
-          showToast(
-            "emerald.500",
-            "Informações do cliente atualizadas com sucesso!"
-          );
-        })
-        .catch((error) => {
-          throw error;
-        });
-    } else {
+    if (userData?.role !== "adm" && data.isValid === true) {
       showToast(
         "danger.400",
-        "Você não tem permissão para executar esta ação!"
+        "Você não tem permissão para validar um cliente!"
       );
+    } else {
+      if (
+        // @ts-ignore
+        clientData?.isValid === false ||
+        // @ts-ignore
+        (clientData?.isValid === true && userData?.role === "adm")
+      ) {
+        firestore()
+          .collection("Client")
+          .doc(uid)
+          .update({
+            name: data.name,
+            email: data.email,
+            telephone: data.phone,
+            isValid: data.isValid,
+            updated_by: userData.name,
+            updated_at: firestore.FieldValue.serverTimestamp(),
+          })
+          .then(() => {
+            showToast(
+              "emerald.500",
+              "Informações do cliente atualizadas com sucesso!"
+            );
+          })
+          .catch((error) => {
+            throw error;
+          });
+      } else {
+        showToast(
+          "danger.400",
+          "Você não tem permissão para executar esta ação!"
+        );
+      }
     }
   }
 
@@ -193,7 +204,14 @@ export function UpdateClientForm({ uid }: Props) {
             control={control}
             name="phone"
             render={({ field: { onBlur, value, onChange } }) => (
-              <Input
+              <TextInputMask
+                type={"cel-phone"}
+                options={{
+                  maskType: "BRL",
+                  withDDD: true,
+                  dddMask: "(99) ",
+                }}
+                customTextInput={Input}
                 placeholder=" Digite o telefone do cliente"
                 // @ts-ignore
                 error={errors.phone}

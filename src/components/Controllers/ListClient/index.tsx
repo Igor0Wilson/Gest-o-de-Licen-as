@@ -1,5 +1,10 @@
 import React from "react";
+
+import { AntDesign } from "@expo/vector-icons";
 import { MaterialIcons } from "@expo/vector-icons";
+import { Feather } from "@expo/vector-icons";
+import { Ionicons } from "@expo/vector-icons";
+
 import { useTheme } from "styled-components/native";
 
 import {
@@ -24,6 +29,7 @@ export type ClientProps = ClientStyleProps & {
   email: string;
   telephone: string;
   isValid: boolean;
+  updated_by: string;
 };
 
 type Props = {
@@ -34,6 +40,19 @@ export function ClientData({ data }: Props) {
   const theme = useTheme();
 
   const uid = data.id;
+
+  const valid =
+    data.isValid === true ? (
+      <Info>
+        <AntDesign name="check" size={16} color="blue" />
+        <Label>Válidado</Label>
+      </Info>
+    ) : (
+      <Info>
+        <Feather name="x" size={16} color="red" />
+        <Label>Não validado</Label>
+      </Info>
+    );
 
   return (
     <Container>
@@ -60,6 +79,11 @@ export function ClientData({ data }: Props) {
               color={theme.COLORS.SUBTEXT}
             />
             <Label>{data.telephone}</Label>
+          </Info>
+          {valid}
+          <Info>
+            <Ionicons name="create" size={16} color={theme.COLORS.SUBTEXT} />
+            <Label>{data.updated_by}</Label>
           </Info>
           <GroupsContainer>
             <UpdateClient uid={uid} />

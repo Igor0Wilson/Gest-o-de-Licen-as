@@ -123,96 +123,103 @@ export function UpdateLicenceForm({ uid }: Props) {
 
       setUploading(true);
 
-      if (image !== "") {
-        await storage().ref(filename).putFile(uploadUri);
-        const url = await storage().ref(filename).getDownloadURL();
-        let isExpired = false;
-
-        if (
-          data.day < currentDay &&
-          data.month == currentMonth &&
-          data.year == currentYear
-        ) {
-          isExpired = true;
-        } else if (
-          data.day >= currentDay &&
-          data.month < currentMonth &&
-          data.year == currentYear
-        ) {
-          isExpired = true;
-        } else if (data.year < currentYear) {
-          isExpired = true;
-        }
-
-        firestore()
-          .collection("Licences")
-          .doc(uid)
-          .update({
-            mac: data.mac,
-            day: data.day,
-            month: data.month,
-            year: data.year,
-            client: data.client,
-            isValid: data.isValid,
-            expired: isExpired,
-            imageName: filename,
-            imagePath: url,
-            updated_by: userData.name,
-            updated_at: firestore.FieldValue.serverTimestamp(),
-          })
-          .then(() => {
-            showToast("emerald.500", "Licença atualizada com sucesso!");
-          })
-          .catch((error) => {
-            setLoading(false);
-            throw error;
-          });
-
-        setLoading(false);
-        setUploading(false);
+      if (userData?.role !== "adm" && data.isValid === true) {
+        showToast(
+          "danger.400",
+          "Você não tem permissão para validar uma licença!"
+        );
       } else {
-        let isExpired = false;
+        if (image !== "") {
+          await storage().ref(filename).putFile(uploadUri);
+          const url = await storage().ref(filename).getDownloadURL();
+          let isExpired = false;
 
-        if (
-          data.day < currentDay &&
-          data.month == currentMonth &&
-          data.year == currentYear
-        ) {
-          isExpired = true;
-        } else if (
-          data.day >= currentDay &&
-          data.month < currentMonth &&
-          data.year == currentYear
-        ) {
-          isExpired = true;
-        } else if (data.year < currentYear) {
-          isExpired = true;
+          if (
+            data.day < currentDay &&
+            data.month == currentMonth &&
+            data.year == currentYear
+          ) {
+            isExpired = true;
+          } else if (
+            data.day >= currentDay &&
+            data.month < currentMonth &&
+            data.year == currentYear
+          ) {
+            isExpired = true;
+          } else if (data.year < currentYear) {
+            isExpired = true;
+          }
+
+          firestore()
+            .collection("Licences")
+            .doc(uid)
+            .update({
+              mac: data.mac,
+              day: data.day,
+              month: data.month,
+              year: data.year,
+              client: data.client,
+              isValid: data.isValid,
+              expired: isExpired,
+              imageName: filename,
+              imagePath: url,
+              updated_by: userData.name,
+              updated_at: firestore.FieldValue.serverTimestamp(),
+            })
+            .then(() => {
+              showToast("emerald.500", "Licença atualizada com sucesso!");
+            })
+            .catch((error) => {
+              setLoading(false);
+              throw error;
+            });
+
+          setLoading(false);
+          setUploading(false);
+        } else {
+          let isExpired = false;
+
+          if (
+            data.day < currentDay &&
+            data.month == currentMonth &&
+            data.year == currentYear
+          ) {
+            isExpired = true;
+          } else if (
+            data.day >= currentDay &&
+            data.month < currentMonth &&
+            data.year == currentYear
+          ) {
+            isExpired = true;
+          } else if (data.year < currentYear) {
+            isExpired = true;
+          }
+
+          firestore()
+            .collection("Licences")
+            .doc(uid)
+            .update({
+              mac: data.mac,
+              day: data.day,
+              month: data.month,
+              year: data.year,
+              client: data.client,
+              isValid: data.isValid,
+              expired: isExpired,
+              updated_by: userData.name,
+              updated_at: firestore.FieldValue.serverTimestamp(),
+            })
+            .then(() => {
+              showToast("emerald.500", "Licença atualizada com sucesso!");
+            })
+            .catch((error) => {
+              setLoading(false);
+              throw error;
+            });
+
+          setLoading(false);
+          setUploading(false);
         }
-
-        firestore()
-          .collection("Licences")
-          .doc(uid)
-          .update({
-            mac: data.mac,
-            day: data.day,
-            month: data.month,
-            year: data.year,
-            client: data.client,
-            isValid: data.isValid,
-            expired: isExpired,
-            updated_by: userData.name,
-            updated_at: firestore.FieldValue.serverTimestamp(),
-          })
-          .then(() => {
-            showToast("emerald.500", "Licença atualizada com sucesso!");
-          })
-          .catch((error) => {
-            setLoading(false);
-            throw error;
-          });
-
-        setLoading(false);
-        setUploading(false);
       }
     } catch (error) {
       throw error;

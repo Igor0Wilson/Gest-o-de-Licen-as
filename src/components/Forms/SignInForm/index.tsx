@@ -1,5 +1,7 @@
 import React, { useState, useContext } from "react";
 
+import auth from "@react-native-firebase/auth";
+
 import { Form, Title, Footer } from "./styles";
 import { Box, Button, FormControl, Icon, Input, Stack } from "native-base";
 import { useForm, Controller } from "react-hook-form";
@@ -9,6 +11,8 @@ import { AuthContext } from "../../../contexts/auth";
 import { Entypo } from "@expo/vector-icons";
 import { MaterialIcons } from "@expo/vector-icons";
 import { Fontisto } from "@expo/vector-icons";
+import { FooterButton } from "@components/Controllers/FooterButton";
+import { showToast } from "@components/ToastMessage";
 
 type SignInFormProps = {
   email: string;
@@ -34,7 +38,16 @@ export function SignInForm() {
     signIn(data);
   }
 
-  function handleForgotPassword() {}
+  function handleForgotPassword(data: SignInFormProps) {
+    auth()
+      .sendPasswordResetEmail(data.email)
+      .then(() => {
+        showToast(
+          "emerald.500",
+          "Email de redefinição enviado no email cadastro! obs: Verifique a caixa de SPAM!"
+        );
+      });
+  }
 
   return (
     <Box alignItems="center">
@@ -139,13 +152,13 @@ export function SignInForm() {
               Entrar
             </Button>
 
-            {/* <Footer>
+            <Footer>
               <FooterButton
                 title="Esqueci senha"
                 icon="email"
-                onPress={handleForgotPassword}
+                onPress={handleSubmit(handleForgotPassword)}
               />
-            </Footer> */}
+            </Footer>
           </Stack>
         </Form>
       </FormControl>

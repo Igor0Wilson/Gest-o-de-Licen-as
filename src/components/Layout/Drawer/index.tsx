@@ -1,16 +1,20 @@
+import React, { useContext } from "react";
 import {
   DrawerContentScrollView,
   DrawerItem,
   DrawerItemList,
 } from "@react-navigation/drawer";
-import React, { useContext } from "react";
+
+import { EvilIcons } from "@expo/vector-icons";
+import { MaterialIcons } from "@expo/vector-icons";
+import { FontAwesome } from "@expo/vector-icons";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import {
   ContainerNavigation,
   HeaderContainer,
   LogOutContainer,
 } from "./styles";
-import { Avatar, Text } from "native-base";
+import { Avatar, HStack, Text } from "native-base";
 import { AuthContext } from "../../../contexts/auth";
 import { AntDesign } from "@expo/vector-icons";
 
@@ -22,14 +26,32 @@ export function Drawer({ ...props }) {
     signOut();
   }
 
+  const role = userData.role === "adm" ? "Administrador" : "Colaborador";
+
   return (
     <ContainerNavigation>
       <HeaderContainer>
-        <Avatar bg="cyan.500" alignSelf="center" size="lg">
+        <Avatar bg="blueGray.400" mb={3} mt={5} alignSelf="center" size="lg">
           <AntDesign name="user" size={35} color="black" />
         </Avatar>
-        <Text>{userData?.name}</Text>
-        <Text>{userData?.email}</Text>
+        <HStack>
+          <FontAwesome name="user" size={16} color="black" />
+          <Text mt={-1} mb={1} ml={2}>
+            {userData?.name}
+          </Text>
+        </HStack>
+        <HStack>
+          <MaterialIcons name="email" mr={3} size={16} color="black" />
+          <Text mt={-1} mb={1} ml={2}>
+            {userData?.email}
+          </Text>
+        </HStack>
+        <HStack>
+          <EvilIcons name="user" mr={3} size={24} color="black" />
+          <Text mt={-1} mb={1} ml={2}>
+            {role}
+          </Text>
+        </HStack>
       </HeaderContainer>
       <DrawerContentScrollView {...props}>
         <DrawerItemList {...props} />

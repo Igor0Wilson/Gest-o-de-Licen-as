@@ -1,8 +1,5 @@
-import React, { useContext } from "react";
-import { MaterialIcons } from "@expo/vector-icons";
+import React from "react";
 import { useTheme } from "styled-components/native";
-
-import firestore from "@react-native-firebase/firestore";
 
 import {
   Container,
@@ -16,11 +13,11 @@ import {
   GroupsContainer,
 } from "./styles";
 
-import { Button } from "native-base";
+import { AntDesign } from "@expo/vector-icons";
 import { Entypo } from "@expo/vector-icons";
 import { EvilIcons } from "@expo/vector-icons";
-import { AuthContext } from "../../../contexts/auth";
-import { showToast } from "@components/ToastMessage";
+import { MaterialIcons } from "@expo/vector-icons";
+
 import { UpdateUser } from "../UpdateUserModal";
 import { DeleteUser } from "../Popover/DeleteUser";
 
@@ -38,28 +35,24 @@ type Props = {
 };
 
 export function UserData({ data }: Props) {
-  const { userData } = useContext(AuthContext);
-
   const roleTitle = data.role === "adm" ? "Administrador" : "Colaborador";
+
+  const isBlock =
+    data.isActive === true ? (
+      <Info>
+        <Entypo name="block" size={16} color="red" />
+        <Label>Bloqueado</Label>
+      </Info>
+    ) : (
+      <Info>
+        <AntDesign name="check" size={16} color="blue" />
+        <Label>Liberado</Label>
+      </Info>
+    );
 
   const theme = useTheme();
 
   const uid = data.id;
-
-  function handleDeleteUser() {
-    if (userData.role === "adm") {
-      firestore()
-        .collection("Users")
-        .doc(uid)
-        .delete()
-        .then(() => showToast("emerald.500", "Usuário deletado com sucesso!"));
-    } else {
-      showToast(
-        "danger.400",
-        "Você não tem permissão para executar esta ação!"
-      );
-    }
-  }
 
   return (
     <Container>
@@ -91,6 +84,7 @@ export function UserData({ data }: Props) {
             <EvilIcons name="user" size={24} color="black" />
             <Label>{roleTitle}</Label>
           </Info>
+          {isBlock}
           <GroupsContainer>
             <UpdateUser uid={uid} />
             <DeleteUser data={data} />

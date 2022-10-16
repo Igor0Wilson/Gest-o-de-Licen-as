@@ -48,7 +48,7 @@ export default function AppRoutes() {
             <AntDesign name="addusergroup" size={20} color="black" />
           ),
         }}
-        name="Clients"
+        name="Clientes"
         component={Clients}
       />
     </Navigator>

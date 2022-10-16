@@ -49,7 +49,6 @@ const ContextProps = {
 export const AuthContext = createContext<ContextProps>(ContextProps);
 
 export default function AuthProvider({ children }: UserContextProps) {
-  const [isLoading, setIsLoading] = useState(false);
   const [user, setUser] = useState(null);
   const [userData, setUserData] = useState({});
 

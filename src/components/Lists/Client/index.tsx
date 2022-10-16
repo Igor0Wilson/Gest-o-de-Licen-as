@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { FlatList } from "react-native";
 
 import firestore from "@react-native-firebase/firestore";
@@ -6,6 +6,7 @@ import firestore from "@react-native-firebase/firestore";
 import { ClientData, ClientProps } from "@components/Controllers/ListClient";
 import { Container, Header, Title, Counter } from "./styles";
 import { Load } from "@components/Controllers/Spinner";
+import { Text } from "native-base";
 
 export function ClientList() {
   const [isLoading, setIsLoading] = useState(false);

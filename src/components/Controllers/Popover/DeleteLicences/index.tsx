@@ -21,7 +21,7 @@ export function DeleteLicence({ data }: Props) {
   async function handleDeleteLicences(data: LicencesProps) {
     try {
       if (data.imageName !== undefined) {
-        if (userData.role === "colab") {
+        if (data.isValid === true && userData?.role === "colab") {
           showToast(
             "danger.400",
             "Você não tem permissão para executar esta ação!"
@@ -37,7 +37,7 @@ export function DeleteLicence({ data }: Props) {
             );
         }
       } else {
-        if (userData.role === "colab") {
+        if (data.isValid === true && userData?.role === "colab") {
           showToast(
             "danger.400",
             "Você não tem permissão para executar esta ação!"
@@ -67,7 +67,7 @@ export function DeleteLicence({ data }: Props) {
               <Button
                 ml={1}
                 colorScheme="danger"
-                size={10}
+                size={9}
                 {...triggerProps}
                 onPress={() => {
                   setIsOpen(true);

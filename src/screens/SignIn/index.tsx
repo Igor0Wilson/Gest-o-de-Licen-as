@@ -1,5 +1,5 @@
 import React from "react";
-import { KeyboardAvoidingView, Platform, Image } from "react-native";
+import { KeyboardAvoidingView, Platform } from "react-native";
 import { SignInForm } from "@components/Forms/SignInForm";
 import { Container, Content, Title } from "./styles";
 import { Center } from "native-base";
